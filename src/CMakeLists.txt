@@ -10,5 +10,6 @@ add_subdirectory(samconf)
 if (INSTALL_SAMCONF_TOOLS)
   install(PROGRAMS ${PROJECT_SOURCE_DIR}/src/signature.sh
           PERMISSIONS OWNER_READ OWNER_WRITE
-          DESTINATION ${CMAKE_INSTALL_BINDIR})
+          DESTINATION ${CMAKE_INSTALL_BINDIR}
+          RENAME samconf-sign)
 endif (INSTALL_SAMCONF_TOOLS)

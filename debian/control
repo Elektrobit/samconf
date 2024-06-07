@@ -33,6 +33,7 @@ Description: Tools for signed and mergable configuration
  Package containing tools.
 
 Package: libsamconf0
+Section: libs
 Architecture: any
 Depends:
  ${misc:Depends},
@@ -43,6 +44,7 @@ Description: Signed and mergable configuration
  sources including support for verification of the configuration sources.
 
 Package: libmock-samconf0
+Section: libs
 Architecture: any
 Depends:
  ${misc:Depends},
@@ -55,6 +57,7 @@ Description: Signed and mergable configuration (mock libraries)
  Mock libraries.
 
 Package: libsamconf-dev
+Section: libdevel
 Architecture: any
 Depends:
  ${misc:Depends},
@@ -69,6 +72,7 @@ Description: Development package for signed and mergable configuration
  Development package.
 
 Package: samconf-doc
+Section: doc
 Architecture: all
 Depends:
  ${misc:Depends},

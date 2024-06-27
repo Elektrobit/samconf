@@ -4,14 +4,16 @@
 # Create an signature file for a given file path argument
 set -e
 
+SCRIPT_NAME=$(basename "$0")
+
 help () {
-    echo "signature.sh – manage samconf signatures"
+    echo "${SCRIPT_NAME} – manage samconf signatures"
     echo
     echo "sign a given file with private key:"
-    echo "  $>signature.sh <valid_path> <private key path>"
+    echo "  $>${SCRIPT_NAME} <valid_path> <private key path>"
     echo
     echo "create a key pair to use with samconf:"
-    echo "  $>signature.sh create_keys <output directory> <keyname>"
+    echo "  $>${SCRIPT_NAME} create_keys <output directory> <keyname>"
 }
 
 signfile () {

@@ -26,4 +26,72 @@ samconfConfigStatusE_t samconfConfigSetBool(samconfConfig_t *config, bool value)
 samconfConfigStatusE_t samconfConfigSetReal(samconfConfig_t *config, double value);
 int samconfInitConfig();
 
+/*******************************************************************
+ * Get a string from a samconfConfig_t.
+ * If there is no string found under the provided search path
+ * a default value is returned.
+ * Also if any error is encountered while searching the configuration
+ * the defaultValue is returned.
+ *
+ * Parameters:
+ *      root: the configuration to look in
+ *      path: the path where to look for the string
+ *      defaultValue: the default value to return
+ * Returns:
+ *      - the string found in root under path
+ *      - defaultValue if nothing was found or an error occurred
+ ******************************************************************/
+const char *samconfConfigGetStringOr(const samconfConfig_t *root, const char *path, const char *defaultValue);
+
+/*******************************************************************
+ * Get a bool from a samconfConfig_t.
+ * If there is no string found under the provided search path
+ * a default value is returned.
+ * Also if any error is encountered while searching the configuration
+ * the defaultValue is returned.
+ *
+ * Parameters:
+ *      root: the configuration to look in
+ *      path: the path where to look for the string
+ *      defaultValue: the default value to return
+ * Returns:
+ *      - the bool found in the root under path
+ *      - defaultValue if nothing was found or an error occurred
+ ******************************************************************/
+bool samconfConfigGetBoolOr(const samconfConfig_t *root, const char *path, bool defaultValue);
+
+/*******************************************************************
+ * Get a int32_t from a samconfConfig_t.
+ * If there is no string found under the provided search path
+ * a default value is returned.
+ * Also if any error is encountered while searching the configuration
+ * the defaultValue is returned.
+ *
+ * Parameters:
+ *      root: the configuration to look in
+ *      path: the path where to look for the string
+ *      defaultValue: the default value to return
+ * Returns:
+ *      - the int32_t found in the root under path
+ *      - defaultValue if nothing was found or an error occurred
+ ******************************************************************/
+int32_t samconfConfigGetInt32Or(const samconfConfig_t *root, const char *path, int32_t defaultValue);
+
+/*******************************************************************
+ * Get a double from a samconfConfig_t.
+ * If there is no string found under the provided search path
+ * a default value is returned.
+ * Also if any error is encountered while searching the configuration
+ * the defaultValue is returned.
+ *
+ * Parameters:
+ *      root: the configuration to look in
+ *      path: the path where to look for the string
+ *      defaultValue: the default value to return
+ * Returns:
+ *      - the double found in the root under path
+ *      - defaultValue if nothing was found or an error occurred
+ ******************************************************************/
+double samconfConfigGetRealOr(const samconfConfig_t *root, const char *path, double defaultValue);
+
 __END_DECLS

@@ -1,0 +1,95 @@
+Source: samconf
+Section: admin
+Priority: optional
+Maintainer: Isaac True <isaac.true@emlix.com>
+Build-Depends:
+ debhelper-compat (= 13),
+ cmake,
+ git,
+ libcmocka-dev,
+ libsafu-dev,
+ libcmocka-mocks-dev,
+ cmocka-extensions-dev,
+ pkg-config,
+ pandoc,
+ pandoc-plantuml-filter,
+ graphviz,
+Rules-Requires-Root: no
+Standards-Version: 4.6.0.1
+Homepage: https://github.com/Elektrobit/samconf
+Vcs-Browser: https://github.com/Elektrobit/samconf
+Vcs-Git: https://github.com/Elektrobit/samconf
+
+Package: samconf-tools
+Section: utils
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: Tools for signed and mergable configuration
+ It stands for signed and mergable configuration. It is used by elos. The
+ goal of the library is to manage program configuration options from various
+ sources including support for verification of the configuration sources.
+ .
+ Package containing tools.
+
+Package: libsamconf0
+Section: libs
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: Signed and mergable configuration
+ It stands for signed and mergable configuration. It is used by elos. The
+ goal of the library is to manage program configuration options from various
+ sources including support for verification of the configuration sources.
+
+Package: libsamconf-test-utils0
+Section: libs
+Architecture: any
+Depends:
+ ${misc:Depends},
+ libsamconf0 (= ${binary:Version}),
+Description: Library with convenience functions for writing tests
+ Allows you to easily create configuration mock-ups from strings if you write
+ test where samconf is used.
+
+Package: libmock-samconf0
+Section: libdevel
+Architecture: any
+Depends:
+ ${misc:Depends},
+ libsamconf0 (= ${binary:Version}),
+Description: Signed and mergable configuration (mock libraries)
+ It stands for signed and mergable configuration. It is used by elos. The
+ goal of the library is to manage program configuration options from various
+ sources including support for verification of the configuration sources.
+ .
+ Mock libraries.
+
+Package: libsamconf-dev
+Section: libdevel
+Architecture: any
+Depends:
+ ${misc:Depends},
+ libsamconf0 (= ${binary:Version}),
+ libmock-samconf0 (= ${binary:Version}),
+ libsafu-dev,
+Description: Development package for signed and mergable configuration
+ It stands for signed and mergable configuration. It is used by elos. The
+ goal of the library is to manage program configuration options from various
+ sources including support for verification of the configuration sources.
+ .
+ Development package.
+
+Package: samconf-doc
+Section: doc
+Architecture: all
+Depends:
+ ${misc:Depends},
+Description: Documentation package for signed and mergable configuration
+ It stands for signed and mergable configuration. It is used by elos. The
+ goal of the library is to manage program configuration options from various
+ sources including support for verification of the configuration sources.
+ .
+ Documentation package.

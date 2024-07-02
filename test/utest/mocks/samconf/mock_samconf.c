@@ -2,6 +2,8 @@
 
 #include "mock_samconf.h"
 
+#include <cmocka.h>
+
 MOCK_FUNC_BODY(samconfGetBackendOps, const samconfConfigBackendOps_t *, size_t idx) {
     if (MOCK_IS_ACTIVE(samconfGetBackendOps)) {
         check_expected(idx);
@@ -101,6 +103,20 @@ MOCK_FUNC_BODY(samconfConfigGetInt32, samconfConfigStatusE_t, const samconfConfi
         return mock_type(samconfConfigStatusE_t);
     }
     return MOCK_FUNC_REAL(samconfConfigGetInt32)(root, path, result);
+}
+
+MOCK_FUNC_BODY(samconfConfigGetReal, samconfConfigStatusE_t, const samconfConfig_t *root, const char *path,
+               double *result) {
+    if (MOCK_IS_ACTIVE(samconfConfigGetReal)) {
+        check_expected_ptr(root);
+        check_expected_ptr(path);
+        check_expected_ptr(result);
+        if (result != NULL) {
+            *result = mock_type(double);
+        }
+        return mock_type(samconfConfigStatusE_t);
+    }
+    return MOCK_FUNC_REAL(samconfConfigGetReal)(root, path, result);
 }
 
 MOCK_FUNC_BODY(samconfConfigGetString, samconfConfigStatusE_t, const samconfConfig_t *root, const char *path,
@@ -271,4 +287,42 @@ MOCK_FUNC_BODY(samconfCryptoUtilsVerify, samconfConfigStatusE_t, const char *dat
         return mock_type(samconfConfigStatusE_t);
     }
     return MOCK_FUNC_REAL(samconfCryptoUtilsVerify)(data, length, signature);
+}
+
+MOCK_FUNC_BODY(samconfConfigGetStringOr, const char *, const samconfConfig_t *root, const char *path,
+               const char *defaultValue) {
+    if (MOCK_IS_ACTIVE(samconfConfigGetStringOr)) {
+        check_expected_ptr(root);
+        check_expected_ptr(path);
+        check_expected_ptr(defaultValue);
+        return mock_ptr_type(const char *);
+    }
+    return MOCK_FUNC_REAL(samconfConfigGetStringOr)(root, path, defaultValue);
+}
+MOCK_FUNC_BODY(samconfConfigGetBoolOr, bool, const samconfConfig_t *root, const char *path, bool defaultValue) {
+    if (MOCK_IS_ACTIVE(samconfConfigGetBoolOr)) {
+        check_expected_ptr(root);
+        check_expected_ptr(path);
+        check_expected_ptr(defaultValue);
+        return mock_type(bool);
+    }
+    return MOCK_FUNC_REAL(samconfConfigGetBoolOr)(root, path, defaultValue);
+}
+MOCK_FUNC_BODY(samconfConfigGetInt32Or, int32_t, const samconfConfig_t *root, const char *path, int32_t defaultValue) {
+    if (MOCK_IS_ACTIVE(samconfConfigGetInt32Or)) {
+        check_expected_ptr(root);
+        check_expected_ptr(path);
+        check_expected_ptr(defaultValue);
+        return mock_type(int32_t);
+    }
+    return MOCK_FUNC_REAL(samconfConfigGetInt32Or)(root, path, defaultValue);
+}
+MOCK_FUNC_BODY(samconfConfigGetRealOr, double, const samconfConfig_t *root, const char *path, double defaultValue) {
+    if (MOCK_IS_ACTIVE(samconfConfigGetRealOr)) {
+        check_expected_ptr(root);
+        check_expected_ptr(path);
+        check_expected_ptr(defaultValue);
+        return mock_type(double);
+    }
+    return MOCK_FUNC_REAL(samconfConfigGetRealOr)(root, path, defaultValue);
 }

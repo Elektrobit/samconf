@@ -1,0 +1,11 @@
+/*.substvars
+/files
+/debhelper-build-stamp
+/samconf-tools/
+/libsamconf0/
+/libmock-samconf0/
+/libsamconf-dev/
+/samconf-doc/
+/.debhelper/
+/tmp/
+/*.debhelper.log

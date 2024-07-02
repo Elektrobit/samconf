@@ -3,15 +3,15 @@
 
 #include "samconfConfigGet_utest.h"
 
-int samconfTestSamconfConfigGetErrorRootHasNoChildSetup(UNUSED void **state) {
+int samconfTestSamconfConfigGetSuccessRootHasNoChildSetup(UNUSED void **state) {
     return 0;
 }
 
-int samconfTestSamconfConfigGetErrorRootHasNoChildTeardown(UNUSED void **state) {
+int samconfTestSamconfConfigGetSuccessRootHasNoChildTeardown(UNUSED void **state) {
     return 0;
 }
 
-void samconfTestSamconfConfigGetErrorRootHasNoChild(UNUSED void **state) {
+void samconfTestSamconfConfigGetSuccessRootHasNoChild(UNUSED void **state) {
     const samconfConfig_t *result = NULL;
     const char *testPath = "Scanner/Syslog/SyslogPath";
 
@@ -39,7 +39,7 @@ void samconfTestSamconfConfigGetErrorRootHasNoChild(UNUSED void **state) {
         clock_gettime(CLOCK_REALTIME, &stop);
         sum.tv_sec += (stop.tv_sec - start.tv_sec);
         sum.tv_nsec += (stop.tv_nsec - start.tv_nsec);
-        assert_int_equal(status, SAMCONF_CONFIG_ERROR);
+        assert_int_equal(status, SAMCONF_CONFIG_NOT_FOUND);
         assert_null(result);
     }
 

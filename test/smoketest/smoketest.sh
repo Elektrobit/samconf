@@ -147,6 +147,50 @@ function smoketest_genkeys {
     exit 0
 }
 
+smoketest_compile_program_using_libsamconf_test_utils() {
+    RESULT_DIR="$SMOKETEST_RESULT_DIR/compile_program_using_libsamconf_test_utils"
+    rm -rvf $RESULT_DIR
+    mkdir -p $RESULT_DIR
+
+    SMOKETEST_TMP_DIR=$(mktemp -d /tmp/samconf_smoketest_XXXXXX)
+
+    echo "Try to compile simple program using libsamconf_test_utils"
+    TEST_C_PROG='
+#include <samconf/test_utils.h>
+#include <samconf/samconf.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[]) {
+
+  samconfConfig_t config = {0};
+  samconfUtilCreateMockConfigFromStr("{\"optionName\": 42}", false, &config);
+
+  int32_t value = 0;
+  samconfConfigGetInt32(&config, "/optionName", &value);
+
+  printf("%s is %i\n", config.children[0]->key, value);
+
+  samconfConfigDeleteMembers(&config);
+  return EXIT_SUCCESS;
+}
+'
+    echo "$TEST_C_PROG"
+
+    echo "$TEST_C_PROG" \
+        | gcc -v -xc -lsamconf_test_utils -lsamconf -lsafu \
+        -I "${DIST_DIR}/usr/local/include/" -L "${DIST_DIR}/usr/local/lib" \
+        -I "${BASE_DIR}/build/deps/include/" -L "${BASE_DIR}/build/deps/lib" \
+        -o "${SMOKETEST_TMP_DIR}/testlibelos" - \
+        >> "$RESULT_DIR/libsamconf_test_utils.log" 2>&1
+    if [ $? -ne 0 ]; then
+        error_exit "failed to compile test program for libsamconf_test_utils"
+    fi
+    echo "Finished smoketest."
+    exit 0
+}
+
 function print_help {
     echo
     echo "Usage: $0 <simple_config|sign_config|help> <Debug|Release>"
@@ -180,6 +224,9 @@ case $1 in
         ;;
     genkeys)
         smoketest_genkeys
+        ;;
+    compile_program_using_libsamconf_test_utils)
+        smoketest_compile_program_using_libsamconf_test_utils
         ;;
     help)
         print_help

@@ -1,0 +1,6 @@
+usr/include/samconf
+usr/lib/*/cmake
+usr/lib/*/pkgconfig
+usr/lib/*/libsamconf.so
+usr/lib/*/libmock_samconf.so
+usr/lib/*/libsamconf_test_utils.so

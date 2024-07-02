@@ -33,6 +33,8 @@ MOCK_FUNC_PROTOTYPE(samconfConfigGetBool, samconfConfigStatusE_t, const samconfC
                     bool *result)
 MOCK_FUNC_PROTOTYPE(samconfConfigGetInt32, samconfConfigStatusE_t, const samconfConfig_t *root, const char *path,
                     int32_t *result)
+MOCK_FUNC_PROTOTYPE(samconfConfigGetReal, samconfConfigStatusE_t, const samconfConfig_t *root, const char *path,
+                    double *result)
 MOCK_FUNC_PROTOTYPE(samconfConfigGetString, samconfConfigStatusE_t, const samconfConfig_t *root, const char *path,
                     const char **result)
 MOCK_FUNC_PROTOTYPE(samconfConfigDelete, samconfConfigStatusE_t, samconfConfig_t *config)
@@ -56,5 +58,12 @@ MOCK_FUNC_PROTOTYPE(samconfLoadPublicKey, samconfConfigStatusE_t, EVP_PKEY **pKe
 MOCK_FUNC_PROTOTYPE(samconfBase64Decode, samconfConfigStatusE_t, const char *base64, uint8_t **buf, size_t *bufLen)
 MOCK_FUNC_PROTOTYPE(samconfCryptoUtilsVerify, samconfConfigStatusE_t, const char *data, size_t length,
                     const char *signature)
+
+MOCK_FUNC_PROTOTYPE(samconfConfigGetStringOr, const char *, const samconfConfig_t *root, const char *path,
+                    const char *defaultValue)
+MOCK_FUNC_PROTOTYPE(samconfConfigGetBoolOr, bool, const samconfConfig_t *root, const char *path, bool defaultValue)
+MOCK_FUNC_PROTOTYPE(samconfConfigGetInt32Or, int32_t, const samconfConfig_t *root, const char *path,
+                    int32_t defaultValue)
+MOCK_FUNC_PROTOTYPE(samconfConfigGetRealOr, double, const samconfConfig_t *root, const char *path, double defaultValue)
 
 #endif /* __MOCK_SAMCONF_SAMCONF_H__ */

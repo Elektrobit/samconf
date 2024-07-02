@@ -99,7 +99,7 @@ samconfConfigStatusE_t samconfLoad(const char *location, bool enforceSignature, 
     bool isSigned;
 
     if (config == NULL) {
-        safuLogErr("Invalid Call to samconfLoad, unintialized configuration");
+        safuLogErr("Invalid Call to samconfLoad, uninitialized configuration");
         return SAMCONF_CONFIG_ERROR;
     }
 

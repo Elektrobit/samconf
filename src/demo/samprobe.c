@@ -125,13 +125,13 @@ int main(int argc, char **argv) {
     status = samconfLoad(argv[1], false, &config);
 
     if (status == SAMCONF_CONFIG_ERROR) {
-        fprintf(stderr, "ERR: An error occured while loading form config file");
+        fprintf(stderr, "ERR: An error occurred while loading form config file");
         return EXIT_FAILURE;
     } else if (status == SAMCONF_CONFIG_INVALID_SIGNATURE) {
         fprintf(stderr, "ERR: Signature was invalid");
         return EXIT_FAILURE;
     } else if (config == NULL) {
-        fprintf(stderr, "ERR: unexpected error occured, where config was intialized but no expected error was caught");
+        fprintf(stderr, "ERR: unexpected error occuirred, where config was initialized but no expected error was caught");
         return EXIT_FAILURE;
     }
 
@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
     status = samconfConfigDelete(config);
 
     if (status == SAMCONF_CONFIG_ERROR) {
-        fprintf(stderr, "ERR: An error occured while deleting config");
+        fprintf(stderr, "ERR: An error occurred while deleting config");
         return EXIT_FAILURE;
     }
 

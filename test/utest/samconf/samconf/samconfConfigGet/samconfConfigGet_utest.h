@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-#ifndef SAMCONF_CONFIGGET_UTEST_H
-#define SAMCONF_CONFIGGET_UTEST_H
+#pragma once
 
 #include <cmocka_extensions/mock_extensions.h>
 
@@ -17,10 +16,8 @@ TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetErrorNullRoot)
 TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetErrorNullPath)
 TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetExtErrorStrdup)
 TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetErrorNullResult)
-TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetErrorRootHasNoChild)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetSuccessRootHasNoChild)
 TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetSuccessRootChildCountZero)
 TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetSuccessEntryFound)
 TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetSuccessEntryNotFound)
 TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetSuccessResultNonNull)
-
-#endif /* SAMCONF_CONFIGGET_UTEST_H */

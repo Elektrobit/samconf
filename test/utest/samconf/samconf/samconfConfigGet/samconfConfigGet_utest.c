@@ -8,7 +8,7 @@ TEST_SUITE_FUNC_PROTOTYPES(samconfConfigGetUtest)
 int main() {
     const struct CMUnitTest tests[] = {TEST_CASE(samconfTestSamconfConfigGetErrorNullResult),
                                        TEST_CASE(samconfTestSamconfConfigGetErrorNullRoot),
-                                       TEST_CASE(samconfTestSamconfConfigGetErrorRootHasNoChild),
+                                       TEST_CASE(samconfTestSamconfConfigGetSuccessRootHasNoChild),
                                        TEST_CASE(samconfTestSamconfConfigGetSuccessEntryFound),
                                        TEST_CASE(samconfTestSamconfConfigGetSuccessEntryNotFound),
                                        TEST_CASE(samconfTestSamconfConfigGetSuccessResultNonNull),

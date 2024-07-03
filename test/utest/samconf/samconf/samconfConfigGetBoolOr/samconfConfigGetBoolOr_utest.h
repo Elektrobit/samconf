@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: MIT
+#pragma once
+
+#include <cmocka_extensions/mock_extensions.h>
+
+#include "samconf_utest.h"
+
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetBoolOrSuccessEntryFound)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetBoolOrSuccessEntryNotFound)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetBoolOrSuccessNodeNotBool)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetBoolOrExtErrConfigGet)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetBoolOrErrorRootNull)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfConfigGetBoolOrErrorPathNull)

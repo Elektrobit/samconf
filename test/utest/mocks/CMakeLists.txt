@@ -20,8 +20,13 @@ create_mock_lib(
   WRAPS
     samconfConfigGet
     samconfConfigGetBool
+    samconfConfigGetBoolOr
     samconfConfigGetInt32
+    samconfConfigGetInt32Or
+    samconfConfigGetReal
+    samconfConfigGetRealOr
     samconfConfigGetString
+    samconfConfigGetStringOr
     samconfGetBackendOps
     samconfVerifySignature
     samconfConfigBackendNew

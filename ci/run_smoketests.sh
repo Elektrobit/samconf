@@ -17,4 +17,5 @@ time "$SMOKETEST_RUNNER" signed_config "$BUILD_TYPE"
 time "$SMOKETEST_RUNNER" error_signed_config "$BUILD_TYPE"
 time "$SMOKETEST_RUNNER" sign_config "$BUILD_TYPE"
 time "$SMOKETEST_RUNNER" genkeys "$BUILD_TYPE"
+time "$SMOKETEST_RUNNER" compile_program_using_libsamconf_test_utils "$BUILD_TYPE"
 

@@ -41,5 +41,10 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 # c-autodoc
-c_autodoc_roots = ['../../src/samconf/private', '../../src/samconf/public']
+c_autodoc_roots = [
+    '../../src/samconf/private',
+    '../../src/samconf/public',
+    '../../test/utest/utils/public',
+    '../../test/utest/utils/private',
+]
 set_type_checking_flag = True

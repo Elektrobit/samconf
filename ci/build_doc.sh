@@ -31,6 +31,11 @@ function createDeveloperDocu() {
 	-o "${SPHINX_GENERATED_SOURCE_DIR}/developer/documentation.rst" \
 	"${MD_DOCUMENTAION_DIR}/documentation.md"
 
+    sphinx-c-apidoc --force \
+	    -o "${SPHINX_GENERATED_SOURCE_DIR}/developer/api/" \
+	    --tocfile index \
+	    "${BASE_DIR}/test/utest/utils/public"
+
     echo -e "
 Developer documentation
 ==========================
@@ -41,6 +46,8 @@ Developer documentation
 
   DeveloperManual
   documentation
+  API<api/index>
+
 " > "${SPHINX_GENERATED_SOURCE_DIR}/developer/index.rst"
 }
 

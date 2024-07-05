@@ -53,7 +53,6 @@ install(
   EXPORT samconfTargets
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/samconf
   NAMESPACE samconf::
-  FILE samconfTargets.cmake # Not sure if this is still needed
 )
 
 include(CMakePackageConfigHelpers)

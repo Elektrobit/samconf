@@ -124,15 +124,17 @@ code-lint:
       - build/Release/cmake/lint_results/
 
 code-coverage:
-  rules:
-    - when: never
-      allow_failure: true
   stage: test
+  tags:
+    - "intelpt"
+    - "docker"
   needs:
     - build-docker-image
     - build-release
     - build-dependencies
   script:
+    - cat /proc/cpuinfo
+    - ls -lah /sys/devices/intel_pt
     - ci/create_coverage.sh
   artifacts:
     when: always
@@ -140,14 +142,13 @@ code-coverage:
       - build/Release/result/coverage_results/
 
 publish-kpis:
-  rules:
-    - when: never
-      allow_failure: true
+  stage: test
   needs:
     - build-docker-image
+    - build-release
     - code-coverage
   script:
-    - ci/publish_pkis.sh
+    - ci/publish_kpis.sh
 
 documentation:
   stage: build

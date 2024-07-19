@@ -1,0 +1,2 @@
+version=4
+https://github.com/Elektrobit/samconf/tags .*/samconf-(\d+).(\d+).(\d+).tar.gz

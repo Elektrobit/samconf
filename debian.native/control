@@ -74,6 +74,7 @@ Depends:
  ${misc:Depends},
  libsamconf0 (= ${binary:Version}),
  libmock-samconf0 (= ${binary:Version}),
+ libsamconf-test-utils0 (= ${binary:Version}),
  libsafu-dev,
 Description: Development package for signed and mergable configuration
  It stands for signed and mergable configuration. It is used by elos. The

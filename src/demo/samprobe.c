@@ -131,7 +131,8 @@ int main(int argc, char **argv) {
         fprintf(stderr, "ERR: Signature was invalid");
         return EXIT_FAILURE;
     } else if (config == NULL) {
-        fprintf(stderr, "ERR: unexpected error occuirred, where config was initialized but no expected error was caught");
+        fprintf(stderr,
+                "ERR: unexpected error occurred, where config was initialized but no expected error was caught");
         return EXIT_FAILURE;
     }
 

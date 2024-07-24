@@ -37,7 +37,7 @@ function smoketest_simple_config {
     echo "Smoketest comparing output ${RESULT_DIR}/simple_config_output.txt with ${RESULT_DIR}/simple_config_nosign_output.txt"
     output_diff=$(diff -w ${RESULT_DIR}/simple_config_output.txt ${RESULT_DIR}/simple_config_nosign_output.txt || echo "diff returned: $?")
     if [ -n "$output_diff" ]; then
-        echo "Problems occured while comparing the client output:"
+        echo "Problems occurred while comparing the client output:"
         echo -e "$output_diff"
         error_exit "Test failed"
     fi

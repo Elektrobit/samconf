@@ -14,6 +14,7 @@ Welcome to samconf's documentation!
    demo
    samconf API <generated/api/index>
    generated/developer/index
+   ADRs <../../documentation/adr/index>
 
 Indices and tables
 ==================

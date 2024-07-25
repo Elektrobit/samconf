@@ -8,9 +8,7 @@ This library has the following main tasks:
 * Transparently verify signed configurations
 
 
-## Internal Representation
-
-### General Structure
+## General Structure
 
 The configuration is held in a tree structure. Each tree node is of type
 `samconfConfig_t`. A node can hold a value of a certain type defined by its type
@@ -26,13 +24,7 @@ This structure allows a hierarchical ordering of configuration options. The foll
 Each node can be addressed by a _xpath_ like notation. The option _SyslogPath_ of the
 _Syslog-Scanner_ is for example ``/elos/scanner/syslog/SyslogPath``.
 
-### Combined from different Sources
-
-The tree structure allows easy extension of a basic configuration or merging of an
-arbitrary number of configurations. Thus a configuration tree can consist of nodes from different sources. Since
-the goal of this library is the comfortable **reading** access to different configuration formats, there is no reference to the original source in a node of a tree. This also eases the merging of two trees.
-
-### From Configuration Source to Configuration
+## From Configuration Source to Configuration
 
 The _samconf_ library shall support different types of sources for configuration
 options and provided a unified interface to access them. The following diagram
@@ -58,7 +50,7 @@ samconfConfig_t tree.
 The process of loading a configuration from and building a configuration tree
 from an arbitrary configuration source shall be done by the ConfigurationFactory component.
 
-#### The Configuration Factory
+### The Configuration Factory
 
 The _Configuration Factory_ shall provide an interface to abstract the details of creating a `samconfConfig_t` configuration tree, therefore it shall fullfill the following requirements:
 
@@ -102,7 +94,7 @@ typedef struct samconfConfigBackend {
 
 An implementation for a specific configuration source shall implement the above functions, which can then be used by the _Configuration Factory_ to parse a configuration.
 
-#### Types of Configuration Sources
+### Types of Configuration Sources
 
 The following sources for configuration options shall be provided:
 
@@ -111,7 +103,7 @@ The following sources for configuration options shall be provided:
 * JSON file
 * Compiled in configuration
 
-##### Parameter Source
+#### Parameter Source
 
 A configuration option shall be passed to a program as parameter. The parsing
 and the format of such parameter shall be follow the format accepted by
@@ -136,7 +128,7 @@ B) a set of parameter is mapped statically in the code to a full qualified name 
 
 In either case the following rules shall be applied to set the different types of values:
 
-###### Boolean
+##### Boolean
 
 * if a parameter is specified the corresponding option value shall be true otherwise false
 * if a parameter is set explicitly to true or false the corresponding value shall be used for the corresponding option
@@ -146,7 +138,7 @@ In either case the following rules shall be applied to set the different types o
 -/--itemB=false  => root/categoryB/itemB = false
 ```
 
-###### Integer
+##### Integer
 
 If a parameter provides an integer value it shall be converted to the configuration option type and used.
 
@@ -155,7 +147,7 @@ If a parameter provides an integer value it shall be converted to the configurat
 -/--itemA 42  => /root/categoryA/itemA = 42
 ```
 
-###### Real
+##### Real
 
 If a parameter provides a real value it shall be converted to the configuration option type and used.
 
@@ -164,7 +156,7 @@ If a parameter provides a real value it shall be converted to the configuration 
 -/--itemA 42.3  => /root/categoryA/itemA = 42.3
 ```
 
-###### String
+##### String
 
 If a parameter provides a string value it shall be used.
 
@@ -173,63 +165,98 @@ If a parameter provides a string value it shall be used.
 -/--subItem "the value of a configuration option"  => /root/categoryA/itemA/subItem = "the value of a configuration option"
 ```
 
-##### Environment Source
+#### Environment Source
 
-To integrate environment configuration options into a `samconfConfig_t` tree, the issue to solve is where to insert the parameter into the configuration tree. There two possible solutions:
+To load  a configuration from an environment into a `samconfConfig_t` tree, the
+Option path must be encoded in the environment variable name. Given a config
+path like `/myApp/network/port` would translate to `myApp_network_port`.
 
-A) the environment variable name must be structured like a full qualified name `--app.categoryA.itemA.subItem "the value of a configuration option"`
-B) a set of parameter is mapped statically in the code to a full qualified name by the parameter loader for example.
-
-```
-$> app -p 42 --ItemB
-```
-
-this will results in two options (key value pairs):
+An example environment config could then look like:
 
 ```
-root.categoryA.itemA = 42
-root.categoryB.itemB = true
+myApp_network_port = 33333
+myApp_network_interface = "0.0.0.0"
+myApp_network_enable = true
 ```
 
-In either case the following rules shall be applied to set the different types of values:
+Environment variables can have the following types:
 
-###### Boolean
+##### Boolean
 
-If a environment is set to true or false the corresponding value shall be used
-for the corresponding option. If the value of an environment variable can not
-be mapped, it shall be ignored and can optionally be reported via a log
-message. The variable name shall be uppercase and the environment loader shall be case sensitive.
+If a environment parameter  contains the string `true` or `false` the
+corresponding value of `SAMCONF_CONFIG_VALUE_BOOLEAN` shall be used. The
+strings `true` or `false` are accepted and mapped case insensitive.
+Surrounding white spaces shall be stripped.
+
+If the value can not be mapped, the config option shall be set to
+SAMCONF_CONFIG_INVALID_TYPE and the value is undefined.
 
 ```
 ITEM_B="true"  => /root/categoryB/itemB = true
 ITEM_B="false"  => /root/categoryB/itemB = false
+ITEM_B="invalid value"  => /root/categoryB/itemB = undefined
 ```
 
-###### Integer
+##### Integer
 
-If a parameter provides an integer value it shall be converted to the configuration option type and used.
+If a parameter provides an integer value it shall be converted to the
+configuration option type and used. Surrounding white spaces shall be stripped.
+
+If the value can not be mapped, the config option shall be set to
+SAMCONF_CONFIG_INVALID_TYPE and the value is undefined.
 
 ```
 ITEM_A=42  => /root/categoryA/itemA = 42
+ITEM_A="not a numer"  => /root/categoryA/itemA = undefined
 ```
 
-###### Real
+##### Real
 
-If a parameter provides a real value it shall be converted to the configuration option type and used.
+If a parameter provides a real value it shall be converted to the configuration
+option type and used. Surrounding white spaces shall be stripped.
+
+If the value can not be mapped, the config option shall be set to
+SAMCONF_CONFIG_INVALID_TYPE and the value is undefined.
 
 ```
 ITEM_A=42.3 => /root/categoryA/itemA = 42.3
+ITEM_A="not a number"  => /root/categoryA/itemA = undefined
 ```
 
-###### String
+##### String
 
-If a parameter provides a string value it shall be used.
+If a parameter the value is not a string representing a boolean, integer, real
+or array the value it shall be used as it is.
+
+If the environment variable is empty an empty string is used. 
+
+If the value can not be mapped, the config option shall be set to
+SAMCONF_CONFIG_INVALID_TYPE and the value is undefined.
 
 ```
 SUBITEM="string value" => /root/categoryA/itemA/subItem = "string value"
+SUBITEM= => /root/categoryA/itemA/subItem = ""
+ITEM_A="value can not be mapped"  => /root/categoryA/itemA = undefined
 ```
 
-##### JSON File Source
+##### Array
+
+If a parameter provides an array it shall be converted into a configuration
+node of type array and its elements added as child nodes.
+Arrays are ',' separated strings and can consist of the other primitive types
+boolean, integer, real or string. White spaces around the separator are
+stripped. Arrays of mixed types are not supported.
+
+If the value can not be mapped, the config option shall be set to
+SAMCONF_CONFIG_INVALID_TYPE and the value is undefined.
+
+```
+SUBITEM="array" => /root/categoryA/itemA/subItem = "1,2,3,4"
+SUBITEM="array" => /root/categoryA/itemA/subItem = "red, green, blue"
+SUBITEM="array" => /root/categoryA/itemA/subItem = "true, false, true"
+```
+
+#### JSON File Source
 
 The information from a JSON file is transformed in to a configuration by using the JSON object composition structure.
 
@@ -258,7 +285,7 @@ will be transformed in:
 ![samconfConfig_t tree](images/config_from_json_example.png "samconfConfig_t tree")
 
 
-##### Compiled in Source
+#### Compiled in Source
 
 It shall be possible to integrate a compiled in configuration tree. So it is
 possible to provide compiled in defaults for configuration options. To be convenient a the confiuration values shall be privided in a static definable way like:
@@ -274,6 +301,76 @@ struct samconfbuildInConfig {
   },
 };
 ```
+
+## Merge multiple Config-Trees
+
+The tree structure allows easy extension of a basic configuration or merging of an
+arbitrary number of configurations. Thus a configuration tree can consist of
+nodes from different sources.
+
+Merging of two or more configs need:
+
+* at least two `samconfConfig_t` trees
+* a config path prefix for each source, to specify the mount point in the final
+  config tree
+* a set of rules how to merge them 
+
+The following example illustrates how to merge different configuration from
+different sources.
+```
+ConfigSource envSource = {
+   .location= "/proc/6542/environment",
+   .prefix = "/"
+};
+
+ConfigSource paramSource = {
+   .location= "/proc/6542/cmdline",
+   .prefix = "/"
+};
+
+ConfigSource configFileSource = {
+   .location= "/etc/myApp.json",
+   .prefix = "/"
+};
+
+aConfig = samconfLoad(configFileSource);
+bConfig = samconfLoad(envSource);
+cConfig = samconfLoad(paramSource);
+
+samconfConfig_t mergedConfig ={};
+samconfMerge(&mergedConfig,{aConfig,bConfig,cConfig});
+
+samconfConfigGetBool("/myApp/isSomethingEnabled");
+...
+
+```
+
+The merge process shall be fast as possible as usually configurations are read
+during startup and the delay for preparing the config shall as minimal as
+possible.
+
+The samconf merge algorithm is as follows:
+
+```c
+function merge(configs, mergeRules) {
+      mergeRules =  MergeRules
+      rootConfig = new Config
+      for config in configs {
+           for child in config.childNModes {
+                 if (child is leaf ) {
+                      optionPath = config.getPathPrefix() + child.getPath()
+                      rootConfig.insertIf(optionPath, child, rules)
+                 }else {
+                     for child in child.childs
+                             ... iterate trough the tree
+                 }
+
+           }
+     }
+ }
+```
+*The algorithm in pseudo code*
+
 
 ## Public API
 

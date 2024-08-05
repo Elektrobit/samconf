@@ -4,7 +4,7 @@ It stands for **s**igned and **m**ergable **conf**iguration. It is used by
 [elos](https://github.com/Elektrobit/elos). The goal of the library is to
 manage program configuration options from various sources including support for
 verification of the configuration sources.
-
+There is also a online documentation available at https://elektrobit.github.io/samconf/.
 
 Dependencies:
 

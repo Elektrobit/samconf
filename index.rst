@@ -11,9 +11,16 @@ Welcome to samconf's documentation!
    :caption: Contents:
 
 
-   demo
-   samconf API <generated/api/index>
-   generated/developer/index
+   ci/index.rst
+   cmake/index.rst
+   .github/index.rst
+   src/demo/index.rst
+   debian.native/README.md
+   samconf API <build/Release/doc/source_generated/api/index.rst>
+   developer API <build/Release/doc/source_generated/developer/api/index.rst>
+   documentation/developer.md
+   documentation/documentation.md
+   ADRs <documentation/adr/index.rst>
 
 Indices and tables
 ==================

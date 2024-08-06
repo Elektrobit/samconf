@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 find_package(json-c REQUIRED)
-find_package(safu REQUIRED)
+find_package(safu 0.56.2 REQUIRED)
 
 add_library(
   samconf_test_utils

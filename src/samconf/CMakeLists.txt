@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-find_package(safu REQUIRED)
+find_package(safu 0.56.2 REQUIRED)
 
 add_library(samconf_interface INTERFACE)
 target_include_directories(samconf_interface

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 find_package(safu REQUIRED)
-find_package(cmocka_mocks REQUIRED)
+find_package(cmocka_mocks 0.54.2 REQUIRED)
 
 create_unit_test(
   NAME

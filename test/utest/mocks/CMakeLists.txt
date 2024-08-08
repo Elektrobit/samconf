@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 include(create_mock_lib.cmake)
-find_package(cmocka_mocks REQUIRED)
-find_package(safu)
+find_package(cmocka_mocks 0.54.2 REQUIRED)
+find_package(safu 0.56.2 REQUIRED)
 
 create_mock_lib(
   NAME

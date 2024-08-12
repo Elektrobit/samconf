@@ -15,6 +15,7 @@ samconfConfigStatusE_t samconfConfigInit(samconfConfig_t *config);
 samconfConfigStatusE_t samconfConfigDelete(samconfConfig_t *config);
 samconfConfigStatusE_t samconfConfigAdd(samconfConfig_t *parent, samconfConfig_t *child);
 samconfConfigStatusE_t samconfConfigDeleteMembers(samconfConfig_t *config);
+samconfConfigStatusE_t samconfConfigSetValue(samconfConfig_t *config, const char *value);
 samconfConfigStatusE_t samconfConfigGet(const samconfConfig_t *root, const char *path, const samconfConfig_t **result);
 samconfConfigStatusE_t samconfConfigGetString(const samconfConfig_t *root, const char *path, const char **result);
 samconfConfigStatusE_t samconfConfigSetString(samconfConfig_t *config, const char *stringValue);

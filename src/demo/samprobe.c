@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     } else if (config == NULL) {
         fprintf(stderr,
-                "ERR: unexpected error occuirred, where config was initialized but no expected error was caught");
+                "ERR: unexpected error occurred, where config was initialized but no expected error was caught");
         return EXIT_FAILURE;
     }
 

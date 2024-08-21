@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: MIT
+#pragma once
+
+#include <cmocka_extensions/cmocka_extensions.h>
+#include <cmocka_extensions/mock_extensions.h>
+
+#include "samconf/config_backend.h"
+#include "samconf/env_backend.h"
+#include "samconf/samconf.h"
+
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfEnvBackendCreateConfigSuccess)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfEnvBackendCreateConfigErrorNullPath)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfEnvBackendCreateConfigErrorNullRoot)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfEnvBackendCreateConfigErrorNullValue)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfEnvBackendCreateConfigExtErrorConfigNew)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfEnvBackendCreateConfigExtErrorConfigAdd)

@@ -48,6 +48,13 @@ MOCK_FUNC_PROTOTYPE(samconfJsonBackendLoad, samconfConfigStatusE_t, samconfConfi
                     samconfConfig_t **config)
 MOCK_FUNC_PROTOTYPE(samconfJsonBackendClose, samconfConfigStatusE_t, samconfConfigBackend_t *backend)
 
+MOCK_FUNC_PROTOTYPE(samconfEnvBackendSupports, samconfConfigStatusE_t, const char *location, bool *isSupported)
+MOCK_FUNC_PROTOTYPE(samconfEnvBackendOpen, samconfConfigStatusE_t, const char *location,
+                    samconfConfigBackend_t *backend)
+MOCK_FUNC_PROTOTYPE(samconfEnvBackendLoad, samconfConfigStatusE_t, samconfConfigBackend_t *backend, bool isSigned,
+                    samconfConfig_t **config)
+MOCK_FUNC_PROTOTYPE(samconfEnvBackendClose, samconfConfigStatusE_t, samconfConfigBackend_t *backend)
+
 MOCK_FUNC_PROTOTYPE(samconfUriPattern, samconfConfigStatusE_t, regex_t **pattern)
 MOCK_FUNC_PROTOTYPE(samconfUriNew, samconfConfigStatusE_t, samconfUri_t **uri, const char *uriString)
 MOCK_FUNC_PROTOTYPE(samconfUriInit, samconfConfigStatusE_t, samconfUri_t *uri, const char *uriString)
@@ -66,4 +73,8 @@ MOCK_FUNC_PROTOTYPE(samconfConfigGetInt32Or, int32_t, const samconfConfig_t *roo
                     int32_t defaultValue)
 MOCK_FUNC_PROTOTYPE(samconfConfigGetRealOr, double, const samconfConfig_t *root, const char *path, double defaultValue)
 
+MOCK_FUNC_PROTOTYPE(samconfConfigSetValue, samconfConfigStatusE_t, samconfConfig_t *config, const char *value)
+
+MOCK_FUNC_PROTOTYPE(samconfEnvBackendCreateConfig, samconfConfigStatusE_t, samconfConfig_t **root, const char *path,
+                    const char *value)
 #endif /* __MOCK_SAMCONF_SAMCONF_H__ */

@@ -1,3 +1,4 @@
 # SPDX-License-Identifier: MIT
 add_subdirectory(samconfEnvBackendLoad)
 add_subdirectory(samconfEnvBackendCreateConfig)
+add_subdirectory(samconfEnvBackendSupports)

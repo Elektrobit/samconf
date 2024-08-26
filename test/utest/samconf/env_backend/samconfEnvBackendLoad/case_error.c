@@ -14,7 +14,7 @@ int samconfTestSamconfEnvBackendLoadErrorTeardown(UNUSED void **state) {
 
 void samconfTestSamconfEnvBackendLoadError(UNUSED void **state) {
     samconfConfigStatusE_t result;
-    samconfConfigBackend_t *testBackend = NULL;
+    samconfConfigBackend_t testBackend = {0};
     samconfConfig_t *testroot = NULL;
 
     TEST("samconfEnvBackendLoad");
@@ -24,6 +24,6 @@ void samconfTestSamconfEnvBackendLoadError(UNUSED void **state) {
     expect_any(samconfConfigNew, config);
     will_return(samconfConfigNew, SAMCONF_CONFIG_ERROR);
 
-    result = samconfEnvBackendLoad(testBackend, true, &testroot);
+    result = samconfEnvBackendLoad(&testBackend, true, &testroot);
     assert_int_equal(result, SAMCONF_CONFIG_ERROR);
 }

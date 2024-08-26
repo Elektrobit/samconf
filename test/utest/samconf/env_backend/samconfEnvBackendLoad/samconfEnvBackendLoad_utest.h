@@ -7,6 +7,7 @@
 #include "samconf/config_backend.h"
 #include "samconf/env_backend.h"
 #include "samconf/samconf.h"
+#include "samconf/uri.h"
 
 typedef struct samconfEnvBackendLoadTestData {
     samconfConfigBackend_t *backend;

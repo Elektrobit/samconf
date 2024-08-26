@@ -12,7 +12,7 @@ void samconfTestSamconfGetBackendOpsSuccessGetDummyBackend(UNUSED void **state) 
     TEST("samconfGetBackendOps with index of dummy Ops");
     SHOULD("%s", "return dummy Ops");
 
-    opsDummy = samconfGetBackendOps(1);
+    opsDummy = samconfGetBackendOps(2);
 
     assert_int_equal(opsDummy->supports("", NULL), SAMCONF_CONFIG_NOT_IMPLEMENTED);
     assert_int_equal(opsDummy->open(NULL, NULL), SAMCONF_CONFIG_NOT_IMPLEMENTED);

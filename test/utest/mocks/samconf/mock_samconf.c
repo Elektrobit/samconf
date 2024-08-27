@@ -364,13 +364,13 @@ MOCK_FUNC_BODY(samconfConfigGetRealOr, double, const samconfConfig_t *root, cons
     return MOCK_FUNC_REAL(samconfConfigGetRealOr)(root, path, defaultValue);
 }
 
-MOCK_FUNC_BODY(samconfConfigSetValue, samconfConfigStatusE_t, samconfConfig_t *config, const char *value) {
-    if (MOCK_IS_ACTIVE(samconfConfigSetValue)) {
+MOCK_FUNC_BODY(samconfConfigSetValueFromString, samconfConfigStatusE_t, samconfConfig_t *config, const char *value) {
+    if (MOCK_IS_ACTIVE(samconfConfigSetValueFromString)) {
         check_expected_ptr(config);
         check_expected_ptr(value);
         return mock_type(samconfConfigStatusE_t);
     }
-    return MOCK_FUNC_REAL(samconfConfigSetValue)(config, value);
+    return MOCK_FUNC_REAL(samconfConfigSetValueFromString)(config, value);
 }
 
 MOCK_FUNC_BODY(samconfEnvBackendCreateConfig, samconfConfigStatusE_t, samconfConfig_t **root, const char *path,

@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <json-c/json.h>
+#include <libgen.h>
 #include <safu/common.h>
 #include <safu/log.h>
 #include <stddef.h>
@@ -93,53 +94,37 @@ static void _get_path_to_token(char **pathToToken, char *token) {
 
 samconfConfigStatusE_t samconfEnvBackendCreateConfig(samconfConfig_t **root, const char *path, const char *value) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
-    char *pathCopy, *freePath, *lastConfig;
+    char *pathCopy = NULL;
+    char *freePath = NULL;
+    char *lastConfig = NULL;
     char *pathToToken = NULL;
     samconfConfig_t *node = NULL;
     samconfConfig_t *parent = NULL;
     const samconfConfig_t *existingNode = NULL;
 
-    if (!root || !path) {
+    if (root == NULL || path == NULL) {
         result = SAMCONF_CONFIG_ERROR;
-    }
-
-    if (result == SAMCONF_CONFIG_OK) {
+    } else {
         freePath = pathCopy = strdup(path);
 
-        if (!pathCopy || !freePath) {
+        if (pathCopy == NULL || freePath == NULL) {
             result = SAMCONF_CONFIG_ERROR;
-        }
-
-        if (result == SAMCONF_CONFIG_OK) {
+        } else {
             if (pathCopy[0] == '\0') {
                 result = SAMCONF_CONFIG_NOT_FOUND;
-            }
-        }
-
-        if (result == SAMCONF_CONFIG_OK) {
-            if (pathCopy[0] == '/') {
-                if (strlen(pathCopy) == 1) {
-                    result = SAMCONF_CONFIG_NOT_FOUND;
-                } else {
-                    ++pathCopy;
+            } else {
+                if (pathCopy[0] == '/') {
+                    if (strlen(pathCopy) == 1) {
+                        result = SAMCONF_CONFIG_NOT_FOUND;
+                    } else {
+                        ++pathCopy;
+                    }
                 }
             }
         }
 
         if (result == SAMCONF_CONFIG_OK) {
-            size_t len = strlen(pathCopy);
-            if (pathCopy[len - 1] == '/') {
-                pathCopy[len - 1] = '\0';
-            }
-
-            lastConfig = strrchr(pathCopy, '/');
-            if (lastConfig) {
-                ++lastConfig;
-            } else {
-                lastConfig = pathCopy;
-            }
-
-            char *processedPath = strdup(pathCopy);
+            lastConfig = basename(pathCopy);
             char *token = strsep(&pathCopy, "/");
             parent = *root;
 
@@ -151,7 +136,7 @@ samconfConfigStatusE_t samconfEnvBackendCreateConfig(samconfConfig_t **root, con
                         node = (samconfConfig_t *)existingNode;
                         if (strcasecmp(pathToToken, token) == 0) {
                             if (token == lastConfig) {
-                                result = samconfConfigSetValue(node, value);
+                                result = samconfConfigSetValueFromString(node, value);
                                 if (result != SAMCONF_CONFIG_OK) {
                                     safuLogWarnF(
                                         "Invalid type or null passed as value, node : %s will be set to default",
@@ -171,7 +156,7 @@ samconfConfigStatusE_t samconfEnvBackendCreateConfig(samconfConfig_t **root, con
                         node->key = strdup(token);
                         node->type = SAMCONF_CONFIG_VALUE_OBJECT;
                         if (token == lastConfig) {
-                            result = samconfConfigSetValue(node, value);
+                            result = samconfConfigSetValueFromString(node, value);
                             if (result != SAMCONF_CONFIG_OK) {
                                 safuLogWarnF("Invalid type or null passed as value, node : %s will be set to default",
                                              node->key);
@@ -197,7 +182,6 @@ samconfConfigStatusE_t samconfEnvBackendCreateConfig(samconfConfig_t **root, con
                 token = strsep(&pathCopy, "/");
             }
             free(pathToToken);
-            free(processedPath);
         }
         free(freePath);
     }

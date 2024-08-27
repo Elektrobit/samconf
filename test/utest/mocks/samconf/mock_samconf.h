@@ -73,7 +73,7 @@ MOCK_FUNC_PROTOTYPE(samconfConfigGetInt32Or, int32_t, const samconfConfig_t *roo
                     int32_t defaultValue)
 MOCK_FUNC_PROTOTYPE(samconfConfigGetRealOr, double, const samconfConfig_t *root, const char *path, double defaultValue)
 
-MOCK_FUNC_PROTOTYPE(samconfConfigSetValue, samconfConfigStatusE_t, samconfConfig_t *config, const char *value)
+MOCK_FUNC_PROTOTYPE(samconfConfigSetValueFromString, samconfConfigStatusE_t, samconfConfig_t *config, const char *value)
 
 MOCK_FUNC_PROTOTYPE(samconfEnvBackendCreateConfig, samconfConfigStatusE_t, samconfConfig_t **root, const char *path,
                     const char *value)

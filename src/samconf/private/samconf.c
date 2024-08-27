@@ -465,18 +465,21 @@ samconfConfigStatusE_t samconfConfigGetReal(const samconfConfig_t *root, const c
     return status;
 }
 
-samconfConfigStatusE_t samconfConfigSetValue(samconfConfig_t *config, const char *value) {
+samconfConfigStatusE_t samconfConfigSetValueFromString(samconfConfig_t *config, const char *value) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
-    char *endPtr;
+    char *endPtr = NULL;
 
     if (!value) {
         result = SAMCONF_CONFIG_ERROR;
     }
 
     if (result == SAMCONF_CONFIG_OK) {
-        if (strcasecmp(value, "true") == 0 || strcasecmp(value, "false") == 0) {
+        if (strcasecmp(value, "true") == 0) {
             config->type = SAMCONF_CONFIG_VALUE_BOOLEAN;
-            config->value.boolean = (strcasecmp(value, "true") == 0 ? true : false);
+            config->value.boolean = true;
+        } else if (strcasecmp(value, "false") == 0) {
+            config->type = SAMCONF_CONFIG_VALUE_BOOLEAN;
+            config->value.boolean = false;
         } else {
             config->value.integer = strtoll(value, &endPtr, 10);
             if (*endPtr == '\0') {

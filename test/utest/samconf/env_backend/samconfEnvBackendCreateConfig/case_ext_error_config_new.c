@@ -14,6 +14,7 @@ int samconfTestSamconfEnvBackendCreateConfigExtErrorConfigNewTeardown(UNUSED voi
 
 void samconfTestSamconfEnvBackendCreateConfigExtErrorConfigNew(UNUSED void **state) {
     samconfConfig_t *testConfig = NULL;
+    const samconfConfig_t *testNode = NULL;
     samconfConfigStatusE_t result;
     const char *testPath = "UTEST/TEST/INTEGER";
 
@@ -29,6 +30,9 @@ void samconfTestSamconfEnvBackendCreateConfigExtErrorConfigNew(UNUSED void **sta
 
     result = samconfEnvBackendCreateConfig(&testConfig, testPath, "42");
     assert_int_equal(result, SAMCONF_CONFIG_ERROR);
+
+    result = samconfConfigGet(testConfig, testPath, &testNode);
+    assert_int_equal(result, SAMCONF_CONFIG_NOT_FOUND);
 
     result = samconfConfigDelete(testConfig);
     assert_int_equal(result, SAMCONF_CONFIG_OK);

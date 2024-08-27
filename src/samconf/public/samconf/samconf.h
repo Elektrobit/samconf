@@ -15,7 +15,6 @@ samconfConfigStatusE_t samconfConfigInit(samconfConfig_t *config);
 samconfConfigStatusE_t samconfConfigDelete(samconfConfig_t *config);
 samconfConfigStatusE_t samconfConfigAdd(samconfConfig_t *parent, samconfConfig_t *child);
 samconfConfigStatusE_t samconfConfigDeleteMembers(samconfConfig_t *config);
-samconfConfigStatusE_t samconfConfigSetValue(samconfConfig_t *config, const char *value);
 samconfConfigStatusE_t samconfConfigGet(const samconfConfig_t *root, const char *path, const samconfConfig_t **result);
 samconfConfigStatusE_t samconfConfigGetString(const samconfConfig_t *root, const char *path, const char **result);
 samconfConfigStatusE_t samconfConfigSetString(samconfConfig_t *config, const char *stringValue);
@@ -26,6 +25,21 @@ samconfConfigStatusE_t samconfConfigSetInt(samconfConfig_t *config, int64_t intV
 samconfConfigStatusE_t samconfConfigSetBool(samconfConfig_t *config, bool value);
 samconfConfigStatusE_t samconfConfigSetReal(samconfConfig_t *config, double value);
 int samconfInitConfig();
+
+/**
+ * Creates a samconfConfig_t struct by following the path parameter. The value is then set to
+ * the last node in the path
+ *
+ * Parameters:
+ *     root (samconfConfig_t *): config to which value is to be set.
+ *     value (const char*):  value to be set. It can be uint64_t, bool, double or string
+ *
+ * Returns:
+ *     samconfConfigStatusE_t:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ */
+samconfConfigStatusE_t samconfConfigSetValueFromString(samconfConfig_t *config, const char *value);
 
 /*******************************************************************
  * Get a string from a samconfConfig_t.

@@ -36,8 +36,16 @@ void samconfTestSamconfEnvBackendCreateConfigSuccess(UNUSED void **state) {
         result = samconfConfigGet(testConfig, testPaths[i], &testnode);
         assert_int_equal(result, SAMCONF_CONFIG_OK);
         assert_string_equal(testnode->key, testKey[i]);
+        if (testnode->type == SAMCONF_CONFIG_VALUE_INT) {
+            assert_int_equal(testnode->value.integer, 42);
+        } else if (testnode->type == SAMCONF_CONFIG_VALUE_BOOLEAN) {
+            assert_int_equal(testnode->value.boolean, true);
+        } else if (testnode->type == SAMCONF_CONFIG_VALUE_REAL) {
+            assert_int_equal(testnode->value.real, 1.9865);
+        } else {
+            assert_string_equal(testnode->value.string, "utest string");
+        }
     }
-
     result = samconfConfigDelete(testConfig);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
 }

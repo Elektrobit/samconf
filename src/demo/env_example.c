@@ -1,16 +1,8 @@
 // SPDX-License-Identifier: MIT
 #define _GNU_SOURCE
-#include <safu/common.h>
-#include <safu/json.h>
-#include <safu/log.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <unistd.h>
 
-#include "samconf/config_backend.h"
-#include "samconf/env_backend.h"
 #include "samconf/samconf.h"
 
 static void _set_env_variables() {
@@ -41,30 +33,30 @@ int main(UNUSED int argc, UNUSED char **argv) {
     _set_env_variables();
     result = samconfLoad(location, false, &config);
 
-    fprintf(stdout, "%s\t%s\t%s\n", "KEY", "VALUE", "TYPE");
+    fprintf(stdout, "%-30s\t%-30s\t%-30s\t%-30s\n", "PATH", "KEY", "VALUE", "TYPE");
     for (size_t i = 0; i < 5; i++) {
         result = samconfConfigGet(config, paths[i], &node);
         switch (node->type) {
             case SAMCONF_CONFIG_VALUE_STRING:
-                fprintf(stdout, "%s\t%s\t%d\n", node->key, node->value.string, node->type);
+                fprintf(stdout, "%-30s\t%-30s\t%-30s\t%-30d\n", paths[i], node->key, node->value.string, node->type);
                 break;
             case SAMCONF_CONFIG_VALUE_INT:
-                fprintf(stdout, "%s\t%ld\t%d\n", node->key, node->value.integer, node->type);
+                fprintf(stdout, "%-30s\t%-30s\t%-30ld\t%-30d\n", paths[i], node->key, node->value.integer, node->type);
                 break;
             case SAMCONF_CONFIG_VALUE_BOOLEAN:
-                fprintf(stdout, "%s\t%d\t%d\n", node->key, node->value.boolean, node->type);
+                fprintf(stdout, "%-30s\t%-30s\t%-30d\t%-30d\n", paths[i], node->key, node->value.boolean, node->type);
                 break;
             case SAMCONF_CONFIG_VALUE_REAL:
-                fprintf(stdout, "%s\t%f\t%d\n", node->key, node->value.real, node->type);
+                fprintf(stdout, "%-30s\t%-30s\t%-30f\t%-30d\n", paths[i], node->key, node->value.real, node->type);
                 break;
             case SAMCONF_CONFIG_VALUE_ARRAY:
-                fprintf(stdout, "%s\t%s\t%d\n", node->key, "None", node->type);
+                fprintf(stdout, "%-30s\t%-30s\t%-30s\t%-30d\n", paths[i], node->key, "None", node->type);
                 break;
             case SAMCONF_CONFIG_VALUE_OBJECT:
-                fprintf(stdout, "%s\t%s\t%d\n", node->key, "None", node->type);
+                fprintf(stdout, "%-30s\t%-30s\t%-30s\t%-30d\n", paths[i], node->key, "None", node->type);
                 break;
             default:
-                fprintf(stdout, "%s\t%s\t%d\n", node->key, "None", node->type);
+                fprintf(stdout, "%-30s\t%-30s\t%-30s\t%-30d\n", paths[i], node->key, "None", node->type);
                 break;
         }
     }

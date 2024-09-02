@@ -7,6 +7,7 @@
 #include <libgen.h>
 #include <safu/common.h>
 #include <safu/log.h>
+#include <safu/vector.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -191,37 +192,45 @@ samconfConfigStatusE_t samconfEnvBackendCreateConfig(samconfConfig_t **root, con
 
 static samconfConfigStatusE_t _transform_env_to_config(samconfUri_t *uri, bool isSigned, samconfConfig_t *config) {
     extern char **environ;
-    samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
-
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
     char *key = NULL;
     char *val = NULL;
     char *envCopy = NULL;
     size_t pos = 0;
     size_t len = 0;
+    char *param = "envPrefix";
+    char *filter = NULL;
 
     config->isSigned = isSigned;
 
-    for (size_t i = 0; environ[i] != NULL; i++) {
-        envCopy = strdup(environ[i]);
-        if (envCopy != NULL) {
-            pos = strcspn(envCopy, "=");
-            key = envCopy;
-            val = envCopy + pos + 1;
-            key[pos] = '\0';
-            if (strstr(key, uri->authority) != NULL) {
-                len = strlen(key);
-                if (len > 1) {
-                    _replaceCharsInString(key, strlen(key), '_', '/');
+    result = samconfUriGetParameter(uri, param, &filter);
+
+    if (result != SAMCONF_CONFIG_OK || filter == NULL) {
+        safuLogErrF("Invalid filter string in URI : %s", uri->plain);
+    } else {
+        for (size_t i = 0; environ[i] != NULL; i++) {
+            envCopy = strdup(environ[i]);
+            if (envCopy != NULL) {
+                pos = strcspn(envCopy, "=");
+                key = envCopy;
+                val = envCopy + pos + 1;
+                key[pos] = '\0';
+                if (strstr(envCopy, filter) != NULL) {
+                    len = strlen(key);
+                    if (len > 1) {
+                        _replaceCharsInString(key, strlen(key), '_', '/');
+                    }
+                    result = samconfEnvBackendCreateConfig(&config, key, val);
+                    if (result != SAMCONF_CONFIG_OK) {
+                        safuLogErrF("Config creation failed for given key : %s, value: %s\n", key, val);
+                        free(envCopy);
+                        break;
+                    }
                 }
-                result = samconfEnvBackendCreateConfig(&config, key, val);
-                if (result != SAMCONF_CONFIG_OK) {
-                    safuLogErrF("Config creation failed for given key : %s, value: %s\n", key, val);
-                    free(envCopy);
-                    break;
-                }
+                free(envCopy);
             }
-            free(envCopy);
         }
+        free(filter);
     }
 
     return result;
@@ -241,8 +250,12 @@ samconfConfigStatusE_t samconfEnvBackendLoad(samconfConfigBackend_t *backend, bo
         if (result == SAMCONF_CONFIG_OK) {
             (*config)->type = SAMCONF_CONFIG_VALUE_OBJECT;
             (*config)->key = strdup("root");
-
-            result = _transform_env_to_config(backend->backendHandle, isSigned, *config);
+            if ((*config)->key == NULL) {
+                safuLogErr("strdup failed to set root key");
+                result = SAMCONF_CONFIG_ERROR;
+            } else {
+                result = _transform_env_to_config(backend->backendHandle, isSigned, *config);
+            }
         } else {
             safuLogErr("Failed to initialize Config");
         }

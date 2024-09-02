@@ -25,7 +25,7 @@ int main(UNUSED int argc, UNUSED char **argv) {
     samconfConfig_t *config = NULL;
     const samconfConfig_t *node = NULL;
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
-    const char *location = "env://SAMCONF";
+    const char *location = "env://?envPrefix=SAMCONF";
 
     const char *paths[] = {"SAMCONF/VARIABLE/STRING", "SAMCONF/VARIABLE/INT", "SAMCONF/VARIABLE/REAL",
                            "SAMCONF/VARIABLE/BOOL", "SAMCONF/SAMCONF/VARIABLE/INT"};

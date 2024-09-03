@@ -27,6 +27,20 @@ samconfConfigStatusE_t samconfConfigSetReal(samconfConfig_t *config, double valu
 int samconfInitConfig();
 
 /**
+ * Create a path to the config, upto the top most parent.
+ *
+ * Parameters:
+ *     config(samconfConfig_t *): config from which path is to be created.
+ *     path (const char*):  path from root parent to given config
+ *
+ * Returns:
+ *     samconfConfigStatusE_t:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ */
+samconfConfigStatusE_t samconfGetParentPath(const samconfConfig_t *config, const char **path);
+
+/**
  * Creates a samconfConfig_t struct by following the path parameter. The value is then set to
  * the last node in the path
  *

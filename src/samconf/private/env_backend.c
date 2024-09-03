@@ -69,8 +69,8 @@ samconfConfigStatusE_t samconfEnvBackendClose(samconfConfigBackend_t *backend) {
     return result;
 }
 
-static void _replaceCharsInString(char *str, uint32_t len, char old, char new) {
-    uint32_t i = 0;
+static void _replaceCharsInString(char *str, size_t len, char old, char new) {
+    size_t i = 0;
     while (str[i] != '\0' && i < len) {
         if (str[i] == old) str[i] = new;
         i++;
@@ -193,7 +193,9 @@ samconfConfigStatusE_t samconfEnvBackendCreateConfig(samconfConfig_t **root, con
 static samconfConfigStatusE_t _transform_env_to_config(samconfUri_t *uri, bool isSigned, samconfConfig_t *config) {
     extern char **environ;
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    char *rootKey = "root";
     char *key = NULL;
+    char *newKey = NULL;
     char *val = NULL;
     char *envCopy = NULL;
     size_t pos = 0;
@@ -218,14 +220,30 @@ static samconfConfigStatusE_t _transform_env_to_config(samconfUri_t *uri, bool i
                 if (strstr(envCopy, filter) != NULL) {
                     len = strlen(key);
                     if (len > 1) {
-                        _replaceCharsInString(key, strlen(key), '_', '/');
+                        _replaceCharsInString(key, len, '_', '/');
                     }
-                    result = samconfEnvBackendCreateConfig(&config, key, val);
-                    if (result != SAMCONF_CONFIG_OK) {
-                        safuLogErrF("Config creation failed for given key : %s, value: %s\n", key, val);
+                    len += strlen(rootKey);
+                    newKey = safuAllocMem(NULL, len + 2);
+                    if (newKey == NULL) {
+                        safuLogErr("memory allocation for key and root key failed");
                         free(envCopy);
                         break;
                     }
+                    int ret = snprintf(newKey, len + 2, "%s/%s", rootKey, key);
+                    if (ret < 0) {
+                        safuLogErr("adding root to key failed");
+                        free(newKey);
+                        free(envCopy);
+                        break;
+                    }
+                    result = samconfEnvBackendCreateConfig(&config, newKey, val);
+                    if (result != SAMCONF_CONFIG_OK) {
+                        safuLogErrF("Config creation failed for given key : %s, value: %s\n", key, val);
+                        free(newKey);
+                        free(envCopy);
+                        break;
+                    }
+                    free(newKey);
                 }
                 free(envCopy);
             }

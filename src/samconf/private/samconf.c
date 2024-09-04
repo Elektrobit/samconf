@@ -8,6 +8,7 @@
 
 #include "samconf/config_backend.h"
 #include "samconf/crypto_utils.h"
+#include "samconf/env_backend.h"
 #include "samconf/json_backend.h"
 #include "samconf/signature.h"
 
@@ -38,6 +39,8 @@ static const samconfConfigBackendOps_t samconfDummyOps = {
 static const samconfConfigBackendOps_t *const samconfBackendOps[] = {
 #ifdef SAMCONF_ENABLE_CONFIG_BACKEND_JSON
     &samconfJsonOps,
+#elif SAMCONF_ENABLE_CONFIG_BACKEND_ENV
+    &samconfEnvOps,
 #endif
     &samconfDummyOps,
 };
@@ -460,6 +463,40 @@ samconfConfigStatusE_t samconfConfigGetReal(const samconfConfig_t *root, const c
     }
 
     return status;
+}
+
+samconfConfigStatusE_t samconfConfigSetValueFromString(samconfConfig_t *config, const char *value) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
+    char *endPtr = NULL;
+
+    if (!value) {
+        result = SAMCONF_CONFIG_ERROR;
+    }
+
+    if (result == SAMCONF_CONFIG_OK) {
+        if (strcasecmp(value, "true") == 0) {
+            config->type = SAMCONF_CONFIG_VALUE_BOOLEAN;
+            config->value.boolean = true;
+        } else if (strcasecmp(value, "false") == 0) {
+            config->type = SAMCONF_CONFIG_VALUE_BOOLEAN;
+            config->value.boolean = false;
+        } else {
+            config->value.integer = strtoll(value, &endPtr, 10);
+            if (*endPtr == '\0') {
+                config->type = SAMCONF_CONFIG_VALUE_INT;
+            } else {
+                config->value.real = strtod(value, &endPtr);
+                if (*endPtr == '\0') {
+                    config->type = SAMCONF_CONFIG_VALUE_REAL;
+                } else {
+                    config->value.string = strdup(value);
+                    config->type = SAMCONF_CONFIG_VALUE_STRING;
+                }
+            }
+        }
+    }
+
+    return result;
 }
 
 int samconfInitConfig() {

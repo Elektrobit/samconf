@@ -203,6 +203,43 @@ MOCK_FUNC_BODY(samconfJsonBackendClose, samconfConfigStatusE_t, samconfConfigBac
     return MOCK_FUNC_REAL(samconfJsonBackendClose)(backend);
 }
 
+MOCK_FUNC_BODY(samconfEnvBackendSupports, samconfConfigStatusE_t, const char *location, bool *isSupported) {
+    if (MOCK_IS_ACTIVE(samconfEnvBackendSupports)) {
+        check_expected_ptr(location);
+        check_expected_ptr(isSupported);
+        return mock_type(samconfConfigStatusE_t);
+    }
+    return MOCK_FUNC_REAL(samconfEnvBackendSupports)(location, isSupported);
+}
+
+MOCK_FUNC_BODY(samconfEnvBackendOpen, samconfConfigStatusE_t, const char *location, samconfConfigBackend_t *backend) {
+    if (MOCK_IS_ACTIVE(samconfEnvBackendOpen)) {
+        check_expected_ptr(location);
+        check_expected_ptr(backend);
+        return mock_type(samconfConfigStatusE_t);
+    }
+    return MOCK_FUNC_REAL(samconfEnvBackendOpen)(location, backend);
+}
+
+MOCK_FUNC_BODY(samconfEnvBackendLoad, samconfConfigStatusE_t, samconfConfigBackend_t *backend, bool isSigned,
+               samconfConfig_t **config) {
+    if (MOCK_IS_ACTIVE(samconfEnvBackendLoad)) {
+        check_expected_ptr(backend);
+        check_expected(isSigned);
+        check_expected_ptr(config);
+        return mock_type(samconfConfigStatusE_t);
+    }
+    return MOCK_FUNC_REAL(samconfEnvBackendLoad)(backend, isSigned, config);
+}
+
+MOCK_FUNC_BODY(samconfEnvBackendClose, samconfConfigStatusE_t, samconfConfigBackend_t *backend) {
+    if (MOCK_IS_ACTIVE(samconfEnvBackendClose)) {
+        check_expected_ptr(backend);
+        return mock_type(samconfConfigStatusE_t);
+    }
+    return MOCK_FUNC_REAL(samconfEnvBackendClose)(backend);
+}
+
 MOCK_FUNC_BODY(samconfUriNew, samconfConfigStatusE_t, samconfUri_t **uri, const char *uriString) {
     if (MOCK_IS_ACTIVE(samconfUriNew)) {
         check_expected_ptr(uri);
@@ -325,4 +362,29 @@ MOCK_FUNC_BODY(samconfConfigGetRealOr, double, const samconfConfig_t *root, cons
         return mock_type(double);
     }
     return MOCK_FUNC_REAL(samconfConfigGetRealOr)(root, path, defaultValue);
+}
+
+MOCK_FUNC_BODY(samconfConfigSetValueFromString, samconfConfigStatusE_t, samconfConfig_t *config, const char *value) {
+    if (MOCK_IS_ACTIVE(samconfConfigSetValueFromString)) {
+        check_expected_ptr(config);
+        check_expected_ptr(value);
+        return mock_type(samconfConfigStatusE_t);
+    }
+    return MOCK_FUNC_REAL(samconfConfigSetValueFromString)(config, value);
+}
+
+MOCK_FUNC_BODY(samconfEnvBackendCreateConfig, samconfConfigStatusE_t, samconfConfig_t **root, const char *path,
+               const char *value) {
+    if (MOCK_IS_ACTIVE(samconfEnvBackendCreateConfig)) {
+        check_expected_ptr(root);
+        check_expected_ptr(path);
+        check_expected_ptr(value);
+
+        if (root != NULL) {
+            *root = mock_ptr_type(samconfConfig_t *);
+        }
+        return mock_type(samconfConfigStatusE_t);
+    }
+
+    return MOCK_FUNC_REAL(samconfEnvBackendCreateConfig)(root, path, value);
 }

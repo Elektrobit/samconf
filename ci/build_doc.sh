@@ -33,6 +33,7 @@ DIST_DIR="$BUILD_DIR/dist"
 
 MD_DOCUMENTAION_DIR="${BASE_DIR}/documentation"
 SAMCONF_SOURCE_SOURCE_DIR="${BASE_DIR}/src"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$BASE_DIR/build/deps/lib"
 
 SPHINX_SOURCE_DIR=${BASE_DIR}
 SPHINX_BUILD_DIR=${BUILD_DIR}/doc
@@ -61,8 +62,8 @@ function createDeveloperDocu() {
 createApiDocu
 createDeveloperDocu
 
-export PATH="${PATH}:${BASE_DIR}/build/Release/dist/usr/local/bin"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-"./"}:${BASE_DIR}/build/Release/dist/usr/local/lib"
+export PATH="${PATH}:${DIST_DIR}/usr/local/bin"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-"./"}:${DIST_DIR}/usr/local/lib"
 
 sphinx-build -b html ${SPHINX_SOURCE_DIR} ${SPHINX_HTML_OUTPUT_DIR} 2> ${SPHINX_BUILD_DIR}/html_doc_error.log
 if [ $? -ne 0 ]; then

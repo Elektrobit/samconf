@@ -3,30 +3,61 @@
 
 #include "samconfEnvBackendLoad_utest.h"
 
-int samconfTestSamconfEnvBackendLoadSuccessSetup(UNUSED void **state) {
+int samconfTestSamconfEnvBackendLoadSuccessSetup(void **state) {
     setenv("UTEST_VARIABLE_STRING", "utest string", 1);
     setenv("UTEST_VARIABLE_INT", "42", 1);
     setenv("UTEST_VARIABLE_REAL", "1.9865", 1);
     setenv("UTEST_VARIABLE_BOOL", "true", 1);
     setenv("UTEST_UTEST_VARIABLE_INT", "42", 1);
     setenv("__UTEST_VARIABLE_INT", "42", 1);
+
+    samconfConfigStatusE_t result;
+    samconfUri_t *uri;
+    result = samconfUriNew(&uri, "env://UTEST_VARIABLE");
+    assert_int_equal(result, SAMCONF_CONFIG_OK);
+
+    samconfConfigBackend_t *backend = malloc(sizeof(samconfConfigBackend_t));
+    if (backend == NULL) {
+        return 1;
+    }
+
+    samconfEnvBackendLoadTestData_t *data = malloc(sizeof(samconfEnvBackendLoadTestData_t));
+    if (data == NULL) {
+        free(backend);
+        return 1;
+    }
+
+    data->backend = backend;
+    backend->backendHandle = uri;
+    *state = data;
     return 0;
 }
 
-int samconfTestSamconfEnvBackendLoadSuccessTeardown(UNUSED void **state) {
+int samconfTestSamconfEnvBackendLoadSuccessTeardown(void **state) {
     unsetenv("UTEST_VARIABLE_STRING");
     unsetenv("UTEST_VARIABLE_INT");
     unsetenv("UTEST_VARIABLE_REAL");
     unsetenv("UTEST_VARIABLE_BOOL");
     unsetenv("UTEST_UTEST_VARIABLE_INT");
     unsetenv("__UTEST_VARIABLE_INT");
+
+    samconfConfigStatusE_t result;
+    samconfEnvBackendLoadTestData_t *data = (samconfEnvBackendLoadTestData_t *)*state;
+
+    result = samconfUriDelete(data->backend->backendHandle);
+    free(data->backend);
+
+    result = samconfConfigDelete(data->config);
+    assert_int_equal(result, SAMCONF_CONFIG_OK);
+
+    free(data);
+
     return 0;
 }
 
-void samconfTestSamconfEnvBackendLoadSuccess(UNUSED void **state) {
+void samconfTestSamconfEnvBackendLoadSuccess(void **state) {
+    samconfEnvBackendLoadTestData_t *data = (samconfEnvBackendLoadTestData_t *)*state;
     samconfConfigStatusE_t result;
-    samconfConfigBackend_t *testBackend = NULL;
-    samconfConfig_t *testroot = NULL;
     const samconfConfig_t *testnode = NULL;
 
     const char *testPaths[] = {"UTEST/VARIABLE/STRING", "UTEST/VARIABLE/INT",       "UTEST/VARIABLE/REAL",
@@ -38,12 +69,12 @@ void samconfTestSamconfEnvBackendLoadSuccess(UNUSED void **state) {
     TEST("samconfEnvBackendLoad");
     SHOULD("%s", "return a config_t object containing env variable values");
 
-    result = samconfEnvBackendLoad(testBackend, true, &testroot);
+    result = samconfEnvBackendLoad(data->backend, true, &data->config);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
 
     for (size_t i = 0; i < ARRAY_SIZE(testPaths); i++) {
         PARAM("%s", testPaths[i]);
-        result = samconfConfigGet(testroot, testPaths[i], &testnode);
+        result = samconfConfigGet(data->config, testPaths[i], &testnode);
         assert_int_equal(result, SAMCONF_CONFIG_OK);
         assert_string_equal(testnode->key, resultKey[i]);
         switch (testnode->type) {
@@ -61,7 +92,4 @@ void samconfTestSamconfEnvBackendLoadSuccess(UNUSED void **state) {
                 break;
         }
     }
-
-    result = samconfConfigDelete(testroot);
-    assert_int_equal(result, SAMCONF_CONFIG_OK);
 }

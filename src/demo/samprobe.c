@@ -9,9 +9,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "samconf/config_backend.h"
-#include "samconf/json_backend.h"
 #include "samconf/samconf.h"
+
+#define DECIMAL_DIGITS_BOUND(t) (241 * sizeof(t) / 100 + 2)
 
 static void _usage(const char *progName) {
     printf("Usage: %s <config_location>\n", progName);

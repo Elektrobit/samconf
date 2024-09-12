@@ -12,7 +12,7 @@ void samconfTestSamconfGetBackendOpsError(UNUSED void **state) {
     TEST("samconfGetBackendOps with invalid input");
     SHOULD("%s", "return Null");
 
-    ops = samconfGetBackendOps(2);
+    ops = samconfGetBackendOps(3);
 
     assert_null(ops);
 }

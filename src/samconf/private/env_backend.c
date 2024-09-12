@@ -189,7 +189,7 @@ samconfConfigStatusE_t samconfEnvBackendCreateConfig(samconfConfig_t **root, con
     return result;
 }
 
-static samconfConfigStatusE_t _transform_env_to_config(bool isSigned, samconfConfig_t *config) {
+static samconfConfigStatusE_t _transform_env_to_config(samconfUri_t *uri, bool isSigned, samconfConfig_t *config) {
     extern char **environ;
     samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
 
@@ -208,15 +208,17 @@ static samconfConfigStatusE_t _transform_env_to_config(bool isSigned, samconfCon
             key = envCopy;
             val = envCopy + pos + 1;
             key[pos] = '\0';
-            len = strlen(key);
-            if (len > 1) {
-                _replaceCharsInString(key, strlen(key), '_', '/');
-            }
-            result = samconfEnvBackendCreateConfig(&config, key, val);
-            if (result != SAMCONF_CONFIG_OK) {
-                safuLogErrF("Config creation failed for given key : %s, value: %s\n", key, val);
-                free(envCopy);
-                break;
+            if (strstr(key, uri->authority) != NULL) {
+                len = strlen(key);
+                if (len > 1) {
+                    _replaceCharsInString(key, strlen(key), '_', '/');
+                }
+                result = samconfEnvBackendCreateConfig(&config, key, val);
+                if (result != SAMCONF_CONFIG_OK) {
+                    safuLogErrF("Config creation failed for given key : %s, value: %s\n", key, val);
+                    free(envCopy);
+                    break;
+                }
             }
             free(envCopy);
         }
@@ -225,18 +227,25 @@ static samconfConfigStatusE_t _transform_env_to_config(bool isSigned, samconfCon
     return result;
 }
 
-samconfConfigStatusE_t samconfEnvBackendLoad(UNUSED samconfConfigBackend_t *backend, bool isSigned,
-                                             samconfConfig_t **config) {
+samconfConfigStatusE_t samconfEnvBackendLoad(samconfConfigBackend_t *backend, bool isSigned, samconfConfig_t **config) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
-    result = samconfConfigNew(config);
+
+    if (backend == NULL) {
+        safuLogErr("Failed to create config tree due to invalid backend");
+        result = SAMCONF_CONFIG_ERROR;
+    }
 
     if (result == SAMCONF_CONFIG_OK) {
-        (*config)->type = SAMCONF_CONFIG_VALUE_OBJECT;
-        (*config)->key = strdup("root");
+        result = samconfConfigNew(config);
 
-        result = _transform_env_to_config(isSigned, *config);
-    } else {
-        safuLogErr("Failed to initialize Config");
+        if (result == SAMCONF_CONFIG_OK) {
+            (*config)->type = SAMCONF_CONFIG_VALUE_OBJECT;
+            (*config)->key = strdup("root");
+
+            result = _transform_env_to_config(backend->backendHandle, isSigned, *config);
+        } else {
+            safuLogErr("Failed to initialize Config");
+        }
     }
 
     return result;

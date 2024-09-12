@@ -39,9 +39,12 @@ static const samconfConfigBackendOps_t samconfDummyOps = {
 static const samconfConfigBackendOps_t *const samconfBackendOps[] = {
 #ifdef SAMCONF_ENABLE_CONFIG_BACKEND_JSON
     &samconfJsonOps,
-#elif SAMCONF_ENABLE_CONFIG_BACKEND_ENV
+#endif
+
+#ifdef SAMCONF_ENABLE_CONFIG_BACKEND_ENV
     &samconfEnvOps,
 #endif
+
     &samconfDummyOps,
 };
 

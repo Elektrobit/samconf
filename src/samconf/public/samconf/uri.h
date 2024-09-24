@@ -38,6 +38,21 @@ __BEGIN_DECLS
 samconfConfigStatusE_t samconfUriPattern(regex_t **pattern);
 samconfConfigStatusE_t samconfUriNew(samconfUri_t **uri, const char *uriString);
 samconfConfigStatusE_t samconfUriInit(samconfUri_t *uri, const char *uriString);
+
+/**
+ * Retrieves the value of a given uri parameter from the given uri query string
+ *
+ * Parameters:
+ *     uri (samconfUri_t):  uri struct containing uri query
+ *     uriParam (const char*): parameter string whose value is to be determined
+ *     value (char **): value of uriParam extracted from uri query
+ *
+ * Returns:
+ *     samconfConfigStatusE_t:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ */
+samconfConfigStatusE_t samconfUriGetParameter(samconfUri_t *uri, const char *uriParam, char **value);
 samconfConfigStatusE_t samconfUriDelete(samconfUri_t *uri);
 samconfConfigStatusE_t samconfUriDeleteMembers(samconfUri_t *uri);
 

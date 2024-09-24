@@ -9,7 +9,7 @@ int samconfTestSamconfEnvBackendLoadExtErrorCreateConfigSetup(void **state) {
 
     samconfConfigStatusE_t result;
     samconfUri_t *uri;
-    result = samconfUriNew(&uri, "env://UTEST_VARIABLE");
+    result = samconfUriNew(&uri, "env://?envPrefix=UTEST_VARIABLE&testVar=Check");
     assert_int_equal(result, SAMCONF_CONFIG_OK);
 
     samconfConfigBackend_t *backend = malloc(sizeof(samconfConfigBackend_t));

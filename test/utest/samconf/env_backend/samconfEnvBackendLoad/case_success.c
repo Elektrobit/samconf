@@ -60,8 +60,9 @@ void samconfTestSamconfEnvBackendLoadSuccess(void **state) {
     samconfConfigStatusE_t result;
     const samconfConfig_t *testnode = NULL;
 
-    const char *testPaths[] = {"UTEST/VARIABLE/STRING", "UTEST/VARIABLE/INT",       "UTEST/VARIABLE/REAL",
-                               "UTEST/VARIABLE/BOOL",   "UTEST/UTEST/VARIABLE/INT", "UTEST/VARIABLE/INT"};
+    const char *testPaths[] = {"root/UTEST/VARIABLE/STRING",    "root/UTEST/VARIABLE/INT",
+                               "root/UTEST/VARIABLE/REAL",      "root/UTEST/VARIABLE/BOOL",
+                               "root/UTEST/UTEST/VARIABLE/INT", "root/UTEST/VARIABLE/INT"};
 
     const char *resultKey[] = {"STRING", "INT", "REAL", "BOOL", "INT", "INT"};
     samconfEnvBackendTestValues_t testValues = {.string = "utest string", .integer = 42, .real = 1.9865};

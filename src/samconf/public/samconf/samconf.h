@@ -26,6 +26,35 @@ samconfConfigStatusE_t samconfConfigSetBool(samconfConfig_t *config, bool value)
 samconfConfigStatusE_t samconfConfigSetReal(samconfConfig_t *config, double value);
 int samconfInitConfig();
 
+/**
+ * Create a path to the config, upto the top most parent.
+ *
+ * Parameters:
+ *     config(samconfConfig_t *): config from which path is to be created.
+ *     path (const char*):  path from root parent to given config
+ *
+ * Returns:
+ *     samconfConfigStatusE_t:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ */
+samconfConfigStatusE_t samconfGetParentPath(const samconfConfig_t *config, const char **path);
+
+/**
+ * Creates a samconfConfig_t struct by following the path parameter. The value is then set to
+ * the last node in the path
+ *
+ * Parameters:
+ *     root (samconfConfig_t *): config to which value is to be set.
+ *     value (const char*):  value to be set. It can be uint64_t, bool, double or string
+ *
+ * Returns:
+ *     samconfConfigStatusE_t:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ */
+samconfConfigStatusE_t samconfConfigSetValueFromString(samconfConfig_t *config, const char *value);
+
 /*******************************************************************
  * Get a string from a samconfConfig_t.
  * If there is no string found under the provided search path

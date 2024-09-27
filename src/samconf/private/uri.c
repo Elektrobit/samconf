@@ -94,6 +94,49 @@ NOINLINE samconfConfigStatusE_t samconfUriInit(samconfUri_t *uri, const char *ur
     return status;
 }
 
+NOINLINE samconfConfigStatusE_t samconfUriGetParameter(samconfUri_t *uri, const char *uriParam, char **value) {
+    samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
+    char *queryString = NULL;
+    char *freequery = NULL;
+    char *paramString = NULL;
+    char *freeparam = NULL;
+    char *paramName = NULL;
+    char *paramValue = NULL;
+
+    if (uri == NULL || uri->query == NULL || uriParam == NULL) {
+        safuLogErr("Invalid parameter to get value from");
+    } else {
+        freequery = queryString = strdup(uri->query);
+        if (queryString == NULL) {
+            safuLogErr("strdup failed");
+        } else {
+            if (queryString[0] == '?') {
+                ++queryString;
+            }
+            char *token = strsep(&queryString, "&");
+            if (queryString != NULL) {
+                while (token) {
+                    freeparam = paramString = strdup(token);
+                    if (paramString != NULL) {
+                        paramName = strsep(&paramString, "=");
+                        if (strcmp(paramName, uriParam) == 0) {
+                            paramValue = strsep(&paramString, "=");
+                            *value = strdup(paramValue);
+                            free(freeparam);
+                            status = SAMCONF_CONFIG_OK;
+                            break;
+                        }
+                        free(freeparam);
+                    }
+                    token = strsep(&queryString, "&");
+                }
+            }
+            free(freequery);
+        }
+    }
+    return status;
+}
+
 NOINLINE samconfConfigStatusE_t samconfUriDelete(samconfUri_t *uri) {
     samconfConfigStatusE_t status;
 

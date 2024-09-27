@@ -9,9 +9,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "samconf/config_backend.h"
-#include "samconf/json_backend.h"
 #include "samconf/samconf.h"
+
+#define DECIMAL_DIGITS_BOUND(t) (241 * sizeof(t) / 100 + 2)
 
 static void _usage(const char *progName) {
     printf("Usage: %s <config_location>\n", progName);
@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     } else if (config == NULL) {
         fprintf(stderr,
-                "ERR: unexpected error occuirred, where config was initialized but no expected error was caught");
+                "ERR: unexpected error occurred, where config was initialized but no expected error was caught");
         return EXIT_FAILURE;
     }
 

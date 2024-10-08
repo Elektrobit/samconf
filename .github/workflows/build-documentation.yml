@@ -54,9 +54,7 @@ jobs:
         run: ci/install_deps.py -G
       - name: Build samconf
         run: |
-          cmake -B ./build/Release/cmake . -DCMAKE_BUILD_TYPE=Release
-          make -C ./build/Release/cmake all
-          sudo make -C ./build/Release/cmake install
+          ./ci/build.sh Release
       - name: setup python Virtual env
         run: |
           python -m venv ${{ github.workspace }}/.venv

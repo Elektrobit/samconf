@@ -160,7 +160,7 @@ documentation:
     - ci/build_doc.sh
   artifacts:
     paths:
-      - build/doc/
+      - build/Release/doc/
 
 build-deb-packages:
   parallel:

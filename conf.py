@@ -14,6 +14,7 @@ author = 'wolfgang.gehrhardt@emlix.com'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
+    'myst_parser',
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinxcontrib.programoutput',
@@ -29,22 +30,23 @@ extensions = [
     'sphinx_c_autodoc.viewcode',
 ]
 
-templates_path = ['_templates']
-exclude_patterns = []
-
+templates_path = ['doc/_templates']
+exclude_patterns = ['build/deps/**', 'build/*/cmake/_deps/*', 'README.md', '.venv', 'debian.native/devdoc-index.md']
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 language = 'en'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'alabaster'
-html_static_path = ['_static']
+html_static_path = ['doc/source/_static']
 
 # c-autodoc
 c_autodoc_roots = [
-    '../../src/samconf/private',
-    '../../src/samconf/public',
-    '../../test/utest/utils/public',
-    '../../test/utest/utils/private',
+    'src/samconf',
+    'test/utest/utils',
 ]
 set_type_checking_flag = True

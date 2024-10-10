@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: MIT
-
 #include "samconf/samconf.h"
 
 #include <safu/common.h>
 #include <safu/log.h>
+#include <string.h>
 #include <strings.h>
+#include <sys/types.h>
 
 #include "samconf/config_backend.h"
 #include "samconf/crypto_utils.h"
+#include "samconf/env_backend.h"
 #include "samconf/json_backend.h"
 #include "samconf/signature.h"
 
@@ -39,6 +41,11 @@ static const samconfConfigBackendOps_t *const samconfBackendOps[] = {
 #ifdef SAMCONF_ENABLE_CONFIG_BACKEND_JSON
     &samconfJsonOps,
 #endif
+
+#ifdef SAMCONF_ENABLE_CONFIG_BACKEND_ENV
+    &samconfEnvOps,
+#endif
+
     &samconfDummyOps,
 };
 
@@ -232,6 +239,102 @@ samconfConfigStatusE_t samconfConfigAdd(samconfConfig_t *parent, samconfConfig_t
     child->parent = parent;
 
     return status;
+}
+
+static samconfConfigStatusE_t _add_to_new_path(const char *existingPath, const char *segment, char **newPath) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    size_t strLen = 0;
+    int ret = 0;
+
+    if (existingPath == NULL || segment == NULL) {
+        safuLogErr("invalid parameters");
+    } else {
+        strLen = strlen(segment) + strlen(existingPath);
+        *newPath = safuAllocMem(NULL, strLen + 2);
+        if (*newPath == NULL) {
+            safuLogErr("SafuAllocMem failed");
+        } else {
+            if (existingPath[0] == '\0') {
+                ret = snprintf(*newPath, strLen + 2, "%s", segment);
+            } else {
+                ret = snprintf(*newPath, strLen + 2, "%s/%s", segment, existingPath);
+            }
+            if (ret < 0) {
+                safuLogErr("snprintf failed");
+                free(*newPath);
+            } else {
+                result = SAMCONF_CONFIG_OK;
+            }
+        }
+    }
+    return result;
+}
+
+samconfConfigStatusE_t samconfGetParentPath(const samconfConfig_t *config, const char **path) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    samconfConfig_t *parent = NULL;
+    char *rootKey = "root";
+    char *existingPath = "";
+    char *newPath = NULL;
+
+    if (config == NULL || path == NULL) {
+        safuLogErr("invalid parameters");
+    } else {
+        if (strcmp(config->key, rootKey) == 0) {
+            *path = strdup(rootKey);
+            result = SAMCONF_CONFIG_OK;
+        } else {
+            result = _add_to_new_path(existingPath, config->key, &newPath);
+            if (result == SAMCONF_CONFIG_ERROR) {
+                safuLogErrF("adding %s to path failed", config->key);
+            } else if (newPath == NULL) {
+                safuLogErr("created path is null");
+                result = SAMCONF_CONFIG_ERROR;
+            } else {
+                parent = config->parent;
+                while (strcmp(parent->key, rootKey) != 0) {
+                    existingPath = strdup(newPath);
+                    if (existingPath == NULL) {
+                        safuLogErr("strdup failed");
+                        result = SAMCONF_CONFIG_ERROR;
+                        free(newPath);
+                        break;
+                    }
+                    free(newPath);
+                    newPath = NULL;
+                    result = _add_to_new_path(existingPath, parent->key, &newPath);
+                    if (result == SAMCONF_CONFIG_ERROR) {
+                        safuLogErrF("adding %s to path failed", parent->key);
+                        free(existingPath);
+                        break;
+                    }
+                    parent = parent->parent;
+                    result = SAMCONF_CONFIG_OK;
+                    free(existingPath);
+                }
+                if (strcmp(parent->key, rootKey) == 0 && result == SAMCONF_CONFIG_OK) {
+                    existingPath = strdup(newPath);
+                    if (existingPath == NULL) {
+                        safuLogErr("strdup failed");
+                        result = SAMCONF_CONFIG_ERROR;
+                    } else {
+                        free(newPath);
+                        newPath = NULL;
+                        result = _add_to_new_path(existingPath, rootKey, &newPath);
+                        if (result == SAMCONF_CONFIG_ERROR) {
+                            safuLogErrF("adding %s to path failed", rootKey);
+                        } else {
+                            *path = newPath;
+                            result = SAMCONF_CONFIG_OK;
+                        }
+                        free(existingPath);
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
 }
 
 samconfConfigStatusE_t samconfConfigGet(const samconfConfig_t *root, const char *path, const samconfConfig_t **result) {
@@ -460,6 +563,40 @@ samconfConfigStatusE_t samconfConfigGetReal(const samconfConfig_t *root, const c
     }
 
     return status;
+}
+
+samconfConfigStatusE_t samconfConfigSetValueFromString(samconfConfig_t *config, const char *value) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
+    char *endPtr = NULL;
+
+    if (!value) {
+        result = SAMCONF_CONFIG_ERROR;
+    }
+
+    if (result == SAMCONF_CONFIG_OK) {
+        if (strcasecmp(value, "true") == 0) {
+            config->type = SAMCONF_CONFIG_VALUE_BOOLEAN;
+            config->value.boolean = true;
+        } else if (strcasecmp(value, "false") == 0) {
+            config->type = SAMCONF_CONFIG_VALUE_BOOLEAN;
+            config->value.boolean = false;
+        } else {
+            config->value.integer = strtoll(value, &endPtr, 10);
+            if (*endPtr == '\0') {
+                config->type = SAMCONF_CONFIG_VALUE_INT;
+            } else {
+                config->value.real = strtod(value, &endPtr);
+                if (*endPtr == '\0') {
+                    config->type = SAMCONF_CONFIG_VALUE_REAL;
+                } else {
+                    config->value.string = strdup(value);
+                    config->type = SAMCONF_CONFIG_VALUE_STRING;
+                }
+            }
+        }
+    }
+
+    return result;
 }
 
 int samconfInitConfig() {

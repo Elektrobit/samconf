@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-find_package(cmocka_extensions REQUIRED)
+find_package(cmocka_extensions 0.53.1 REQUIRED)
 
 create_unit_test(
   NAME

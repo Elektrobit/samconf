@@ -1,17 +1,16 @@
 #!/bin/bash
 set -eou pipefail
 
-BASE_DIR=$(realpath $(dirname $0)/../../)
+CMDPATH="$(realpath "$(dirname "$0")")"
+  
+export PREFIX_PATH="${PREFIX_PATH-"/usr"}"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-""}:${PREFIX_PATH}/lib"
+export PATH="${PATH}:${PREFIX_PATH}/bin"
 
-BUILD_TYPE="${2:-Debug}"
-BUILD_DIR="$BASE_DIR/build/$BUILD_TYPE"
+export SMOKETEST_DIR=${SMOKETEST_DIR-${CMDPATH}}
+export SMOKETEST_RESULT_DIR=${SMOKETEST_RESULT_DIR-"./results/smoketest"}
+export SMOKETEST_TMP_DIR="${SMOKETEST_TMP_DIR-"$(mktemp -d /tmp/samconf_smoketest_XXXXXX)"}"
 
-DIST_DIR=$(realpath "$BUILD_DIR/dist/")
-
-export LD_LIBRARY_PATH="$DIST_DIR/usr/local/lib"
-export PATH=${PATH}:"$BUILD_DIR/cmake/src/demo:$DIST_DIR/usr/local/bin:$BASE_DIR/src"
-export SMOKETEST_DIR=${SMOKETEST_DIR-"$(dirname $0)"}
-export SMOKETEST_RESULT_DIR=${SMOKETEST_RESULT_DIR-"$BUILD_DIR/result/smoketest_results"}
 export PRIVATE_KEY="$SMOKETEST_DIR/samconf.pem"
 export PUBLIC_KEY="$SMOKETEST_DIR/samconf.pub"
 export SAMCONF_SIGNATURE_KEY="$PUBLIC_KEY"
@@ -151,8 +150,6 @@ smoketest_compile_program_using_libsamconf_test_utils() {
     RESULT_DIR="$SMOKETEST_RESULT_DIR/compile_program_using_libsamconf_test_utils"
     rm -rvf $RESULT_DIR
     mkdir -p $RESULT_DIR
-
-    SMOKETEST_TMP_DIR=$(mktemp -d /tmp/samconf_smoketest_XXXXXX)
 
     echo "Try to compile simple program using libsamconf_test_utils"
     TEST_C_PROG='

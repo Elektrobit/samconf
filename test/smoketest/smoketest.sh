@@ -54,7 +54,7 @@ function smoketest_signed_config {
     local CONFIG_FILE="$RESULT_DIR/config.json"
 
     echo "Starting smoketest signed config ..."
-    signature.sh $CONFIG_FILE "$PRIVATE_KEY"
+    samconf-sign $CONFIG_FILE "$PRIVATE_KEY"
     samprobe $CONFIG_FILE &> $RESULT_DIR/signed_config_output.txt
     re=$?
     if [ $re -ne 0 ]; then
@@ -103,7 +103,7 @@ function smoketest_sign_config {
     echo "Starting smoketest signing config ..."
 
 
-    signature.sh "$RESULT_DIR/config.json" "$PRIVATE_KEY"
+    samconf-sign "$RESULT_DIR/config.json" "$PRIVATE_KEY"
     if [ $? -ne 0 ]; then
         error_exit "signing failed: executable returned error code on exit"
     fi
@@ -130,7 +130,7 @@ function smoketest_genkeys {
     mkdir -p $RESULT_DIR
 
     echo "Starting smoketest signing config ..."
-    signature.sh create_keys "$RESULT_DIR" "samconf"
+    samconf-sign create_keys "$RESULT_DIR" "samconf"
     if [ $? -ne 0 ]; then
         error_exit "creating a key pair failed"
     fi

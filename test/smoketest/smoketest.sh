@@ -176,10 +176,10 @@ int main(int argc, char *argv[]) {
     echo "$TEST_C_PROG"
 
     echo "$TEST_C_PROG" \
-        | gcc -v -xc -lsamconf_test_utils -lsamconf -lsafu \
+        | gcc -v -Wl,--no-as-needed -xc -lsamconf_test_utils -lsamconf -lsafu \
         -I "${DIST_DIR}/usr/local/include/" -L "${DIST_DIR}/usr/local/lib" \
         -I "${BASE_DIR}/build/deps/include/" -L "${BASE_DIR}/build/deps/lib" \
-        -o "${SMOKETEST_TMP_DIR}/testlibelos" - \
+        -o "${SMOKETEST_TMP_DIR}/testlibelos"  - \
         >> "$RESULT_DIR/libsamconf_test_utils.log" 2>&1
     if [ $? -ne 0 ]; then
         error_exit "failed to compile test program for libsamconf_test_utils"

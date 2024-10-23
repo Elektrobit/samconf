@@ -14,10 +14,30 @@ export LD_LIBRARY_PATH="${BASE_DIR}/build/deps/lib"
 
 rm -rf "$SMOKETEST_RESULT_DIR"
 
-time "$SMOKETEST_RUNNER" simple_config "$BUILD_TYPE"
-time "$SMOKETEST_RUNNER" signed_config "$BUILD_TYPE"
-time "$SMOKETEST_RUNNER" error_signed_config "$BUILD_TYPE"
-time "$SMOKETEST_RUNNER" sign_config "$BUILD_TYPE"
-time "$SMOKETEST_RUNNER" genkeys "$BUILD_TYPE"
-time "$SMOKETEST_RUNNER" compile_program_using_libsamconf_test_utils "$BUILD_TYPE"
+FAIL=0
+RESULT=""
+function run_test() {
+    TEST_NAME="${1}"
+    RESULT="${RESULT}${TEST_NAME} "
+    if time "${SMOKETEST_RUNNER}" "${TEST_NAME}" "${BUILD_TYPE}"; then
+        RESULT="${RESULT} OK\n"
+    else
+        RESULT="${RESULT} FAILED\n"
+        FAIL=$((FAIL + 1))
+    fi
+}
+
+run_test simple_config
+run_test signed_config
+run_test error_signed_config
+run_test sign_config
+run_test genkeys
+run_test compile_program_using_libsamconf_test_utils
+
+echo "################################################################################"
+echo "# Summary"
+echo "################################################################################"
+echo -e "${RESULT}"
+
+exit "${FAIL}"
 

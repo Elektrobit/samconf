@@ -146,6 +146,10 @@ function smoketest_genkeys {
     exit 0
 }
 
+run_in_source_tree() {
+    [ -d "${SMOKETEST_DIR}/../../build/deps" ]
+}
+
 smoketest_compile_program_using_libsamconf_test_utils() {
     RESULT_DIR="$SMOKETEST_RESULT_DIR/compile_program_using_libsamconf_test_utils"
     rm -rvf $RESULT_DIR
@@ -175,10 +179,15 @@ int main(int argc, char *argv[]) {
 '
     echo "$TEST_C_PROG"
 
+    if run_in_source_tree; then
+        BUILD_DEPS_PREFIX="${SMOKETEST_DIR}/../../build/deps"
+        EXTRA_FLAGS="-I ${BUILD_DEPS_PREFIX}/include/ -L ${BUILD_DEPS_PREFIX}/lib"
+    fi
+
     echo "$TEST_C_PROG" \
         | gcc -v -Wl,--no-as-needed -xc -lsamconf_test_utils -lsamconf -lsafu \
-        -I "${DIST_DIR}/usr/local/include/" -L "${DIST_DIR}/usr/local/lib" \
-        -I "${BASE_DIR}/build/deps/include/" -L "${BASE_DIR}/build/deps/lib" \
+        -I "${PREFIX_PATH}/include/" -L "${PREFIX_PATH}/lib" \
+        ${EXTRA_FLAGS} \
         -o "${SMOKETEST_TMP_DIR}/testlibelos"  - \
         >> "$RESULT_DIR/libsamconf_test_utils.log" 2>&1
     if [ $? -ne 0 ]; then

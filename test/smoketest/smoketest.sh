@@ -1,5 +1,5 @@
-#!/bin/bash
-set -eou pipefail
+#!/bin/sh
+set -eu 
 
 CMDPATH="$(realpath "$(dirname "$0")")"
   
@@ -7,37 +7,34 @@ export PREFIX_PATH="${PREFIX_PATH-"/usr"}"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-""}:${PREFIX_PATH}/lib"
 export PATH="${PATH}:${PREFIX_PATH}/bin"
 
-export SMOKETEST_DIR=${SMOKETEST_DIR-${CMDPATH}}
-export SMOKETEST_RESULT_DIR=${SMOKETEST_RESULT_DIR-"./results/smoketest"}
+export SMOKETEST_DIR="${SMOKETEST_DIR-${CMDPATH}}"
+export SMOKETEST_RESULT_DIR="${SMOKETEST_RESULT_DIR-"./results/smoketest"}"
 export SMOKETEST_TMP_DIR="${SMOKETEST_TMP_DIR-"$(mktemp -d /tmp/samconf_smoketest_XXXXXX)"}"
 
 export PRIVATE_KEY="$SMOKETEST_DIR/samconf.pem"
 export PUBLIC_KEY="$SMOKETEST_DIR/samconf.pub"
 export SAMCONF_SIGNATURE_KEY="$PUBLIC_KEY"
 
-function smoketest_simple_config {
-    set -x
+smoketest_simple_config() {
     RESULT_DIR="$SMOKETEST_RESULT_DIR/simple_config"
-    rm -rvf $RESULT_DIR
-    mkdir -p $RESULT_DIR
+    rm -rvf "${RESULT_DIR}"
+    mkdir -p "${RESULT_DIR}"
 
     echo "Starting smoketest simple config ..."
-    samprobe "$SMOKETEST_DIR"/config.json &> $RESULT_DIR/simple_config_output.txt
-
-    if [ $? -ne 0 ]; then
+    if ! samprobe "$SMOKETEST_DIR"/config.json > "${RESULT_DIR}/simple_config_output.txt" 2>&1; then
         error_exit "samprobe failed"
     fi
 
-    echo -ne "Signature file ${SMOKETEST_DIR}/config.json.sig does not exist.\n\n" \
-        > ${RESULT_DIR}/simple_config_nosign_output.txt
-    cat ${SMOKETEST_DIR}/simple_config_output.txt \
-        >> ${RESULT_DIR}/simple_config_nosign_output.txt
+    printf "Signature file %s/config.json.sig does not exist.\n\n" "${SMOKETEST_DIR}" \
+        > "${RESULT_DIR}/simple_config_nosign_output.txt"
+    cat "${SMOKETEST_DIR}/simple_config_output.txt" \
+        >> "${RESULT_DIR}/simple_config_nosign_output.txt"
     
     echo "Smoketest comparing output ${RESULT_DIR}/simple_config_output.txt with ${RESULT_DIR}/simple_config_nosign_output.txt"
-    output_diff=$(diff -w ${RESULT_DIR}/simple_config_output.txt ${RESULT_DIR}/simple_config_nosign_output.txt || echo "diff returned: $?")
+    output_diff=$(diff -w "${RESULT_DIR}/simple_config_output.txt" "${RESULT_DIR}/simple_config_nosign_output.txt" || echo "diff returned: $?")
     if [ -n "$output_diff" ]; then
         echo "Problems occurred while comparing the client output:"
-        echo -e "$output_diff"
+        echo "$output_diff"
         error_exit "Test failed"
     fi
 
@@ -45,12 +42,12 @@ function smoketest_simple_config {
     exit 0
 }
 
-function smoketest_signed_config {
+smoketest_signed_config() {
     RESULT_DIR="$SMOKETEST_RESULT_DIR/signed_config"
     rm -rvf $RESULT_DIR
     mkdir -p $RESULT_DIR
     cp -a "$SMOKETEST_DIR/config.json" "$RESULT_DIR/config.json"
-    local CONFIG_FILE="$RESULT_DIR/config.json"
+    CONFIG_FILE="${RESULT_DIR}/config.json"
 
     echo "Starting smoketest signed config ..."
     samconf-sign $CONFIG_FILE "$PRIVATE_KEY"
@@ -64,17 +61,17 @@ function smoketest_signed_config {
     exit 0
 }
 
-function smoketest_error_signed_config {
+smoketest_error_signed_config() {
     RESULT_DIR="$SMOKETEST_RESULT_DIR/error_signed_config"
     rm -rvf $RESULT_DIR
     mkdir -p $RESULT_DIR
     cp -a "$SMOKETEST_DIR/config.json" "$RESULT_DIR/config.json"
-    local CONFIG_FILE="$RESULT_DIR/config.json"
+    CONFIG_FILE="${RESULT_DIR}/config.json"
 
     echo "Starting smoketest error signed config ..."
-    echo -n "RSA-SHA2-256:///1234567890123456789012345678901234567890123456789012345678901234" > $CONFIG_FILE.sig
+    echo "RSA-SHA2-256:///1234567890123456789012345678901234567890123456789012345678901234" > "$CONFIG_FILE.sig"
     set +e
-    samprobe $CONFIG_FILE &> $RESULT_DIR/error_signed_config_output.txt
+    samprobe "$CONFIG_FILE" > "${RESULT_DIR}/error_signed_config_output.txt" 2>&1
     re=$?
     set -e
     if [ $re -eq 0 ]; then
@@ -93,7 +90,7 @@ function smoketest_error_signed_config {
     exit 0
 }
 
-function smoketest_sign_config {
+smoketest_sign_config() {
     RESULT_DIR="$SMOKETEST_RESULT_DIR/sign_config"
     rm -rvf $RESULT_DIR
     mkdir -p $RESULT_DIR
@@ -123,7 +120,7 @@ function smoketest_sign_config {
     exit 0
 }
 
-function smoketest_genkeys {
+smoketest_genkeys() {
     RESULT_DIR="$SMOKETEST_RESULT_DIR/genkeys"
     rm -rvf $RESULT_DIR
     mkdir -p $RESULT_DIR
@@ -184,7 +181,7 @@ int main(int argc, char *argv[]) {
         EXTRA_FLAGS="-I ${BUILD_DEPS_PREFIX}/include/ -L ${BUILD_DEPS_PREFIX}/lib"
     fi
 
-    echo "$TEST_C_PROG" \
+    printf '%s' "$TEST_C_PROG" \
         | gcc -v -Wl,--no-as-needed -xc -lsamconf_test_utils -lsamconf -lsafu \
         -I "${PREFIX_PATH}/include/" -L "${PREFIX_PATH}/lib" \
         ${EXTRA_FLAGS} \
@@ -197,13 +194,13 @@ int main(int argc, char *argv[]) {
     exit 0
 }
 
-function print_help {
+print_help() {
     echo
     echo "Usage: $0 <simple_config|sign_config|help> <Debug|Release>"
     echo
 }
 
-function error_exit {
+error_exit() {
     echo "Error : $1, terminating smoketest ..."
     exit 1
 }

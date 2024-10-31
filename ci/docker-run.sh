@@ -46,6 +46,7 @@ docker run --rm ${IT} $SSH_AGENT_OPTS \
     -w /base \
     ${GIT_USER_TOKEN:+-e GIT_USER_TOKEN="${GIT_USER_TOKEN}"} \
     ${SOURCES_URI:+-e SOURCES_URI="${SOURCES_URI}"} \
+    ${SAMCONF_DEPENDENCY_CONFIG:+-e SAMCONF_DEPENDENCY_CONFIG="${SAMCONF_DEPENDENCY_CONFIG}"} \
     --privileged \
     --device=/dev/kmsg \
     "$IMAGE_NAME" "$@"

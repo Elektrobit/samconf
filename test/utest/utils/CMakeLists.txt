@@ -55,4 +55,11 @@ if (SAMCONF_TEST_UTILS AND INSTALL_SAMCONF_TEST_UTILS)
 
   install(TARGETS samconf_test_utils EXPORT samconfTargets  DESTINATION ${CMAKE_INSTALL_LIBDIR})
   install(DIRECTORY public/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h")
+
+  include(${PROJECT_SOURCE_DIR}/cmake/pkgconfig/pkgconfig.cmake)
+  create_pkgconfig(
+    NAME "samconf_test_utils"
+    REQUIRES "safu >= ${safu_VERSION}, samconf >= ${samconf_VERSION}"
+    LIBS "-lsamconf_test_utils"
+  )
 endif (SAMCONF_TEST_UTILS AND INSTALL_SAMCONF_TEST_UTILS)

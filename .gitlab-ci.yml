@@ -109,6 +109,32 @@ unit-test-debug:
     reports:
       junit: build/Debug/result/unit_test/junit.xml
 
+smoketest-test-release:
+  stage: test
+  needs:
+    - build-docker-image
+    - build-release
+    - build-dependencies
+  script:
+    - ci/run_smoketests.sh Release
+  artifacts:
+    when: always
+    paths:
+      - build/Release/result/smoketest/
+
+smoketest-test-debug:
+  stage: test
+  needs:
+    - build-docker-image
+    - build-debug
+    - build-dependencies
+  script:
+    - ci/run_smoketests.sh Debug
+  artifacts:
+    when: always
+    paths:
+      - build/Debug/result/smoketest/
+
 code-lint:
   stage: test
   needs:

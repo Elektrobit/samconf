@@ -52,12 +52,12 @@ void samconfTestSamconfEnvBackendLoadExtErrorCreateConfig(void **state) {
     TEST("samconfEnvBackendLoad");
     SHOULD("%s", "fail on new config creation");
 
-    MOCK_FUNC_AFTER_CALL(samconfEnvBackendCreateConfig, 0);
-    expect_any(samconfEnvBackendCreateConfig, root);
-    expect_any(samconfEnvBackendCreateConfig, path);
-    expect_any(samconfEnvBackendCreateConfig, value);
-    will_return(samconfEnvBackendCreateConfig, data->config);
-    will_return(samconfEnvBackendCreateConfig, SAMCONF_CONFIG_ERROR);
+    MOCK_FUNC_AFTER_CALL(samconfCreateFromStringAt, 0);
+    expect_any(samconfCreateFromStringAt, root);
+    expect_any(samconfCreateFromStringAt, path);
+    expect_any(samconfCreateFromStringAt, value);
+    will_return(samconfCreateFromStringAt, data->config);
+    will_return(samconfCreateFromStringAt, SAMCONF_CONFIG_ERROR);
 
     result = samconfEnvBackendLoad(data->backend, true, &data->config);
     assert_int_equal(result, SAMCONF_CONFIG_ERROR);

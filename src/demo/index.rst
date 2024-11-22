@@ -11,7 +11,7 @@ to check and query config files.
 
 To verify a config file :
 
-.. command-output:: samprobe /test/smoketest/config.json
+.. command-output:: samprobe test/smoketest/config.json
 
 
 env_example – test and query configs created from environment variables

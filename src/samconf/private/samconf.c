@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 #include "samconf/samconf.h"
 
+#include <libgen.h>
 #include <safu/common.h>
 #include <safu/log.h>
 #include <string.h>
@@ -311,6 +312,327 @@ samconfConfigStatusE_t samconfGetParentPath(const samconfConfig_t *config, const
                 }
             }
         }
+    }
+
+    return result;
+}
+
+samconfConfigStatusE_t samconfCreateIntAt(samconfConfig_t **root, const char *path, int64_t value) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    samconfConfig_t *config = NULL;
+    char *copyPath = NULL;
+    char *key = NULL;
+
+    if (root == NULL || path == NULL) {
+        safuLogErr("Invalid Parameter");
+    } else {
+        result = samconfConfigNew(&config);
+        if (result != SAMCONF_CONFIG_OK) {
+            safuLogErr("samconfConfigNew failed");
+        } else {
+            copyPath = strdup(path);
+            if (copyPath == NULL) {
+                safuLogErrF("strdup path %s failed", path);
+            } else {
+                key = basename(copyPath);
+                config->key = strdup(key);
+                if (config->key == NULL) {
+                    safuLogErrF("strdup key %s failed", key);
+                } else {
+                    result = samconfConfigSetInt(config, value);
+                    if (result != SAMCONF_CONFIG_OK) {
+                        safuLogErr("samconfConfigSetInt failed");
+                    } else {
+                        result = samconfInsertAt(root, path, config);
+                        if (result != SAMCONF_CONFIG_OK) {
+                            safuLogErr("samconfInsertAt failed");
+                        }
+                    }
+                }
+            }
+            free(copyPath);
+        }
+    }
+    return result;
+}
+
+samconfConfigStatusE_t samconfCreateRealAt(samconfConfig_t **root, const char *path, double value) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    samconfConfig_t *config = NULL;
+    char *copyPath = NULL;
+    char *key = NULL;
+
+    if (root == NULL || path == NULL) {
+        safuLogErr("Invalid Parameter");
+    } else {
+        result = samconfConfigNew(&config);
+        if (result != SAMCONF_CONFIG_OK) {
+            safuLogErr("samconfConfigNew failed");
+        } else {
+            copyPath = strdup(path);
+            if (copyPath == NULL) {
+                safuLogErrF("strdup path %s failed", path);
+            } else {
+                key = basename(copyPath);
+                config->key = strdup(key);
+                if (config->key == NULL) {
+                    safuLogErrF("strdup key %s failed", key);
+                } else {
+                    result = samconfConfigSetReal(config, value);
+                    if (result != SAMCONF_CONFIG_OK) {
+                        safuLogErr("samconfConfigSetReal failed");
+                    } else {
+                        result = samconfInsertAt(root, path, config);
+                        if (result != SAMCONF_CONFIG_OK) {
+                            safuLogErr("samconfInsertAt failed");
+                        }
+                    }
+                }
+            }
+            free(copyPath);
+        }
+    }
+
+    return result;
+}
+
+samconfConfigStatusE_t samconfCreateBoolAt(samconfConfig_t **root, const char *path, bool value) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    samconfConfig_t *config = NULL;
+    char *copyPath = NULL;
+    char *key = NULL;
+
+    if (root == NULL || path == NULL) {
+        safuLogErr("Invalid Parameter");
+    } else {
+        result = samconfConfigNew(&config);
+        if (result != SAMCONF_CONFIG_OK) {
+            safuLogErr("samconfConfigNew failed");
+        } else {
+            copyPath = strdup(path);
+            if (copyPath == NULL) {
+                safuLogErrF("strdup path %s failed", path);
+            } else {
+                key = basename(copyPath);
+                config->key = strdup(key);
+                if (config->key == NULL) {
+                    safuLogErrF("strdup key %s failed", key);
+                } else {
+                    result = samconfConfigSetBool(config, value);
+                    if (result != SAMCONF_CONFIG_OK) {
+                        safuLogErr("samconfConfigSetBool failed");
+                    } else {
+                        result = samconfInsertAt(root, path, config);
+                        if (result != SAMCONF_CONFIG_OK) {
+                            safuLogErr("samconfInsertAt failed");
+                        }
+                    }
+                }
+            }
+            free(copyPath);
+        }
+    }
+    return result;
+}
+
+samconfConfigStatusE_t samconfCreateFromStringAt(samconfConfig_t **root, const char *path, char *value) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    samconfConfig_t *config = NULL;
+    char *copyPath = NULL;
+    char *key = NULL;
+
+    if (root == NULL || path == NULL || value == NULL) {
+        safuLogErr("Invalid Parameter");
+    } else {
+        result = samconfConfigNew(&config);
+        if (result != SAMCONF_CONFIG_OK) {
+            safuLogErr("samconfConfigNew failed");
+        } else {
+            copyPath = strdup(path);
+            if (copyPath == NULL) {
+                safuLogErrF("strdup path %s failed", path);
+            } else {
+                key = basename(copyPath);
+                config->key = strdup(key);
+                if (config->key == NULL) {
+                    safuLogErrF("strdup key %s failed", key);
+                } else {
+                    result = samconfConfigSetValueFromString(config, value);
+                    if (result != SAMCONF_CONFIG_OK) {
+                        safuLogErr("samconfConfigSetValueFromString failed");
+                    } else {
+                        result = samconfInsertAt(root, path, config);
+                        if (result != SAMCONF_CONFIG_OK) {
+                            safuLogErr("samconfInsertAt failed");
+                        }
+                    }
+                }
+            }
+            free(copyPath);
+        }
+    }
+    return result;
+}
+
+samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char *path, const char *value) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    samconfConfig_t *config = NULL;
+    char *copyPath = NULL;
+    char *key = NULL;
+
+    if (root == NULL || path == NULL || value == NULL) {
+        safuLogErr("Invalid Parameter");
+    } else {
+        result = samconfConfigNew(&config);
+        if (result != SAMCONF_CONFIG_OK) {
+            safuLogErr("samconfConfigNew failed");
+        } else {
+            copyPath = strdup(path);
+            if (copyPath == NULL) {
+                safuLogErrF("strdup path %s failed", path);
+            } else {
+                key = basename(copyPath);
+                config->key = strdup(key);
+                if (config->key == NULL) {
+                    safuLogErrF("strdup key %s failed", key);
+                } else {
+                    result = samconfConfigSetString(config, value);
+                    if (result != SAMCONF_CONFIG_OK) {
+                        safuLogErr("samconfConfigSetString failed");
+                    } else {
+                        result = samconfInsertAt(root, path, config);
+                        if (result != SAMCONF_CONFIG_OK) {
+                            safuLogErr("samconfInsertAt failed");
+                        }
+                    }
+                }
+            }
+            free(copyPath);
+        }
+    }
+    return result;
+}
+
+samconfConfigStatusE_t samconfCopyConfigValue(samconfConfig_t *from, samconfConfig_t *to) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+
+    if (from == NULL || to == NULL) {
+        safuLogErr("Invalid Parameter");
+    } else {
+        switch (from->type) {
+            case SAMCONF_CONFIG_VALUE_INT:
+                result = samconfConfigSetInt(to, from->value.integer);
+                break;
+            case SAMCONF_CONFIG_VALUE_BOOLEAN:
+                result = samconfConfigSetBool(to, from->value.boolean);
+                break;
+            case SAMCONF_CONFIG_VALUE_REAL:
+                result = samconfConfigSetReal(to, from->value.real);
+                break;
+            default:
+                result = samconfConfigSetString(to, from->value.string);
+        }
+    }
+
+    return result;
+}
+
+static void _get_path_to_token(char **pathToToken, char *token) {
+    size_t tokenLen = strlen(token);
+
+    if (*pathToToken == NULL) {
+        *pathToToken = strdup(token);
+    } else {
+        size_t pathLen = strlen(*pathToToken);
+        size_t newPathLen = pathLen + tokenLen + 2;
+        char *newPath = safuAllocMem(NULL, newPathLen);
+
+        snprintf(newPath, newPathLen, "%s/%s", *pathToToken, token);
+        free(*pathToToken);
+        *pathToToken = newPath;
+    }
+}
+
+samconfConfigStatusE_t samconfInsertAt(samconfConfig_t **root, const char *path, samconfConfig_t *config) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
+    char *pathCopy = NULL;
+    char *freePath = NULL;
+    char *lastConfig = NULL;
+    char *pathToToken = NULL;
+    samconfConfig_t *node = NULL;
+    samconfConfig_t *parent = NULL;
+    const samconfConfig_t *existingNode = NULL;
+
+    if (root == NULL || path == NULL || config == NULL) {
+        result = SAMCONF_CONFIG_ERROR;
+    } else {
+        freePath = pathCopy = strdup(path);
+
+        if (pathCopy == NULL || freePath == NULL) {
+            result = SAMCONF_CONFIG_ERROR;
+        } else {
+            if (pathCopy[0] == '\0') {
+                result = SAMCONF_CONFIG_NOT_FOUND;
+            } else {
+                if (pathCopy[0] == '/') {
+                    if (strlen(pathCopy) == 1) {
+                        result = SAMCONF_CONFIG_NOT_FOUND;
+                    } else {
+                        ++pathCopy;
+                    }
+                }
+            }
+        }
+
+        if (result == SAMCONF_CONFIG_OK) {
+            lastConfig = basename(pathCopy);
+            char *token = strsep(&pathCopy, "/");
+            parent = *root;
+
+            while (token) {
+                _get_path_to_token(&pathToToken, token);
+                if (pathToToken != NULL) {
+                    result = samconfConfigGet(*root, pathToToken, &existingNode);
+                    if (result == SAMCONF_CONFIG_OK) {
+                        parent = (samconfConfig_t *)existingNode;
+                        if (strcasecmp(pathToToken, token) == 0) {
+                            if (token == lastConfig) {
+                                safuLogErrF("cannot insert node : %s, already exists", config->key);
+                                samconfConfigDelete(config);
+                                break;
+                            }
+                        }
+                    } else {
+                        if (token == lastConfig) {
+                            result = samconfConfigAdd(parent, config);
+                            if (result != SAMCONF_CONFIG_OK) {
+                                safuLogErrF("samconfConfigAdd failed to add node : %s", config->key);
+                                samconfConfigDelete(config);
+                                break;
+                            }
+                        } else {
+                            result = samconfConfigNew(&node);
+                            if (result != SAMCONF_CONFIG_OK) {
+                                safuLogErr("samconfConfigNew failed");
+                                break;
+                            }
+                            node->key = strdup(token);
+                            node->type = SAMCONF_CONFIG_VALUE_OBJECT;
+                            result = samconfConfigAdd(parent, node);
+                            if (result != SAMCONF_CONFIG_OK) {
+                                safuLogErrF("samconfConfigAdd failed to add node : %s", node->key);
+                                samconfConfigDelete(node);
+                                break;
+                            }
+                            parent = node;
+                        }
+                    }
+                }
+                token = strsep(&pathCopy, "/");
+            }
+            free(pathToToken);
+        }
+        free(freePath);
     }
 
     return result;

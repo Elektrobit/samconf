@@ -9,35 +9,13 @@
 
 #include "samconf/config_backend.h"
 #include "samconf/crypto_utils.h"
+#include "samconf/dummy_backend.h"
 #include "samconf/env_backend.h"
 #include "samconf/json_backend.h"
 #include "samconf/signature.h"
 
-static samconfConfigStatusE_t samconfSupportsDummy(UNUSED const char *location, UNUSED bool *isSupported) {
-    return SAMCONF_CONFIG_NOT_IMPLEMENTED;
-}
 
-static samconfConfigStatusE_t samconfOpenDummy(UNUSED const char *location, UNUSED samconfConfigBackend_t *backend) {
-    return SAMCONF_CONFIG_NOT_IMPLEMENTED;
-}
-
-static samconfConfigStatusE_t samconfLoadDummy(UNUSED samconfConfigBackend_t *backend, UNUSED bool isSigned,
-                                               UNUSED samconfConfig_t **config) {
-    return SAMCONF_CONFIG_NOT_IMPLEMENTED;
-}
-
-static samconfConfigStatusE_t samconfCloseDummy(UNUSED samconfConfigBackend_t *backend) {
-    return SAMCONF_CONFIG_NOT_IMPLEMENTED;
-}
-
-static const samconfConfigBackendOps_t samconfDummyOps = {
-    .supports = samconfSupportsDummy,
-    .open = samconfOpenDummy,
-    .load = samconfLoadDummy,
-    .close = samconfCloseDummy,
-};
-
-static const samconfConfigBackendOps_t *const samconfBackendOps[] = {
+static const samconfConfigBackendOps_t *const samconfBackendOps[BACKEND_COUNT] = {
 #ifdef SAMCONF_ENABLE_CONFIG_BACKEND_JSON
     &samconfJsonOps,
 #endif

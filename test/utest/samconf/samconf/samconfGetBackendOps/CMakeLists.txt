@@ -7,7 +7,6 @@ create_unit_test(
   SOURCES
     case_success_get_dummy_backend.c
     case_success_get_json_backend.c
-    case_error.c
     samconfGetBackendOps_utest.c
   LIBRARIES
     cmocka_extensions::cmocka_extensions

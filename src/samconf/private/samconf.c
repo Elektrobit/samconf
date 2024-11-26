@@ -14,34 +14,35 @@
 #include "samconf/json_backend.h"
 #include "samconf/signature.h"
 
-
 static const samconfConfigBackendOps_t *const samconfBackendOps[BACKEND_COUNT] = {
 #ifdef SAMCONF_ENABLE_CONFIG_BACKEND_JSON
-    &samconfJsonOps,
+    [BACKEND_JSON] = &samconfJsonOps,
 #endif
 
 #ifdef SAMCONF_ENABLE_CONFIG_BACKEND_ENV
-    &samconfEnvOps,
+    [BACKEND_ENV] = &samconfEnvOps,
 #endif
 
-    &samconfDummyOps,
+    [BACKEND_DUMMY] = &samconfDummyOps,
 };
 
-NOINLINE const samconfConfigBackendOps_t *samconfGetBackendOps(size_t idx) {
-    if (idx < ARRAY_SIZE(samconfBackendOps)) {
-        return samconfBackendOps[idx];
+NOINLINE const samconfConfigBackendOps_t *samconfGetBackendOps(samconfBackendOptions_t idx) {
+    const samconfConfigBackendOps_t *backend = &samconfDummyOps;
+    if (idx < BACKEND_COUNT && samconfBackendOps[idx] != NULL) {
+        backend = samconfBackendOps[idx];
     }
-    return NULL;
+    return backend;
 }
 
 NOINLINE samconfConfigStatusE_t samconfLookupBackend(const char *location, samconfConfigBackend_t **backend) {
     samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
-    bool isSupported;
+    bool isSupported = false;
+    const samconfConfigBackendOps_t *backendOps = NULL;
 
-    const samconfConfigBackendOps_t *backendOps = samconfGetBackendOps(0);
-    for (size_t i = 0; backendOps != NULL; backendOps = samconfGetBackendOps(++i)) {
+    for (samconfBackendOptions_t idx = BACKEND_JSON; idx < BACKEND_COUNT; ++idx) {
+        backendOps = samconfGetBackendOps(idx);
         if (backendOps->supports(location, &isSupported) == SAMCONF_CONFIG_OK && isSupported) {
-            status = samconfConfigBackendNew(backend, samconfGetBackendOps(i));
+            status = samconfConfigBackendNew(backend, backendOps);
             break;
         }
     }

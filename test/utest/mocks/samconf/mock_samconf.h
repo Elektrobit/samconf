@@ -18,7 +18,7 @@
 #include "samconf/samconf.h"
 #include "samconf/uri.h"
 
-MOCK_FUNC_PROTOTYPE(samconfGetBackendOps, const samconfConfigBackendOps_t *, size_t idx)
+MOCK_FUNC_PROTOTYPE(samconfGetBackendOps, const samconfConfigBackendOps_t *, samconfBackendOptions_t idx)
 MOCK_FUNC_PROTOTYPE(samconfLookupBackend, samconfConfigStatusE_t, const char *location,
                     samconfConfigBackend_t **backend)
 MOCK_FUNC_PROTOTYPE(samconfVerifySignature, samconfConfigStatusE_t, const char *location)

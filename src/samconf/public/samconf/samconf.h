@@ -5,7 +5,7 @@
 
 __BEGIN_DECLS
 
-const struct samconfConfigBackendOps *samconfGetBackendOps(size_t idx);
+const struct samconfConfigBackendOps *samconfGetBackendOps(samconfBackendOptions_t idx);
 samconfConfigStatusE_t samconfLookupBackend(const char *location, struct samconfConfigBackend **backend);
 samconfConfigStatusE_t samconfVerifySignature(const char *location);
 samconfConfigStatusE_t samconfLoad(const char *location, bool enforceSignature, samconfConfig_t **const config);

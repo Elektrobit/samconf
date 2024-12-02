@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+add_compile_definitions(SAFU_LOG="LOG")
 add_executable(
   samprobe
   samprobe.c

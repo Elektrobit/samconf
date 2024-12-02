@@ -153,28 +153,8 @@ smoketest_compile_program_using_libsamconf_test_utils() {
     mkdir -p "${RESULT_DIR}"
 
     echo "Try to compile simple program using libsamconf_test_utils"
-    TEST_C_PROG='
-#include <samconf/test_utils.h>
-#include <samconf/samconf.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-int main(int argc, char *argv[]) {
-
-  samconfConfig_t config = {0};
-  samconfUtilCreateMockConfigFromStr("{\"optionName\": 42}", false, &config);
-
-  int32_t value = 0;
-  samconfConfigGetInt32(&config, "/optionName", &value);
-
-  printf("%s is %i\n", config.children[0]->key, value);
-
-  samconfConfigDeleteMembers(&config);
-  return EXIT_SUCCESS;
-}
-'
-    echo "$TEST_C_PROG"
+    TEST_C_PROG="${SMOKETEST_DIR}/test_utils_example.c"
+    cat "$TEST_C_PROG"
 
     if run_in_source_tree; then
         BUILD_DEPS_PREFIX="${SMOKETEST_DIR}/../../build/deps"
@@ -184,10 +164,11 @@ int main(int argc, char *argv[]) {
     # shellcheck disable=SC2086
     # reasoning: ${EXTRA_FLAGS} shall expand to " " separated flags
     printf '%s' "$TEST_C_PROG" \
-        | gcc -v -Wl,--no-as-needed -xc -lsamconf_test_utils -lsamconf -lsafu \
+        | gcc -v "${TEST_C_PROG}" \
+        -Wl,--no-as-needed -xc -lsamconf_test_utils -lsamconf -lsafu \
         -I "${PREFIX_PATH}/include/" -L "${PREFIX_PATH}/lib" \
         ${EXTRA_FLAGS} \
-        -o "${SMOKETEST_TMP_DIR}/testlibelos"  - \
+        -o "${SMOKETEST_TMP_DIR}/testlibelos" \
         >> "$RESULT_DIR/libsamconf_test_utils.log" 2>&1
     # shellcheck disable=SC2181
     # reasoning: commandline is to long

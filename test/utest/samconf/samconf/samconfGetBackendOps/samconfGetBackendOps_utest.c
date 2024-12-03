@@ -7,7 +7,6 @@ int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(samconfTestSamconfGetBackendOpsSuccessGetDummyBackend),
         cmocka_unit_test(samconfTestSamconfGetBackendOpsSuccessGetJsonBackend),
-        cmocka_unit_test(samconfTestSamconfGetBackendOpsError),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

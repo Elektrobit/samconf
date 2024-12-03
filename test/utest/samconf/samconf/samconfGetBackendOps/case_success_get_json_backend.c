@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "mock_samconf.h"
+#include "samconf/config_backend.h"
 #include "samconfGetBackendOps_utest.h"
 
 void samconfTestSamconfGetBackendOpsSuccessGetJsonBackend(UNUSED void **state) {
@@ -37,7 +38,7 @@ void samconfTestSamconfGetBackendOpsSuccessGetJsonBackend(UNUSED void **state) {
     will_return(samconfJsonBackendLoad, SAMCONF_CONFIG_OK);
     will_return(samconfJsonBackendClose, SAMCONF_CONFIG_OK);
 
-    opsJson = samconfGetBackendOps(0);
+    opsJson = samconfGetBackendOps(BACKEND_JSON);
 
     assert_int_equal(opsJson->supports(location, &testBool), SAMCONF_CONFIG_OK);
     assert_int_equal(opsJson->open(location, &testBackend), SAMCONF_CONFIG_OK);

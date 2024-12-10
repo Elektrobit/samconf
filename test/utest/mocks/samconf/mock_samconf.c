@@ -4,7 +4,7 @@
 
 #include <cmocka.h>
 
-MOCK_FUNC_BODY(samconfGetBackendOps, const samconfConfigBackendOps_t *, size_t idx) {
+MOCK_FUNC_BODY(samconfGetBackendOps, const samconfConfigBackendOps_t *, samconfBackendOptions_t idx) {
     if (MOCK_IS_ACTIVE(samconfGetBackendOps)) {
         check_expected(idx);
         return mock_type(const samconfConfigBackendOps_t *);

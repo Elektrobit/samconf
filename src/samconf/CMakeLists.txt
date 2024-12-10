@@ -14,6 +14,7 @@ add_library(
     private/samconf.c
     private/config_backend.c
     private/json_backend.c
+    private/dummy_backend.c
     private/env_backend.c
     private/crypto_utils.c
     private/signature.c

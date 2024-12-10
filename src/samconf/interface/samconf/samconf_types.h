@@ -9,6 +9,13 @@
 struct samconfConfigBackend;
 struct samconfConfigBackendOps;
 
+typedef enum samconfBackendOptionsE {
+    BACKEND_JSON = 0,
+    BACKEND_ENV,
+    BACKEND_DUMMY,
+    BACKEND_COUNT
+} samconfBackendOptions_t;
+
 typedef enum samconfConfigStatusE {
     SAMCONF_CONFIG_ERROR = -1,
     SAMCONF_CONFIG_OK = 0,

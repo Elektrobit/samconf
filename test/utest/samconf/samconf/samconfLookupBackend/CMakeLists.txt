@@ -6,7 +6,6 @@ create_unit_test(
     test_event_samconfLookupBackend_utest
   SOURCES
     case_success.c
-    case_error_no_loop.c
     case_error_support_fail.c
     case_error_backend_alloc.c
     samconfLookupBackend_utest.c

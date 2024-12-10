@@ -36,15 +36,14 @@ void samconfTestSamconfLookupBackendErrorSupportFail(UNUSED void **state) {
 
     // Test fail on error return
     // HINT: Some optimization seems to reduce the calls to 1
-    expect_value(samconfGetBackendOps, idx, 0);
-    expect_value(samconfGetBackendOps, idx, 1);
-    expect_value(samconfGetBackendOps, idx, 2);
+    expect_value(samconfGetBackendOps, idx, BACKEND_JSON);
+    expect_value(samconfGetBackendOps, idx, BACKEND_ENV);
+    expect_value(samconfGetBackendOps, idx, BACKEND_DUMMY);
 
-    will_return_count(samconfGetBackendOps, &samconfDummyOps, 2);
-    will_return(samconfGetBackendOps, NULL);
+    will_return_count(samconfGetBackendOps, &samconfDummyOps, BACKEND_COUNT);
 
     status = samconfLookupBackend(location, &backendPtr);
-    assert_int_equal(samconfSupportsDummyCounter, 2);
+    assert_int_equal(samconfSupportsDummyCounter, BACKEND_COUNT);
     assert_int_equal(status, SAMCONF_CONFIG_ERROR);
 
     // Reset callback counter
@@ -53,15 +52,14 @@ void samconfTestSamconfLookupBackendErrorSupportFail(UNUSED void **state) {
     // Test fail on supports false
     samconfDummyOps.supports = samconfSupportsDummyFalse;
 
-    expect_value(samconfGetBackendOps, idx, 0);
-    expect_value(samconfGetBackendOps, idx, 1);
-    expect_value(samconfGetBackendOps, idx, 2);
+    expect_value(samconfGetBackendOps, idx, BACKEND_JSON);
+    expect_value(samconfGetBackendOps, idx, BACKEND_ENV);
+    expect_value(samconfGetBackendOps, idx, BACKEND_DUMMY);
 
-    will_return_count(samconfGetBackendOps, &samconfDummyOps, 2);
-    will_return(samconfGetBackendOps, NULL);
+    will_return_count(samconfGetBackendOps, &samconfDummyOps, BACKEND_COUNT);
 
     status = samconfLookupBackend(location, &backendPtr);
-    assert_int_equal(samconfSupportsDummyCounter, 2);
+    assert_int_equal(samconfSupportsDummyCounter, BACKEND_COUNT);
     assert_int_equal(status, SAMCONF_CONFIG_ERROR);
 
     MOCK_FUNC_DISABLE(samconfGetBackendOps);

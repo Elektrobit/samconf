@@ -21,6 +21,6 @@ sed -i "s,^set(SAMCONF_VERSION .*\$,set(SAMCONF_VERSION ${VERSION})," "${INPUTFI
 
 git add -p
 
-git commit -m "elos: Update to ${VERSION}" 
+git commit -m "Update to ${VERSION}"
 echo "New version:"
 git show

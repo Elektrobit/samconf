@@ -173,6 +173,8 @@ publish-kpis:
     - build-docker-image
     - build-release
     - code-coverage
+  variables:
+    BRANCH_NAME: $CI_COMMIT_REF_NAME
   script:
     - ci/publish_kpis.sh
 

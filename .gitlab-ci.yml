@@ -142,6 +142,7 @@ code-lint:
     - build-release
     - build-dependencies
   script:
+    - . ci/ignored_sources.sh
     - ci/code_lint.py --ci
     - ci/checklicense.sh
   artifacts:

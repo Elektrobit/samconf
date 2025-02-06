@@ -39,7 +39,7 @@ jobs:
           libssl-dev \
           locales \
           net-tools \
-          netcat \
+          netcat-openbsd \
           ninja-build \
           nodejs \
           pandoc \

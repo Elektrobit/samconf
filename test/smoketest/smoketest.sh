@@ -25,8 +25,6 @@ smoketest_simple_config() {
         error_exit "samprobe failed"
     fi
 
-    printf "Signature file %s/config.json.sig does not exist.\n\n" "${SMOKETEST_DIR}" \
-        > "${RESULT_DIR}/simple_config_nosign_output.txt"
     cat "${SMOKETEST_DIR}/simple_config_output.txt" \
         >> "${RESULT_DIR}/simple_config_nosign_output.txt"
     

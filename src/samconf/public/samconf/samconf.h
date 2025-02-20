@@ -29,11 +29,10 @@ int samconfInitConfig();
  * Create a path to the config, upto the top most parent.
  *
  * Parameters:
- *     config(samconfConfig_t *): config from which path is to be created.
- *     path (const char*):  path from root parent to given config
+ *     config : config from which path is to be created.
+ *     path : path from root parent to given config
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -44,11 +43,10 @@ samconfConfigStatusE_t samconfGetParentPath(const samconfConfig_t *config, const
  * the last node in the path
  *
  * Parameters:
- *     root (samconfConfig_t *): config to which value is to be set.
- *     value (const char*):  value to be set. It can be uint64_t, bool, double or string
+ *     root : config to which value is to be set.
+ *     value : value to be set. It can be uint64_t, bool, double or string
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -132,12 +130,11 @@ double samconfConfigGetRealOr(const samconfConfig_t *root, const char *path, dou
  * to the exiting node.
  *
  * Parameters:
- *     root (samconfConfig_t *): root config to which further nodes from path a added.
- *     path (const char*):  path followed to create the config
- *     config (samconfConfig_t *):  config to be added as new node or copied to an existing node
+ *     root : root config to which further nodes from path are added.
+ *     path : path followed to create the config
+ *     config : config to be added as new node or copied to an existing node
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -148,12 +145,11 @@ samconfConfigStatusE_t samconfInsertAt(samconfConfig_t **root, const char *path,
  * The struct is then inserted at the given path.
  *
  * Parameters:
- *     root (samconfConfig_t *): root config to which further nodes from path a added.
- *     path (const char*):  path followed to create the config
- *     value (int64_t): integer value of to be set to config
+ *     root : root config to which further nodes from path a added.
+ *     path : path followed to create the config
+ *     value : integer value of to be set to config
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -164,12 +160,11 @@ samconfConfigStatusE_t samconfCreateIntAt(samconfConfig_t **root, const char *pa
  * and inserts it in the path.
  *
  * Parameters:
- *     root (samconfConfig_t *): root config to which further nodes from path a added.
- *     path (const char*):  path followed to create the config
- *     value (double): double value of to be set to config
+ *     root : root config to which further nodes from path a added.
+ *     path : path followed to create the config
+ *     value : double value of to be set to config
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -180,12 +175,11 @@ samconfConfigStatusE_t samconfCreateRealAt(samconfConfig_t **root, const char *p
  * and inserts it in the path.
  *
  * Parameters:
- *     root (samconfConfig_t *): root config to which further nodes from path a added.
- *     path (const char*):  path followed to create the config
- *     value (bool): boolean value of to be set to config
+ *     root : root config to which further nodes from path a added.
+ *     path : path followed to create the config
+ *     value : boolean value of to be set to config
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -203,12 +197,11 @@ samconfConfigStatusE_t samconfCreateBoolAt(samconfConfig_t **root, const char *p
  * The extracted type and value is set to the config accordingly
  *
  * Parameters:
- *     root (samconfConfig_t *): root config to which further nodes from path a added.
- *     path (const char*):  path followed to create the config
- *     value (char*): string to be converted into appropriate value
+ *     root : root config to which further nodes from path a added.
+ *     path : path followed to create the config
+ *     value : string to be converted into appropriate value
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -219,12 +212,11 @@ samconfConfigStatusE_t samconfCreateFromStringAt(samconfConfig_t **root, const c
  * and inserts it in the path.
  *
  * Parameters:
- *     root (samconfConfig_t *): root config to which further nodes from path a added.
- *     path (const char*):  path followed to create the config
- *     value (const char*): string value of to be set to config
+ *     root : root config to which further nodes from path a added.
+ *     path :  path followed to create the config
+ *     value : string value of to be set to config
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -235,12 +227,15 @@ samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char 
  * double, boolean or string.
  *
  * Parameters:
- *     root (samconfConfig_t *): root config to which further nodes from path a added.
- *     path (const char*):  path followed to create the config
- *     value : value of to be set to config of type int64_t, double, bool, const char*
+ *     root : root config to which further nodes from path a added.
+ *     path :  path followed to create the config
+ *     value : value of to be set to config of type int64_t, double, bool, char*, const char*
+ *
+ * Note:
+ *     When value is of type char* , it means, it is the string representation of the value
+ *     and the value can be any of the other supported types given above.
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
@@ -262,11 +257,10 @@ samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char 
  * Copies the type and value from the `from` config to the `to` config
  *
  * Parameters:
- *     from (samconfConfig_t *):  config from which value and type are copied
- *     to (samconfConfig_t *):  config to which value and type are copied to.
+ *     from : config from which value and type are copied
+ *     to : config to which value and type are copied to.
  *
  * Returns:
- *     samconfConfigStatusE_t:
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/

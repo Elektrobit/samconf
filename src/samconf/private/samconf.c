@@ -3,7 +3,10 @@
 
 #include <libgen.h>
 #include <safu/common.h>
+#include <safu/defines.h>
 #include <safu/log.h>
+#include <samconf/samconf_types.h>
+#include <stdio.h>
 #include <string.h>
 #include <strings.h>
 #include <sys/types.h>
@@ -13,6 +16,7 @@
 #include "samconf/dummy_backend.h"
 #include "samconf/env_backend.h"
 #include "samconf/json_backend.h"
+#include "samconf/path_helper.h"
 #include "samconf/signature.h"
 
 static const samconfConfigBackendOps_t *const samconfBackendOps[BACKEND_COUNT] = {
@@ -537,189 +541,132 @@ samconfConfigStatusE_t samconfCopyConfigValue(samconfConfig_t *from, samconfConf
     return result;
 }
 
-static void _get_path_to_token(char **pathToToken, char *token) {
-    size_t tokenLen = strlen(token);
-
-    if (*pathToToken == NULL) {
-        *pathToToken = strdup(token);
-    } else {
-        size_t pathLen = strlen(*pathToToken);
-        size_t newPathLen = pathLen + tokenLen + 2;
-        char *newPath = safuAllocMem(NULL, newPathLen);
-
-        snprintf(newPath, newPathLen, "%s/%s", *pathToToken, token);
-        free(*pathToToken);
-        *pathToToken = newPath;
-    }
-}
-
 samconfConfigStatusE_t samconfInsertAt(samconfConfig_t **root, const char *path, samconfConfig_t *config) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
-    char *pathCopy = NULL;
-    char *freePath = NULL;
-    char *lastConfig = NULL;
+    char **patharray = NULL;
     char *pathToToken = NULL;
+    int segmentCount = 0;
     samconfConfig_t *node = NULL;
     samconfConfig_t *parent = NULL;
     const samconfConfig_t *existingNode = NULL;
 
     if (root == NULL || path == NULL || config == NULL) {
         result = SAMCONF_CONFIG_ERROR;
-    } else {
-        freePath = pathCopy = strdup(path);
+    }
 
-        if (pathCopy == NULL || freePath == NULL) {
+    if (result == SAMCONF_CONFIG_OK) {
+        result = samconfPathCreateArray(path, &patharray, &segmentCount);
+        if (patharray == NULL || segmentCount == 0) {
             result = SAMCONF_CONFIG_ERROR;
-        } else {
-            if (pathCopy[0] == '\0') {
-                result = SAMCONF_CONFIG_NOT_FOUND;
-            } else {
-                if (pathCopy[0] == '/') {
-                    if (strlen(pathCopy) == 1) {
-                        result = SAMCONF_CONFIG_NOT_FOUND;
-                    } else {
-                        ++pathCopy;
-                    }
-                }
-            }
         }
 
         if (result == SAMCONF_CONFIG_OK) {
-            lastConfig = basename(pathCopy);
-            char *token = strsep(&pathCopy, "/");
             parent = *root;
-
-            while (token) {
-                _get_path_to_token(&pathToToken, token);
-                if (pathToToken != NULL) {
+            for (int i = 0; i < segmentCount; i++) {
+                result = samconfPathGetPathUntil(patharray, i, &pathToToken);
+                if (result == SAMCONF_CONFIG_OK) {
                     result = samconfConfigGet(*root, pathToToken, &existingNode);
                     if (result == SAMCONF_CONFIG_OK) {
-                        parent = (samconfConfig_t *)existingNode;
-                        if (strcasecmp(pathToToken, token) == 0) {
-                            if (token == lastConfig) {
-                                safuLogErrF("cannot insert node : %s, already exists", config->key);
-                                samconfConfigDelete(config);
-                                break;
-                            }
+                        if (i == segmentCount - 1) {
+                            safuLogErrF("cannot insert node : %s, already exists", patharray[i]);
+                            free(pathToToken);
+                            break;
+                        } else {
+                            parent = (samconfConfig_t *)existingNode;
                         }
+                    } else if (result == SAMCONF_CONFIG_ERROR) {
+                        safuLogErrF("error getting node : %s", patharray[i]);
+                        free(pathToToken);
+                        break;
                     } else {
-                        if (token == lastConfig) {
-                            result = samconfConfigAdd(parent, config);
-                            if (result != SAMCONF_CONFIG_OK) {
-                                safuLogErrF("samconfConfigAdd failed to add node : %s", config->key);
-                                samconfConfigDelete(config);
-                                break;
-                            }
+                        if (i == segmentCount - 1) {
+                            node = config;
                         } else {
                             result = samconfConfigNew(&node);
                             if (result != SAMCONF_CONFIG_OK) {
                                 safuLogErr("samconfConfigNew failed");
+                                free(pathToToken);
                                 break;
                             }
-                            node->key = strdup(token);
+                            node->key = strdup(patharray[i]);
                             node->type = SAMCONF_CONFIG_VALUE_OBJECT;
-                            result = samconfConfigAdd(parent, node);
-                            if (result != SAMCONF_CONFIG_OK) {
-                                safuLogErrF("samconfConfigAdd failed to add node : %s", node->key);
-                                samconfConfigDelete(node);
-                                break;
-                            }
-                            parent = node;
                         }
+                        result = samconfConfigAdd(parent, node);
+                        if (result != SAMCONF_CONFIG_OK) {
+                            safuLogErrF("samconfConfigAdd failed to add node : %s", config->key);
+                            samconfConfigDelete(config);
+                            free(pathToToken);
+                            break;
+                        }
+                        parent = node;
                     }
+                    free(pathToToken);
                 }
-                token = strsep(&pathCopy, "/");
             }
-            free(pathToToken);
+            samconfPathDeleteArray(patharray, segmentCount);
         }
-        free(freePath);
     }
 
     return result;
 }
 
 samconfConfigStatusE_t samconfConfigGet(const samconfConfig_t *root, const char *path, const samconfConfig_t **result) {
+    samconfConfigStatusE_t status = SAMCONF_CONFIG_OK;
+    char **patharray = NULL;
+    int segmentCount = 0;
     size_t childItr = 0;
     size_t childCount = 0;
 
     if (!root || !path || !result) {
-        return SAMCONF_CONFIG_ERROR;
-    }
-    if (!root->children) {
-        return SAMCONF_CONFIG_NOT_FOUND;
-    }
-    const samconfConfig_t *node = *(root->children);
-    const samconfConfig_t *parent = root;
-    childCount = root->childCount;
-
-    char *pathCopy, *freePath, *lastConfig;
-
-    // Two Pointers are needed  at start of string
-    // to free them later.
-    //
-    freePath = pathCopy = strdup(path);
-
-    if (!pathCopy || !freePath) {
-        return SAMCONF_CONFIG_ERROR;
-    }
-
-    if (pathCopy[0] == '\0') {
-        free(freePath);
-        return SAMCONF_CONFIG_NOT_FOUND;
-    }
-
-    if (pathCopy[0] == '/') {
-        if (strlen(pathCopy) == 1) {
-            free(freePath);
-            return SAMCONF_CONFIG_NOT_FOUND;
-        } else {
-            ++pathCopy;
-        }
-    }
-
-    if (pathCopy[strlen(pathCopy) - 1] == '/') {
-        pathCopy[strlen(pathCopy) - 1] = '\0';
-    }
-
-    lastConfig = strrchr(pathCopy, '/');
-    if (lastConfig) {
-        ++lastConfig;
+        status = SAMCONF_CONFIG_ERROR;
+    } else if (!root->children || root->childCount == 0) {
+        status = SAMCONF_CONFIG_NOT_FOUND;
     } else {
-        lastConfig = pathCopy;
-    }
+        const samconfConfig_t *node = *(root->children);
+        const samconfConfig_t *parent = root;
+        childCount = root->childCount;
+        status = samconfPathCreateArray(path, &patharray, &segmentCount);
+        if (status == SAMCONF_CONFIG_OK) {
+            for (int i = 0; i < segmentCount; i++) {
+                for (childItr = 0; childItr < childCount; childItr++) {
+                    if (parent->children) {
+                        node = parent->children[childItr];
+                        if (strcmp(node->key, patharray[i]) == 0) {
+                            if (i == segmentCount - 1) {
+                                *result = node;
+                                status = SAMCONF_CONFIG_OK;
+                                break;
+                            } else if (node->children) {
+                                childItr = 0;
+                                childCount = node->childCount;
+                                parent = node;
+                                break;
+                            } else {
+                                if (i == segmentCount - 1) {
+                                    status = SAMCONF_CONFIG_NOT_FOUND;
+                                    break;
+                                } else {
+                                    parent = node;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        status = SAMCONF_CONFIG_NOT_FOUND;
+                        break;
+                    }
+                }
 
-    char *token = strsep(&pathCopy, "/");
-
-    while (token) {
-        for (childItr = 0; childItr < childCount; childItr++) {
-            node = parent->children[childItr];
-            if (strcmp(node->key, token) == 0) {
-                if (token == lastConfig) {
-                    *result = node;
-                    free(freePath);
-                    return SAMCONF_CONFIG_OK;
-                } else if (node->children) {
-                    childItr = 0;
-                    childCount = node->childCount;
-                    parent = node;
+                if ((childCount != 0) && (childItr == childCount)) {
+                    status = SAMCONF_CONFIG_NOT_FOUND;
                     break;
-                } else {
-                    free(freePath);
-                    return SAMCONF_CONFIG_NOT_FOUND;
                 }
             }
+            samconfPathDeleteArray(patharray, segmentCount);
         }
-
-        if ((childCount != 0) && (childItr == childCount)) {
-            free(freePath);
-            return SAMCONF_CONFIG_NOT_FOUND;
-        }
-
-        token = strsep(&pathCopy, "/");
     }
 
-    free(freePath);
-    return SAMCONF_CONFIG_NOT_FOUND;
+    return status;
 }
 
 samconfConfigStatusE_t samconfConfigGetString(const samconfConfig_t *root, const char *path, const char **result) {

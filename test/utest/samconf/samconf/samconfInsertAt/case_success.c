@@ -17,7 +17,7 @@ void samconfTestSamconfInsertAtSuccess(UNUSED void **state) {
     samconfConfig_t *testinsertnode = NULL;
     const samconfConfig_t *testgetnode = NULL;
     samconfConfigStatusE_t result;
-    const char *testPath = "utest/insert/node";
+    const char *testPath = "utest/utest/variable/node";
     const char *nodePath = NULL;
 
     TEST("samconfInsertAt");
@@ -37,7 +37,7 @@ void samconfTestSamconfInsertAtSuccess(UNUSED void **state) {
     result = samconfInsertAt(&testConfig, testPath, testinsertnode);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
 
-    result = samconfConfigGet(testConfig, "utest/insert/node", &testgetnode);
+    result = samconfConfigGet(testConfig, "utest/utest/variable/node", &testgetnode);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
 
     assert_string_equal(testgetnode->key, "node");
@@ -46,7 +46,7 @@ void samconfTestSamconfInsertAtSuccess(UNUSED void **state) {
 
     result = samconfGetParentPath(testgetnode, &nodePath);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
-    assert_string_equal(nodePath, "root/utest/insert/node");
+    assert_string_equal(nodePath, "root/utest/utest/variable/node");
 
     result = samconfConfigDelete(testConfig);
     assert_int_equal(result, SAMCONF_CONFIG_OK);

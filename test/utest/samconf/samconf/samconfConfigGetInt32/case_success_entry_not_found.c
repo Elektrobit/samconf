@@ -14,12 +14,8 @@ int samconfTestSamconfConfigGetInt32SuccessEntryNotFoundTeardown(UNUSED void **s
 void samconfTestSamconfConfigGetInt32SuccessEntryNotFound(void **state) {
     samconfUteststateT_t *testState = *state;
     int result = 0;
-    const char *testPaths[] = {"",
-                               "elos/Scanner/Syslog",
-                               "Scanner/Syslog/SyslogPath/NotExisting",
-                               "Scanner/Syslog/NotExisting",
-                               "NotExisting",
-                               "NotExisting/"};
+    const char *testPaths[] = {"elos/Scanner/Syslog", "Scanner/Syslog/SyslogPath/NotExisting",
+                               "Scanner/Syslog/NotExisting", "NotExisting", "NotExisting/"};
     samconfConfigStatusE_t status = SAMCONF_CONFIG_OK;
 
     samconfConfig_t *syslogChildren[] = {

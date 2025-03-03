@@ -37,7 +37,3 @@ endif(ENABLE_LOGGING)
 
 add_subdirectory(src)
 add_subdirectory(test/utest)
-
-if(PACKAGING)
-  include(cmake/Packing.cmake)
-endif(PACKAGING)

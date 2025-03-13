@@ -1,3 +1,9 @@
+samconf (0.61.2-1) unstable; urgency=medium
+
+  * New upstream tag 0.61.2
+
+ -- Isaac True <isaac.true@emlix.com>  Thu, 13 Mar 2025 16:31:09 +0000
+
 samconf (0.61.0-1) unstable; urgency=medium
 
   * New upstream tag 0.61.0

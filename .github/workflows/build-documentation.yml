@@ -88,7 +88,7 @@ jobs:
         run: |
           tar \
           --dereference --hard-dereference \
-          --directory "${{ github.workspace }}/build/Release/doc/" \
+          --directory "${{ github.workspace }}/build/Release/doc/html" \
           -cvf "$RUNNER_TEMP/artifact.tar" \
           .
       - name: save documentation

@@ -23,7 +23,7 @@ void samconfTestSamconfGetParentPathErrParamPath(UNUSED void **state) {
     samconfConfigStatusE_t result;
     samconfConfig_t *testroot = NULL;
     const samconfConfig_t *testconfig = NULL;
-    const char *correctpath = "root/UTEST/VARIABLE/REAL";
+    const char *correctpath = "UTEST/VARIABLE/REAL";
     const char *testlocation = "env://?envPrefix=UTEST_VARIABLE&testVar=Check";
 
     TEST("samconfGetParentPath");

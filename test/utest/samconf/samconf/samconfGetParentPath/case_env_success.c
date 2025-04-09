@@ -38,17 +38,17 @@ void samconfTestSamconfGetParentPathEnvSuccess(void **state) {
     samconfConfigStatusE_t result;
     const samconfConfig_t *testconfig = NULL;
     const char *testpath = NULL;
-    const char *correctpath = "root/UTEST/VARIABLE/REAL";
+    const char *conflocation = "UTEST/VARIABLE/REAL";
 
     TEST("samconfGetParentPath");
     SHOULD("%s", "returns expected path to given env config");
 
-    result = samconfConfigGet(testroot, correctpath, &testconfig);
+    result = samconfConfigGet(testroot, conflocation, &testconfig);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
 
     result = samconfGetParentPath(testconfig, &testpath);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
-    assert_string_equal(testpath, correctpath);
+    assert_string_equal(testpath, "root/UTEST/VARIABLE/REAL");
 
     free((char *)testpath);
 }

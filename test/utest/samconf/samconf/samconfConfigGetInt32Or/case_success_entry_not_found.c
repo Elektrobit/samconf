@@ -14,13 +14,9 @@ int samconfTestSamconfConfigGetInt32OrSuccessEntryNotFoundTeardown(UNUSED void *
 void samconfTestSamconfConfigGetInt32OrSuccessEntryNotFound(void **state) {
     samconfConfig_t *testConfig = *state;
     int32_t result;
-    int32_t defaultValues[] = {0, -12, INT32_MAX, INT32_MIN, 42};
-    const char *testPaths[] = {"",
-                               "elos/Scanner/SysLongLong",
-                               "Scanner/Syslog/SyslogPath/NotExisting",
-                               "Scanner/Syslog/NotExisting",
-                               "NotExisting",
-                               "NotExisting/"};
+    int32_t defaultValues[] = {-12, INT32_MAX, INT32_MIN, 42};
+    const char *testPaths[] = {"elos/Scanner/SysLongLong", "Scanner/Syslog/SyslogPath/NotExisting",
+                               "Scanner/Syslog/NotExisting", "NotExisting", "NotExisting/"};
 
     TEST("samconfConfigGetInt32Or");
     SHOULD("%s", "return the providet default value since target entry specified in path does not exist");

@@ -9,6 +9,5 @@ create_unit_test(
     case_json_success.c
     samconfGetParentPath_utest.c
   LIBRARIES
-    samconf_weak
     samconf_test_utils
 )

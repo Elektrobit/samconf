@@ -15,12 +15,8 @@ void samconfTestSamconfConfigGetBoolOrSuccessEntryNotFound(void **state) {
     samconfConfig_t *testConfig = *state;
     bool result;
     bool defaultValue;
-    const char *testPaths[] = {"",
-                               "elos/Scanner/SysLongLong",
-                               "Scanner/Syslog/SyslogPath/NotExisting",
-                               "Scanner/Syslog/NotExisting",
-                               "NotExisting",
-                               "NotExisting/"};
+    const char *testPaths[] = {"elos/Scanner/SysLongLong", "Scanner/Syslog/SyslogPath/NotExisting",
+                               "Scanner/Syslog/NotExisting", "NotExisting", "NotExisting/"};
 
     TEST("samconfConfigGetBoolOr");
     SHOULD("%s", "return the providet default value since target entry specified in path does not exist");

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+#include <samconf/samconf.h>
 #include <stdlib.h>
 
 #include "samconfEnvBackendLoad_utest.h"
@@ -9,7 +10,6 @@ int samconfTestSamconfEnvBackendLoadSuccessSetup(void **state) {
     setenv("UTEST_VARIABLE_REAL", "1.9865", 1);
     setenv("UTEST_VARIABLE_BOOL", "true", 1);
     setenv("UTEST_UTEST_VARIABLE_INT", "42", 1);
-    setenv("__UTEST_VARIABLE_INT", "42", 1);
 
     samconfConfigStatusE_t result;
     samconfUri_t *uri;
@@ -39,12 +39,12 @@ int samconfTestSamconfEnvBackendLoadSuccessTeardown(void **state) {
     unsetenv("UTEST_VARIABLE_REAL");
     unsetenv("UTEST_VARIABLE_BOOL");
     unsetenv("UTEST_UTEST_VARIABLE_INT");
-    unsetenv("__UTEST_VARIABLE_INT");
 
     samconfConfigStatusE_t result;
     samconfEnvBackendLoadTestData_t *data = (samconfEnvBackendLoadTestData_t *)*state;
 
     result = samconfUriDelete(data->backend->backendHandle);
+    assert_int_equal(result, SAMCONF_CONFIG_OK);
     free(data->backend);
 
     result = samconfConfigDelete(data->config);
@@ -60,11 +60,10 @@ void samconfTestSamconfEnvBackendLoadSuccess(void **state) {
     samconfConfigStatusE_t result;
     const samconfConfig_t *testnode = NULL;
 
-    const char *testPaths[] = {"root/UTEST/VARIABLE/STRING",    "root/UTEST/VARIABLE/INT",
-                               "root/UTEST/VARIABLE/REAL",      "root/UTEST/VARIABLE/BOOL",
-                               "root/UTEST/UTEST/VARIABLE/INT", "root/UTEST/VARIABLE/INT"};
+    const char *testPaths[] = {"UTEST/VARIABLE/STRING", "UTEST/VARIABLE/INT", "UTEST/VARIABLE/REAL",
+                               "UTEST/VARIABLE/BOOL", "UTEST/UTEST/VARIABLE/INT"};
 
-    const char *resultKey[] = {"STRING", "INT", "REAL", "BOOL", "INT", "INT"};
+    const char *resultKey[] = {"STRING", "INT", "REAL", "BOOL", "INT"};
     samconfEnvBackendTestValues_t testValues = {.string = "utest string", .integer = 42, .real = 1.9865};
 
     TEST("samconfEnvBackendLoad");

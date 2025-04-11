@@ -17,6 +17,7 @@ add_library(
     private/dummy_backend.c
     private/env_backend.c
     private/crypto_utils.c
+    private/path_helper.c
     private/signature.c
     private/uri.c
 )

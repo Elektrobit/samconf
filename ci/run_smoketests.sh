@@ -33,6 +33,7 @@ run_test error_signed_config
 run_test sign_config
 run_test genkeys
 run_test compile_program_using_libsamconf_test_utils
+run_test compile_program_using_libmock_samconf
 
 echo "################################################################################"
 echo "# Summary"

@@ -177,6 +177,36 @@ smoketest_compile_program_using_libsamconf_test_utils() {
     exit 0
 }
 
+smoketest_compile_program_using_libmock_samconf() {
+    RESULT_DIR="$SMOKETEST_RESULT_DIR/compile_program_using_libmock_samconf"
+    rm -rvf "${RESULT_DIR}"
+    mkdir -p "${RESULT_DIR}"
+
+    echo "Try to compile simple program using libmock_samconf"
+
+    if run_in_source_tree; then
+        BUILD_DEPS_PREFIX="${SMOKETEST_DIR}/../../build/deps"
+        EXTRA_FLAGS="-I ${BUILD_DEPS_PREFIX}/include/ -L ${BUILD_DEPS_PREFIX}/lib"
+    fi
+
+    # shellcheck disable=SC2086
+    # reasoning: ${EXTRA_FLAGS} shall expand to " " separated flags
+    printf '#include <samconf/mock_samconf.h>\n int main(int argc, char* argv[]){return argc;}\n' | \
+        gcc -v -xc \
+        -Wl,--no-as-needed -lmock_samconf -lsamconf -lsafu \
+        -I "${PREFIX_PATH}/include/" -L "${PREFIX_PATH}/lib" \
+        ${EXTRA_FLAGS} \
+        -o "${SMOKETEST_TMP_DIR}/testlibmock_samconf" - \
+        >> "$RESULT_DIR/libmock_samconf.log" 2>&1
+    # shellcheck disable=SC2181
+    # reasoning: commandline is to long
+    if [ $? -ne 0 ]; then
+        error_exit "failed to compile test program for libmock_samconf"
+    fi
+    echo "Finished smoketest."
+    exit 0
+}
+
 print_help() {
     echo
     echo "Usage: $0 <simple_config|sign_config|help> <Debug|Release>"
@@ -213,6 +243,9 @@ case $1 in
         ;;
     compile_program_using_libsamconf_test_utils)
         smoketest_compile_program_using_libsamconf_test_utils
+        ;;
+    compile_program_using_libmock_samconf)
+        smoketest_compile_program_using_libmock_samconf
         ;;
     help)
         print_help

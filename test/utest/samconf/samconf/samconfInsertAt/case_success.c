@@ -44,7 +44,7 @@ void samconfTestSamconfInsertAtSuccess(UNUSED void **state) {
     assert_int_equal(testgetnode->type, SAMCONF_CONFIG_VALUE_INT);
     assert_int_equal(testgetnode->value.integer, 42);
 
-    result = samconfGetParentPath(testgetnode, &nodePath);
+    result = samconfPathGetPath(testgetnode, &nodePath);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
     assert_string_equal(nodePath, "root/utest/utest/variable/node");
 

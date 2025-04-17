@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <cmocka_extensions/cmocka_extensions.h>
 #include <cmocka_extensions/mock_extensions.h>
-
-#include "samconf_utest.h"
+#include <samconf/path_helper.h>
+#include <samconf/samconf.h>
 
 #define _TEST_CONFIG \
     "{\
@@ -42,8 +43,7 @@
             }\
         }\
     }"
-
-TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfGetParentPathEnvSuccess)
-TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfGetParentPathJsonSuccess)
-TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfGetParentPathErrParamConfig)
-TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfGetParentPathErrParamPath)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfPathGetPathEnvSuccess)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfPathGetPathJsonSuccess)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfPathGetPathErrParamConfig)
+TEST_CASE_FUNC_PROTOTYPES(samconfTestSamconfPathGetPathErrParamPath)

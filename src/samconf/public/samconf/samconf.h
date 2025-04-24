@@ -278,7 +278,7 @@ samconfConfigStatusE_t samconfConfigCopyConfig(const samconfConfig_t *from, samc
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
-samconfConfigStatusE_t samconfMergeConfig(samconfConfig_t *mergedConfig, samconfConfig_t *configToMerge);
+samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, samconfConfig_t *configToMerge);
 
 /*******************************************************************
  * Iterator function to get next config in level order from given

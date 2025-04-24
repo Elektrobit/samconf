@@ -6,6 +6,7 @@
 #include <safu/defines.h>
 #include <safu/log.h>
 #include <samconf/samconf_types.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -445,6 +446,42 @@ samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samco
     return result;
 }
 
+samconfConfigStatusE_t _findNextConfigAtLevel(const samconfConfig_t *root, const samconfConfig_t *configToFind, int *found,
+                            const samconfConfig_t **nextConfig) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_NOT_FOUND;
+    if (root == NULL || *nextConfig) {
+        result = SAMCONF_CONFIG_ERROR;
+    }
+
+    if (result == SAMCONF_CONFIG_NOT_FOUND) {
+        if (*found && *nextConfig == NULL) {
+            *nextConfig = root;
+            result = SAMCONF_CONFIG_OK;
+        } else if (root == configToFind) {
+            *found = 1;
+        }
+        if (result == SAMCONF_CONFIG_NOT_FOUND) {
+            if (root->children != NULL && root->childCount != 0) {
+                for (size_t i = 0; i < root->childCount; i++) {
+                    result = _findNextConfigAtLevel(root->children[i], configToFind, found, nextConfig);
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+samconfConfigStatusE_t samconfConfigNext(const samconfConfig_t *root, const samconfConfig_t *configToFind,
+                                         const samconfConfig_t **nextConfig) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    int found = 0;
+    if (root != NULL && configToFind != NULL) {
+        result = _findNextConfigAtLevel(root, configToFind, &found, nextConfig);
+    }
+    return result;
+}
+
 samconfConfigStatusE_t samconfInsertAt(samconfConfig_t **root, const char *path, samconfConfig_t *config) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_OK;
     char **patharray = NULL;
@@ -576,7 +613,6 @@ samconfConfigStatusE_t samconfConfigGet(const samconfConfig_t *root, const char 
 samconfConfigStatusE_t samconfMergeConfig(samconfConfig_t *mergedConfig, samconfConfig_t *configToMerge) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
     if (mergedConfig != NULL && configToMerge != NULL) {
-
         // node = configToMerge
         // while node.childCount != 0
         // path = getpath_to_token(node->key);

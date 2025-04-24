@@ -266,4 +266,17 @@ samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samco
  ******************************************************************/
 samconfConfigStatusE_t samconfMergeConfig(samconfConfig_t *mergedConfig, samconfConfig_t *configToMerge);
 
+/*******************************************************************
+ * Iterator function to get next config in level order from given
+ * config in the config tree.
+ *
+ * Parameters:
+ *     config : config whose next config is to be retrieved.
+ *
+ * Returns:
+ *         config – on success.
+ *         NULL – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfConfigNext(const samconfConfig_t *root, const samconfConfig_t *configToFind,
+                                         const samconfConfig_t **nextConfig);
 __END_DECLS

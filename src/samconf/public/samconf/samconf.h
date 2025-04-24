@@ -281,6 +281,20 @@ samconfConfigStatusE_t samconfConfigCopyConfig(const samconfConfig_t *from, samc
 samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, samconfConfig_t *configToMerge);
 
 /*******************************************************************
+ * Merge the given configurations to the given root configuration.
+ *
+ * Parameters:
+ *     mergedConfig : base config into which new configs are merged
+ *     configsToMerge : array configs to be merged into root config
+ *     configCount : size of the configs array
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfConfigMergeConfigs(samconfConfig_t *mergedConfig, samconfConfig_t *configToMergei, size_t configCount);
+
+/*******************************************************************
  * Iterator function to get next config in level order from given
  * config in the config tree.
  *

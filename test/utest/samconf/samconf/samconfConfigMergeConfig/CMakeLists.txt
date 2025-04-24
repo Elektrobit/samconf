@@ -4,13 +4,11 @@ find_package(cmocka_mocks 0.54.2 REQUIRED)
 
 create_unit_test(
   NAME
-  test_samconf_samconfConfigMerge_utest
+  test_samconf_samconfConfigMergeConfig_utest
   SOURCES
     case_success.c
-    samconfConfigMerge_utest.c
+    samconfConfigMergeConfig_utest.c
   LIBRARIES
     samconf_static
-    safu::safu
-    cmocka_mocks::mock_libc
-    safu::mock_safu
+    samconf_test_utils
 )

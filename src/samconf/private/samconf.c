@@ -446,8 +446,30 @@ samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samco
     return result;
 }
 
-samconfConfigStatusE_t _findNextConfigAtLevel(const samconfConfig_t *root, const samconfConfig_t *configToFind, int *found,
-                            const samconfConfig_t **nextConfig) {
+samconfConfigStatusE_t samconfConfigCopyConfig(const samconfConfig_t *from, samconfConfig_t *to) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    if (from == NULL || to == NULL) {
+        safuLogErr("Invalid Parameter");
+    } else {
+        to->key = strdup(from->key);
+
+        if (to->key) {
+            to->isSigned = from->isSigned;
+            to->type = from->type;
+
+            if (to->type != SAMCONF_CONFIG_VALUE_NONE && to->type != SAMCONF_CONFIG_VALUE_ARRAY &&
+                to->type != SAMCONF_CONFIG_VALUE_OBJECT) {
+                result = samconfCopyConfigValue(from, to);
+            } else {
+                result = SAMCONF_CONFIG_OK;
+            }
+        }
+    }
+    return result;
+}
+
+samconfConfigStatusE_t _findNextConfigAtLevel(const samconfConfig_t *root, const samconfConfig_t *configToFind,
+                                              int *found, const samconfConfig_t **nextConfig) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_NOT_FOUND;
     if (root == NULL || *nextConfig) {
         result = SAMCONF_CONFIG_ERROR;

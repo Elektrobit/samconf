@@ -254,6 +254,20 @@ samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char 
 samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samconfConfig_t *to);
 
 /*******************************************************************
+ * Copy a config node to another without copying the parent and children. Non object, array, none types
+ * will have their values copied.
+ *
+ * Parameters:
+ *     from : config node to be copied
+ *     to : config node to be copied to.
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfConfigCopyConfig(const samconfConfig_t *from, samconfConfig_t *to);
+
+/*******************************************************************
  * Merge the given configuration to the given root configuration.
  *
  * Parameters:

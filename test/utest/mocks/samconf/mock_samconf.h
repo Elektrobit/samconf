@@ -84,5 +84,6 @@ MOCK_FUNC_PROTOTYPE(samconfCreateFromStringAt, samconfConfigStatusE_t, samconfCo
                     char *value)
 MOCK_FUNC_PROTOTYPE(samconfCreateStringAt, samconfConfigStatusE_t, samconfConfig_t **root, const char *path,
                     const char *value)
-MOCK_FUNC_PROTOTYPE(samconfCopyConfigValue, samconfConfigStatusE_t, samconfConfig_t *from, samconfConfig_t *to)
+MOCK_FUNC_PROTOTYPE(samconfCopyConfigValue, samconfConfigStatusE_t, const samconfConfig_t *from, samconfConfig_t *to)
+MOCK_FUNC_PROTOTYPE(samconfConfigCopyConfig, samconfConfigStatusE_t, const samconfConfig_t *from, samconfConfig_t *to)
 #endif /* __MOCK_SAMCONF_SAMCONF_H__ */

@@ -712,6 +712,20 @@ samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, 
 
     return result;
 }
+
+samconfConfigStatusE_t samconfConfigMergeConfigs(samconfConfig_t **mergedConfig, samconfConfig_t **configsToMerge,
+                                                 size_t configsCount) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+
+    for (size_t i = 0; i < configsCount; i++) {
+        result = samconfConfigMergeConfig(mergedConfig, configsToMerge[i]);
+        if (((*mergedConfig)->isSigned && configsToMerge[i]->isSigned) ||
+            (!(*mergedConfig)->isSigned && !configsToMerge[i]->isSigned) ||
+            (!(*mergedConfig)->isSigned && configsToMerge[i]->isSigned)) {
+            if (result != SAMCONF_CONFIG_OK) {
+                break;
+            }
+        }
     }
 
     return result;

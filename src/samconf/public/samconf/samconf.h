@@ -266,4 +266,17 @@ samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char 
  ******************************************************************/
 samconfConfigStatusE_t samconfCopyConfigValue(samconfConfig_t *from, samconfConfig_t *to);
 
+/*******************************************************************
+ * Merge the given configuration to the given root configuration.
+ *
+ * Parameters:
+ *     mergedConfig : base config into which new config is merged
+ *     configToMerge : config to be merged into root config
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfMergeConfig(samconfConfig_t *mergedConfig, samconfConfig_t *configToMerge);
+
 __END_DECLS

@@ -669,6 +669,21 @@ samconfConfigStatusE_t samconfConfigGet(const samconfConfig_t *root, const char 
     return status;
 }
 
+samconfConfigStatusE_t samconfMergeConfig(samconfConfig_t *mergedConfig, samconfConfig_t *configToMerge) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    if (mergedConfig != NULL && configToMerge != NULL) {
+
+        // node = configToMerge
+        // while node.childCount != 0
+        // path = getpath_to_token(node->key);
+        // samconfConfigGet(root, path, config)
+        // if Found
+        // node =
+    }
+
+    return result;
+}
+
 samconfConfigStatusE_t samconfConfigGetString(const samconfConfig_t *root, const char *path, const char **result) {
     const samconfConfig_t *node = NULL;
     samconfConfigStatusE_t status = SAMCONF_CONFIG_NOT_FOUND;

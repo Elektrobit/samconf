@@ -421,7 +421,7 @@ samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char 
     return result;
 }
 
-samconfConfigStatusE_t samconfCopyConfigValue(samconfConfig_t *from, samconfConfig_t *to) {
+samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samconfConfig_t *to) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
 
     if (from == NULL || to == NULL) {

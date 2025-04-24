@@ -251,7 +251,7 @@ samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char 
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
-samconfConfigStatusE_t samconfCopyConfigValue(samconfConfig_t *from, samconfConfig_t *to);
+samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samconfConfig_t *to);
 
 /*******************************************************************
  * Merge the given configuration to the given root configuration.

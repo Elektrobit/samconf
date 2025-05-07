@@ -7,6 +7,7 @@ create_unit_test(
   test_samconf_samconfConfigMergeConfig_utest
   SOURCES
     case_success.c
+    case_overwrite_success.c
     samconfConfigMergeConfig_utest.c
   LIBRARIES
     samconf_static

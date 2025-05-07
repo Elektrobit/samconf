@@ -438,6 +438,11 @@ samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samco
             case SAMCONF_CONFIG_VALUE_REAL:
                 result = samconfConfigSetReal(to, from->value.real);
                 break;
+            case SAMCONF_CONFIG_VALUE_NONE:
+            case SAMCONF_CONFIG_VALUE_ARRAY:
+            case SAMCONF_CONFIG_VALUE_OBJECT:
+                result = SAMCONF_CONFIG_OK;
+                break;
             default:
                 result = samconfConfigSetString(to, from->value.string);
         }
@@ -457,12 +462,7 @@ samconfConfigStatusE_t samconfConfigCopyConfig(const samconfConfig_t *from, samc
             to->isSigned = from->isSigned;
             to->type = from->type;
 
-            if (to->type != SAMCONF_CONFIG_VALUE_NONE && to->type != SAMCONF_CONFIG_VALUE_ARRAY &&
-                to->type != SAMCONF_CONFIG_VALUE_OBJECT) {
-                result = samconfCopyConfigValue(from, to);
-            } else {
-                result = SAMCONF_CONFIG_OK;
-            }
+            result = samconfCopyConfigValue(from, to);
         }
     }
     return result;
@@ -671,8 +671,8 @@ samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, 
                         break;
                     }
 
-                    const samconfConfig_t *nodeInMerge = NULL;
-                    status = samconfConfigGet(*mergedConfig, path, &nodeInMerge);
+                    samconfConfig_t *nodeInMerge = NULL;
+                    status = samconfConfigGet(*mergedConfig, path, (const samconfConfig_t **)&nodeInMerge);
                     if (status == SAMCONF_CONFIG_NOT_FOUND) {
                         status = samconfInsertAt(mergedConfig, path, node);
                         if (status != SAMCONF_CONFIG_OK) {
@@ -683,6 +683,13 @@ samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, 
                         }
                     } else if (status == SAMCONF_CONFIG_OK) {
                         safuLogInfo("Node found");
+                        status = samconfCopyConfigValue(node, nodeInMerge);
+                        if (status != SAMCONF_CONFIG_OK) {
+                            safuLogErr("Overwriting exiting node failed");
+                            result = samconfConfigDelete(node);
+                            free(path);
+                            break;
+                        }
                         status = samconfConfigDelete(node);
                     } else {
                         safuLogErr("Search error : invalid node");
@@ -770,6 +777,9 @@ samconfConfigStatusE_t samconfConfigSetString(samconfConfig_t *config, const cha
     samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
 
     if (config != NULL && stringValue != NULL) {
+        if (config->type == SAMCONF_CONFIG_VALUE_STRING) {
+            free(config->value.string);
+        }
         config->value.string = strdup(stringValue);
         if (config->value.string != NULL) {
             config->type = SAMCONF_CONFIG_VALUE_STRING;

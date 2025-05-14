@@ -38,7 +38,7 @@ void samconfTestSamconfConfigMergeConfigSuccess(UNUSED void **state) {
 
             result = samconfConfigMergeConfig(&testDefConfig, testConfigToMerge);
             if (defConfigSignage[j] && !mergeConfigSignage[i]) {
-                assert_int_equal(result, SAMCONF_CONFIG_ERROR);
+                assert_int_equal(result, SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED);
             } else {
                 assert_int_equal(result, SAMCONF_CONFIG_OK);
             }

@@ -468,8 +468,8 @@ samconfConfigStatusE_t samconfConfigCopyConfig(const samconfConfig_t *from, samc
     return result;
 }
 
-samconfConfigStatusE_t _findNextConfigAtLevel(const samconfConfig_t *root, const samconfConfig_t *configToFind,
-                                              int *found, const samconfConfig_t **nextConfig) {
+static samconfConfigStatusE_t _findNextConfigAtLevel(const samconfConfig_t *root, const samconfConfig_t *configToFind,
+                                                     bool *found, const samconfConfig_t **nextConfig) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_NOT_FOUND;
     if (root == NULL || *nextConfig) {
         result = SAMCONF_CONFIG_ERROR;
@@ -480,7 +480,7 @@ samconfConfigStatusE_t _findNextConfigAtLevel(const samconfConfig_t *root, const
             *nextConfig = root;
             result = SAMCONF_CONFIG_OK;
         } else if (root == configToFind) {
-            *found = 1;
+            *found = true;
         }
         if (result == SAMCONF_CONFIG_NOT_FOUND) {
             if (root->children != NULL && root->childCount != 0) {
@@ -497,7 +497,7 @@ samconfConfigStatusE_t _findNextConfigAtLevel(const samconfConfig_t *root, const
 samconfConfigStatusE_t samconfConfigNext(const samconfConfig_t *root, const samconfConfig_t *configToFind,
                                          const samconfConfig_t **nextConfig) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
-    int found = 0;
+    bool found = false;
     if (root != NULL && configToFind != NULL) {
         result = _findNextConfigAtLevel(root, configToFind, &found, nextConfig);
     }
@@ -631,50 +631,52 @@ samconfConfigStatusE_t samconfConfigGet(const samconfConfig_t *root, const char 
     return status;
 }
 
+static bool _followsMergeRule(samconfConfig_t *mergedConfig, samconfConfig_t *configToMerge) {
+    return ((mergedConfig->isSigned && configToMerge->isSigned) ||
+            (!mergedConfig->isSigned && !configToMerge->isSigned) ||
+            (!mergedConfig->isSigned && configToMerge->isSigned));
+}
+
 samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, samconfConfig_t *configToMerge) {
-    samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
-    samconfConfig_t *root = NULL;
-    const samconfConfig_t *configToFind = NULL;
-    const samconfConfig_t *nextConfig = NULL;
-    const samconfConfig_t *nodeInMerge = NULL;
-    char *path = NULL;
 
     if (configToMerge != NULL) {
-        if (((*mergedConfig)->isSigned && configToMerge->isSigned) ||
-            (!(*mergedConfig)->isSigned && !configToMerge->isSigned) ||
-            (!(*mergedConfig)->isSigned && configToMerge->isSigned)) {
-            root = configToMerge;
-            configToFind = root;
+        if (_followsMergeRule(*mergedConfig, configToMerge)) {
+            samconfConfig_t *root = configToMerge;
+            const samconfConfig_t *configToFind = root;
+            const samconfConfig_t *nextConfig = NULL;
             do {
+                samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
                 status = samconfConfigNext(root, configToFind, &nextConfig);
                 if (nextConfig != NULL) {
                     samconfConfig_t *node = NULL;
                     status = samconfConfigNew(&node);
                     if (status != SAMCONF_CONFIG_OK) {
-                        safuLogErrF("Creating new node to merge failed");
+                        safuLogErr("Creating new node to merge failed");
                         break;
                     }
 
                     status = samconfConfigCopyConfig(nextConfig, node);
                     if (status != SAMCONF_CONFIG_OK) {
-                        safuLogErrF("Copying to new node failed");
+                        safuLogErr("Copying to new node failed");
                         result = samconfConfigDelete(node);
                         break;
                     }
 
+                    char *path = NULL;
                     status = samconfPathGetPath(nextConfig, (const char **)&path);
                     if (status != SAMCONF_CONFIG_OK) {
-                        safuLogErrF("Fetching path to node in config failed");
+                        safuLogErr("Fetching path to node in config failed");
                         result = samconfConfigDelete(node);
                         break;
                     }
 
+                    const samconfConfig_t *nodeInMerge = NULL;
                     status = samconfConfigGet(*mergedConfig, path, &nodeInMerge);
                     if (status == SAMCONF_CONFIG_NOT_FOUND) {
                         status = samconfInsertAt(mergedConfig, path, node);
                         if (status != SAMCONF_CONFIG_OK) {
-                            safuLogErrF("Inserting node to merge config failed");
+                            safuLogErr("Inserting node to merge config failed");
                             result = samconfConfigDelete(node);
                             free(path);
                             break;
@@ -683,7 +685,7 @@ samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, 
                         safuLogInfo("Node found");
                         status = samconfConfigDelete(node);
                     } else {
-                        safuLogErrF("Search error : invalid node");
+                        safuLogErr("Search error : invalid node");
                         result = samconfConfigDelete(node);
                         free(path);
                         break;
@@ -693,7 +695,7 @@ samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, 
                         configToFind = nextConfig;
                         nextConfig = NULL;
                     } else {
-                        safuLogErrF("Node found, but new node deletion failed");
+                        safuLogErr("Node found, but new node deletion failed");
                         free(path);
                         break;
                     }
@@ -707,6 +709,8 @@ samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, 
                     result = SAMCONF_CONFIG_OK;
                 }
             } while (configToFind != NULL);
+        } else {
+            result = SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED;
         }
     }
 
@@ -717,11 +721,17 @@ samconfConfigStatusE_t samconfConfigMergeConfigs(samconfConfig_t **mergedConfig,
                                                  size_t configsCount) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
 
+    if (mergedConfig == NULL) {
+        result = samconfConfigNew(mergedConfig);
+        if (result == SAMCONF_CONFIG_OK) {
+            (*mergedConfig)->type = SAMCONF_CONFIG_VALUE_OBJECT;
+            (*mergedConfig)->key = strdup("root");
+        }
+    }
+
     for (size_t i = 0; i < configsCount; i++) {
         result = samconfConfigMergeConfig(mergedConfig, configsToMerge[i]);
-        if (((*mergedConfig)->isSigned && configsToMerge[i]->isSigned) ||
-            (!(*mergedConfig)->isSigned && !configsToMerge[i]->isSigned) ||
-            (!(*mergedConfig)->isSigned && configsToMerge[i]->isSigned)) {
+        if (_followsMergeRule(*mergedConfig, configsToMerge[i])) {
             if (result != SAMCONF_CONFIG_OK) {
                 break;
             }

@@ -296,15 +296,22 @@ samconfConfigStatusE_t samconfConfigMergeConfigs(samconfConfig_t **mergedConfig,
                                                  size_t configCount);
 
 /*******************************************************************
- * Iterator function to get next config in level order from given
- * config in the config tree.
+ * Function to get next node of the config specified by 'configToFind'
+ * where 'configToFind' is a node in a tree with a root node specified
+ * by 'root'.
  *
  * Parameters:
- *     config : config whose next config is to be retrieved.
+ *     root : root node of the config tree
+ *     configToFind : config whose next node needs to be found
+ *     nextConfig : next node of the 'configToFind'
  *
  * Returns:
- *         config – on success.
- *         NULL – on failure.
+ *         next node to configToFind on success
+ *         SAMCONF_CONFIG_OK - on success
+ *         NULL as nextConfig  if  configToFind if is not present in root
+ *         SAMCONF_CONFIG_NOT_FOUND - if configToFind not present in root
+ *         NULL as nextConfig if configToFind is Invalid
+ *         SAMCONF_CONFIG_ERROR if configToFind is Invalid
  ******************************************************************/
 samconfConfigStatusE_t samconfConfigNext(const samconfConfig_t *root, const samconfConfig_t *configToFind,
                                          const samconfConfig_t **nextConfig);

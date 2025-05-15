@@ -47,3 +47,16 @@ void samconfPathDeleteArray(char **patharray, int count);
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
 samconfConfigStatusE_t samconfPathGetPathUntil(char **patharray, int index, char **newPath);
+
+/*******************************************************************
+ * Create a path to the config, upto the top most parent.
+ *
+ * Parameters:
+ *     config : config from which path is to be created.
+ *     path : path from root parent to given config
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfPathGetPath(const samconfConfig_t *config, const char **path);

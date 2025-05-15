@@ -26,6 +26,7 @@ typedef enum samconfConfigStatusE {
     SAMCONF_CONFIG_PARSE_ERROR,
     SAMCONF_CONFIG_INVALID_SIGNATURE,
     SAMCONF_CONFIG_SIGNATURE_NOT_FOUND,
+    SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED,
 } samconfConfigStatusE_t;
 
 typedef enum samconfConfigValueTypeE {

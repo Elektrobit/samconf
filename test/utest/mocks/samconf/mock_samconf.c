@@ -466,7 +466,7 @@ MOCK_FUNC_BODY(samconfCreateStringAt, samconfConfigStatusE_t, samconfConfig_t **
     return MOCK_FUNC_REAL(samconfCreateStringAt)(root, path, value);
 }
 
-MOCK_FUNC_BODY(samconfCopyConfigValue, samconfConfigStatusE_t, samconfConfig_t *from, samconfConfig_t *to) {
+MOCK_FUNC_BODY(samconfCopyConfigValue, samconfConfigStatusE_t, const samconfConfig_t *from, samconfConfig_t *to) {
     if (MOCK_IS_ACTIVE(samconfCopyConfigValue)) {
         check_expected_ptr(from);
         check_expected_ptr(to);
@@ -475,4 +475,15 @@ MOCK_FUNC_BODY(samconfCopyConfigValue, samconfConfigStatusE_t, samconfConfig_t *
     }
 
     return MOCK_FUNC_REAL(samconfCopyConfigValue)(from, to);
+}
+
+MOCK_FUNC_BODY(samconfConfigCopyConfig, samconfConfigStatusE_t, const samconfConfig_t *from, samconfConfig_t *to) {
+    if (MOCK_IS_ACTIVE(samconfConfigCopyConfig)) {
+        check_expected_ptr(from);
+        check_expected_ptr(to);
+
+        return mock_type(samconfConfigStatusE_t);
+    }
+
+    return MOCK_FUNC_REAL(samconfConfigCopyConfig)(from, to);
 }

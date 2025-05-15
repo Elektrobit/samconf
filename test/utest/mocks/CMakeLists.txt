@@ -55,6 +55,7 @@ create_mock_lib(
     samconfUriDeleteMembers
     samconfConfigSetValueFromString
     samconfCopyConfigValue
+    samconfConfigCopyConfig
     samconfCreateAt
     samconfCreateBoolAt
     samconfCreateFromStringAt

@@ -6,6 +6,7 @@
 #include <safu/defines.h>
 #include <safu/log.h>
 #include <samconf/samconf_types.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -225,102 +226,6 @@ samconfConfigStatusE_t samconfConfigAdd(samconfConfig_t *parent, samconfConfig_t
     return status;
 }
 
-static samconfConfigStatusE_t _add_to_new_path(const char *existingPath, const char *segment, char **newPath) {
-    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
-    size_t strLen = 0;
-    int ret = 0;
-
-    if (existingPath == NULL || segment == NULL) {
-        safuLogErr("invalid parameters");
-    } else {
-        strLen = strlen(segment) + strlen(existingPath);
-        *newPath = safuAllocMem(NULL, strLen + 2);
-        if (*newPath == NULL) {
-            safuLogErr("SafuAllocMem failed");
-        } else {
-            if (existingPath[0] == '\0') {
-                ret = snprintf(*newPath, strLen + 2, "%s", segment);
-            } else {
-                ret = snprintf(*newPath, strLen + 2, "%s/%s", segment, existingPath);
-            }
-            if (ret < 0) {
-                safuLogErr("snprintf failed");
-                free(*newPath);
-            } else {
-                result = SAMCONF_CONFIG_OK;
-            }
-        }
-    }
-    return result;
-}
-
-samconfConfigStatusE_t samconfGetParentPath(const samconfConfig_t *config, const char **path) {
-    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
-    samconfConfig_t *parent = NULL;
-    char *rootKey = "root";
-    char *existingPath = "";
-    char *newPath = NULL;
-
-    if (config == NULL || path == NULL) {
-        safuLogErr("invalid parameters");
-    } else {
-        if (strcmp(config->key, rootKey) == 0) {
-            *path = strdup(rootKey);
-            result = SAMCONF_CONFIG_OK;
-        } else {
-            result = _add_to_new_path(existingPath, config->key, &newPath);
-            if (result == SAMCONF_CONFIG_ERROR) {
-                safuLogErrF("adding %s to path failed", config->key);
-            } else if (newPath == NULL) {
-                safuLogErr("created path is null");
-                result = SAMCONF_CONFIG_ERROR;
-            } else {
-                parent = config->parent;
-                while (strcmp(parent->key, rootKey) != 0) {
-                    existingPath = strdup(newPath);
-                    if (existingPath == NULL) {
-                        safuLogErr("strdup failed");
-                        result = SAMCONF_CONFIG_ERROR;
-                        free(newPath);
-                        break;
-                    }
-                    free(newPath);
-                    newPath = NULL;
-                    result = _add_to_new_path(existingPath, parent->key, &newPath);
-                    if (result == SAMCONF_CONFIG_ERROR) {
-                        safuLogErrF("adding %s to path failed", parent->key);
-                        free(existingPath);
-                        break;
-                    }
-                    parent = parent->parent;
-                    result = SAMCONF_CONFIG_OK;
-                    free(existingPath);
-                }
-                if (strcmp(parent->key, rootKey) == 0 && result == SAMCONF_CONFIG_OK) {
-                    existingPath = strdup(newPath);
-                    if (existingPath == NULL) {
-                        safuLogErr("strdup failed");
-                        result = SAMCONF_CONFIG_ERROR;
-                    } else {
-                        free(newPath);
-                        newPath = NULL;
-                        result = _add_to_new_path(existingPath, rootKey, &newPath);
-                        if (result == SAMCONF_CONFIG_ERROR) {
-                            safuLogErrF("adding %s to path failed", rootKey);
-                        } else {
-                            *path = newPath;
-                            result = SAMCONF_CONFIG_OK;
-                        }
-                        free(existingPath);
-                    }
-                }
-            }
-        }
-    }
-
-    return result;
-}
-
 samconfConfigStatusE_t samconfCreateIntAt(samconfConfig_t **root, const char *path, int64_t value) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
     samconfConfig_t *config = NULL;
@@ -517,7 +422,7 @@ samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char 
     return result;
 }
 
-samconfConfigStatusE_t samconfCopyConfigValue(samconfConfig_t *from, samconfConfig_t *to) {
+samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samconfConfig_t *to) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
 
     if (from == NULL || to == NULL) {
@@ -533,11 +438,69 @@ samconfConfigStatusE_t samconfCopyConfigValue(samconfConfig_t *from, samconfConf
             case SAMCONF_CONFIG_VALUE_REAL:
                 result = samconfConfigSetReal(to, from->value.real);
                 break;
+            case SAMCONF_CONFIG_VALUE_NONE:
+            case SAMCONF_CONFIG_VALUE_ARRAY:
+            case SAMCONF_CONFIG_VALUE_OBJECT:
+                result = SAMCONF_CONFIG_OK;
+                break;
             default:
                 result = samconfConfigSetString(to, from->value.string);
         }
     }
 
+    return result;
+}
+
+samconfConfigStatusE_t samconfConfigCopyConfig(const samconfConfig_t *from, samconfConfig_t *to) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    if (from == NULL || to == NULL) {
+        safuLogErr("Invalid Parameter");
+    } else {
+        to->key = strdup(from->key);
+
+        if (to->key) {
+            to->isSigned = from->isSigned;
+            to->type = from->type;
+
+            result = samconfCopyConfigValue(from, to);
+        }
+    }
+    return result;
+}
+
+static samconfConfigStatusE_t _findNextConfigAtLevel(const samconfConfig_t *root, const samconfConfig_t *configToFind,
+                                                     bool *found, const samconfConfig_t **nextConfig) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_NOT_FOUND;
+    if (root == NULL || *nextConfig) {
+        result = SAMCONF_CONFIG_ERROR;
+    }
+
+    if (result == SAMCONF_CONFIG_NOT_FOUND) {
+        if (*found && *nextConfig == NULL) {
+            *nextConfig = root;
+            result = SAMCONF_CONFIG_OK;
+        } else if (root == configToFind) {
+            *found = true;
+        }
+        if (result == SAMCONF_CONFIG_NOT_FOUND) {
+            if (root->children != NULL && root->childCount != 0) {
+                for (size_t i = 0; i < root->childCount; i++) {
+                    result = _findNextConfigAtLevel(root->children[i], configToFind, found, nextConfig);
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+samconfConfigStatusE_t samconfConfigNext(const samconfConfig_t *root, const samconfConfig_t *configToFind,
+                                         const samconfConfig_t **nextConfig) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    bool found = false;
+    if (root != NULL && configToFind != NULL) {
+        result = _findNextConfigAtLevel(root, configToFind, &found, nextConfig);
+    }
     return result;
 }
 
@@ -594,7 +557,6 @@ samconfConfigStatusE_t samconfInsertAt(samconfConfig_t **root, const char *path,
                         result = samconfConfigAdd(parent, node);
                         if (result != SAMCONF_CONFIG_OK) {
                             safuLogErrF("samconfConfigAdd failed to add node : %s", config->key);
-                            samconfConfigDelete(config);
                             free(pathToToken);
                             break;
                         }
@@ -669,6 +631,123 @@ samconfConfigStatusE_t samconfConfigGet(const samconfConfig_t *root, const char 
     return status;
 }
 
+static bool _followsMergeRule(samconfConfig_t *mergedConfig, samconfConfig_t *configToMerge) {
+    return ((mergedConfig->isSigned && configToMerge->isSigned) ||
+            (!mergedConfig->isSigned && !configToMerge->isSigned) ||
+            (!mergedConfig->isSigned && configToMerge->isSigned));
+}
+
+samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, samconfConfig_t *configToMerge) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+
+    if (configToMerge != NULL) {
+        if (_followsMergeRule(*mergedConfig, configToMerge)) {
+            samconfConfig_t *root = configToMerge;
+            const samconfConfig_t *configToFind = root;
+            const samconfConfig_t *nextConfig = NULL;
+            do {
+                samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
+                status = samconfConfigNext(root, configToFind, &nextConfig);
+                if (nextConfig != NULL) {
+                    samconfConfig_t *node = NULL;
+                    status = samconfConfigNew(&node);
+                    if (status != SAMCONF_CONFIG_OK) {
+                        safuLogErr("Creating new node to merge failed");
+                        break;
+                    }
+
+                    status = samconfConfigCopyConfig(nextConfig, node);
+                    if (status != SAMCONF_CONFIG_OK) {
+                        safuLogErr("Copying to new node failed");
+                        result = samconfConfigDelete(node);
+                        break;
+                    }
+
+                    char *path = NULL;
+                    status = samconfPathGetPath(nextConfig, (const char **)&path);
+                    if (status != SAMCONF_CONFIG_OK) {
+                        safuLogErr("Fetching path to node in config failed");
+                        result = samconfConfigDelete(node);
+                        break;
+                    }
+
+                    samconfConfig_t *nodeInMerge = NULL;
+                    status = samconfConfigGet(*mergedConfig, path, (const samconfConfig_t **)&nodeInMerge);
+                    if (status == SAMCONF_CONFIG_NOT_FOUND) {
+                        status = samconfInsertAt(mergedConfig, path, node);
+                        if (status != SAMCONF_CONFIG_OK) {
+                            safuLogErr("Inserting node to merge config failed");
+                            result = samconfConfigDelete(node);
+                            free(path);
+                            break;
+                        }
+                    } else if (status == SAMCONF_CONFIG_OK) {
+                        safuLogInfo("Node found");
+                        status = samconfCopyConfigValue(node, nodeInMerge);
+                        if (status != SAMCONF_CONFIG_OK) {
+                            safuLogErr("Overwriting exiting node failed");
+                            result = samconfConfigDelete(node);
+                            free(path);
+                            break;
+                        }
+                        status = samconfConfigDelete(node);
+                    } else {
+                        safuLogErr("Search error : invalid node");
+                        result = samconfConfigDelete(node);
+                        free(path);
+                        break;
+                    }
+
+                    if (status == SAMCONF_CONFIG_OK) {
+                        configToFind = nextConfig;
+                        nextConfig = NULL;
+                    } else {
+                        safuLogErr("Node found, but new node deletion failed");
+                        free(path);
+                        break;
+                    }
+
+                    free(path);
+                } else {
+                    configToFind = NULL;
+                    if (!(*mergedConfig)->isSigned && configToMerge->isSigned) {
+                        (*mergedConfig)->isSigned = configToMerge->isSigned;
+                    }
+                    result = SAMCONF_CONFIG_OK;
+                }
+            } while (configToFind != NULL);
+        } else {
+            result = SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED;
+        }
+    }
+
+    return result;
+}
+
+samconfConfigStatusE_t samconfConfigMergeConfigs(samconfConfig_t **mergedConfig, samconfConfig_t **configsToMerge,
+                                                 size_t configsCount) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+
+    if (mergedConfig == NULL) {
+        result = samconfConfigNew(mergedConfig);
+        if (result == SAMCONF_CONFIG_OK) {
+            (*mergedConfig)->type = SAMCONF_CONFIG_VALUE_OBJECT;
+            (*mergedConfig)->key = strdup("root");
+        }
+    }
+
+    for (size_t i = 0; i < configsCount; i++) {
+        result = samconfConfigMergeConfig(mergedConfig, configsToMerge[i]);
+        if (_followsMergeRule(*mergedConfig, configsToMerge[i])) {
+            if (result != SAMCONF_CONFIG_OK) {
+                break;
+            }
+        }
+    }
+
+    return result;
+}
+
 samconfConfigStatusE_t samconfConfigGetString(const samconfConfig_t *root, const char *path, const char **result) {
     const samconfConfig_t *node = NULL;
     samconfConfigStatusE_t status = SAMCONF_CONFIG_NOT_FOUND;
@@ -698,6 +777,9 @@ samconfConfigStatusE_t samconfConfigSetString(samconfConfig_t *config, const cha
     samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
 
     if (config != NULL && stringValue != NULL) {
+        if (config->type == SAMCONF_CONFIG_VALUE_STRING) {
+            free(config->value.string);
+        }
         config->value.string = strdup(stringValue);
         if (config->value.string != NULL) {
             config->type = SAMCONF_CONFIG_VALUE_STRING;

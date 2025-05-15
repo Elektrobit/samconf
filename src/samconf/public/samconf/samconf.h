@@ -26,19 +26,6 @@ samconfConfigStatusE_t samconfConfigSetReal(samconfConfig_t *config, double valu
 int samconfInitConfig();
 
 /*******************************************************************
- * Create a path to the config, upto the top most parent.
- *
- * Parameters:
- *     config : config from which path is to be created.
- *     path : path from root parent to given config
- *
- * Returns:
- *         SAMCONF_CONFIG_OK – on success.
- *         SAMCONF_CONFIG_ERROR – on failure.
- ******************************************************************/
-samconfConfigStatusE_t samconfGetParentPath(const samconfConfig_t *config, const char **path);
-
-/*******************************************************************
  * Creates a samconfConfig_t struct by following the path parameter. The value is then set to
  * the last node in the path
  *
@@ -264,6 +251,68 @@ samconfConfigStatusE_t samconfCreateStringAt(samconfConfig_t **root, const char 
  *         SAMCONF_CONFIG_OK – on success.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
-samconfConfigStatusE_t samconfCopyConfigValue(samconfConfig_t *from, samconfConfig_t *to);
+samconfConfigStatusE_t samconfCopyConfigValue(const samconfConfig_t *from, samconfConfig_t *to);
 
+/*******************************************************************
+ * Copy a config node to another without copying the parent and children. Non object, array, none types
+ * will have their values copied.
+ *
+ * Parameters:
+ *     from : config node to be copied
+ *     to : config node to be copied to.
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfConfigCopyConfig(const samconfConfig_t *from, samconfConfig_t *to);
+
+/*******************************************************************
+ * Merge the given configuration to the given root configuration.
+ *
+ * Parameters:
+ *     mergedConfig : base config into which new config is merged
+ *     configToMerge : config to be merged into root config
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfConfigMergeConfig(samconfConfig_t **mergedConfig, samconfConfig_t *configToMerge);
+
+/*******************************************************************
+ * Merge the given configurations to the given root configuration.
+ *
+ * Parameters:
+ *     mergedConfig : base config into which new configs are merged
+ *     configsToMerge : array configs to be merged into root config
+ *     configCount : size of the configs array
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfConfigMergeConfigs(samconfConfig_t **mergedConfig, samconfConfig_t **configToMerge,
+                                                 size_t configCount);
+
+/*******************************************************************
+ * Function to get next node of the config specified by 'configToFind'
+ * where 'configToFind' is a node in a tree with a root node specified
+ * by 'root'.
+ *
+ * Parameters:
+ *     root : root node of the config tree
+ *     configToFind : config whose next node needs to be found
+ *     nextConfig : next node of the 'configToFind'
+ *
+ * Returns:
+ *         next node to configToFind on success
+ *         SAMCONF_CONFIG_OK - on success
+ *         NULL as nextConfig  if  configToFind if is not present in root
+ *         SAMCONF_CONFIG_NOT_FOUND - if configToFind not present in root
+ *         NULL as nextConfig if configToFind is Invalid
+ *         SAMCONF_CONFIG_ERROR if configToFind is Invalid
+ ******************************************************************/
+samconfConfigStatusE_t samconfConfigNext(const samconfConfig_t *root, const samconfConfig_t *configToFind,
+                                         const samconfConfig_t **nextConfig);
 __END_DECLS

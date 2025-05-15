@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 #include <stdlib.h>
 
-#include "samconfGetParentPath_utest.h"
+#include "samconfPathGetPath_utest.h"
 
-int samconfTestSamconfGetParentPathEnvSuccessSetup(void **state) {
+int samconfTestSamconfPathGetPathEnvSuccessSetup(void **state) {
     setenv("UTEST_VARIABLE_STRING", "utest string", 1);
     setenv("UTEST_VARIABLE_INT", "42", 1);
     setenv("UTEST_VARIABLE_REAL", "1.9865", 1);
@@ -20,7 +20,7 @@ int samconfTestSamconfGetParentPathEnvSuccessSetup(void **state) {
     return 0;
 }
 
-int samconfTestSamconfGetParentPathEnvSuccessTeardown(void **state) {
+int samconfTestSamconfPathGetPathEnvSuccessTeardown(void **state) {
     unsetenv("UTEST_VARIABLE_STRING");
     unsetenv("UTEST_VARIABLE_INT");
     unsetenv("UTEST_VARIABLE_REAL");
@@ -33,20 +33,20 @@ int samconfTestSamconfGetParentPathEnvSuccessTeardown(void **state) {
     return 0;
 }
 
-void samconfTestSamconfGetParentPathEnvSuccess(void **state) {
+void samconfTestSamconfPathGetPathEnvSuccess(void **state) {
     samconfConfig_t *testroot = *state;
     samconfConfigStatusE_t result;
     const samconfConfig_t *testconfig = NULL;
     const char *testpath = NULL;
     const char *conflocation = "UTEST/VARIABLE/REAL";
 
-    TEST("samconfGetParentPath");
+    TEST("samconfPathGetPath");
     SHOULD("%s", "returns expected path to given env config");
 
     result = samconfConfigGet(testroot, conflocation, &testconfig);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
 
-    result = samconfGetParentPath(testconfig, &testpath);
+    result = samconfPathGetPath(testconfig, &testpath);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
     assert_string_equal(testpath, "root/UTEST/VARIABLE/REAL");
 

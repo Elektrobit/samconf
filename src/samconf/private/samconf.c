@@ -1131,3 +1131,80 @@ double samconfConfigGetRealOr(const samconfConfig_t *root, const char *path, dou
     }
     return result;
 }
+
+static void _level(const safuVec_t *const indicator) {
+    bool *ind = indicator->data;
+    for (size_t i = 0; i < indicator->elementCount; i++) {
+        if (ind[i]) {
+            printf("    ");
+        } else {
+            printf("│   ");
+        }
+    }
+}
+
+#define BOOL_STRING(b) (b) ? "true" : "false"
+#define SIGNED(sgnd)   (sgnd) ? "✅" : "❌"
+
+void _dumpConfigTree(const samconfConfig_t *const config, safuVec_t *indicator, bool last) {
+    _level(indicator);
+    if (last) {
+        printf("└── %s %s", SIGNED(config->isSigned), config->key);
+    } else {
+        printf("├── %s %s", SIGNED(config->isSigned), config->key);
+    }
+    safuVecPush(indicator, &last);
+    switch (config->type) {
+        case SAMCONF_CONFIG_VALUE_OBJECT:
+            printf("\n");
+            for (size_t i = 0; i < config->childCount; i++) {
+                last = i + 1 >= config->childCount;
+                _dumpConfigTree(config->children[i], indicator, last);
+            }
+            break;
+        case SAMCONF_CONFIG_VALUE_ARRAY:
+            printf("\n");
+            for (size_t i = 0; i < config->childCount; i++) {
+                last = i + 1 >= config->childCount;
+                _dumpConfigTree(config->children[i], indicator, last);
+            }
+            break;
+        case SAMCONF_CONFIG_VALUE_BOOLEAN:
+            printf(": %s\n", BOOL_STRING(config->value.boolean));
+            break;
+        case SAMCONF_CONFIG_VALUE_INT:
+            printf(": %ld\n", config->value.integer);
+            break;
+        case SAMCONF_CONFIG_VALUE_REAL:
+            printf(": %f\n", config->value.real);
+            break;
+        case SAMCONF_CONFIG_VALUE_STRING:
+            printf(": \"%s\"\n", config->value.string);
+            break;
+        default:
+            printf(": UNKNOWN/ERROR\n");
+    }
+    safuVecPop(indicator);
+}
+
+void samconfDumpConfigTree(const samconfConfig_t *const config) {
+    if (config == NULL) {
+        safuLogErr("Conifg to dump is NULL");
+        return;
+    }
+    safuVec_t indicator;
+    safuResultE_t res = safuVecCreate(&indicator, 10, sizeof(bool));
+    if (res != SAFU_RESULT_OK) {
+        safuLogErr("Failed to create indent vec\n");
+        return;
+    }
+    printf("%s / (%s)\n", SIGNED(config->isSigned), config->key);
+    for (size_t i = 0; i < config->childCount; i++) {
+        bool last = i + 1 >= config->childCount;
+        _dumpConfigTree(config->children[i], &indicator, last);
+    }
+    res = safuVecFree(&indicator);
+    if (res != SAFU_RESULT_OK) {
+        safuLogErr("Failed to free indent vec");
+    }
+}

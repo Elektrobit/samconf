@@ -345,4 +345,14 @@ samconfConfigStatusE_t samconfConfigMergeConfigs(samconfConfig_t **mergedConfig,
  ******************************************************************/
 samconfConfigStatusE_t samconfConfigNext(const samconfConfig_t *root, const samconfConfig_t *configToFind,
                                          const samconfConfig_t **nextConfig);
+
+/*******************************************************************
+ * Function to dump a configuration as a tree to stdout
+ *
+ * Parameters:
+ *     config : the config to print
+ *
+ ******************************************************************/
+void samconfDumpConfigTree(const samconfConfig_t *const config);
+
 __END_DECLS

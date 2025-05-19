@@ -19,6 +19,17 @@ samconfConfigStatusE_t samconfJsonBackendSupports(const char *location, bool *is
 
 samconfConfigStatusE_t samconfJsonBackendClose(samconfConfigBackend_t *backend);
 
+/*******************************************************************
+ * generate a json_object out of a samconfConfig_t
+ *
+ * Parameters:
+ *     config : the pointer in which to strore the resulting config
+ *
+ * Returns:
+ *         the config as a json_object struct
+ ******************************************************************/
+struct json_object *samconfDumpJsonConfig(const samconfConfig_t *const config);
+
 __END_DECLS
 
 #endif /* SAMCONF_JSON_BACKEND_H */

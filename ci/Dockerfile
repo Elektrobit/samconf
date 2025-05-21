@@ -78,6 +78,7 @@ RUN python -m venv /home/$USER/.venv \
   && python -m pip install \
      beautifulsoup4==4.12.2  \
      clang==16.0.1.1 \
+     faker==22.0.0 \
      myst-parser==2.0.0 \
      sphinx==7.2.6 \
      sphinx-c-autodoc==1.3.0 \

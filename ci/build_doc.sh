@@ -67,7 +67,7 @@ createApiDocu
 createDeveloperDocu
 
 export PATH="${PATH}:${DIST_DIR}/usr/local/bin"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-"./"}:${DIST_DIR}/usr/local/lib"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-"./"}:${DIST_DIR}/usr/local/lib:${BUILD_DIR}/deps/lib"
 
 mkdir -p ${SPHINX_BUILD_DIR}
 sphinx-build -b html ${SPHINX_SOURCE_DIR} ${SPHINX_HTML_OUTPUT_DIR} 2> >(tee -a ${SPHINX_BUILD_DIR}/html_doc_error.log >&2)

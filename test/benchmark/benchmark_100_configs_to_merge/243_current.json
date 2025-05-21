@@ -1,0 +1,57 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "thing.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.pid 1874283 LT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "room.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 240,
+                            "ShmemOffset": 34,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "claim.so",
+                        "Run": "Always"
+                    },
+                    "SyslogScanner": {
+                        "File": "should.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "2000": ".ev.source.pid 262391 EQ OR .e.source.pid 262391 STRCMP OR .ev.source.pid 262391 EQ OR .ev.source.pid 262391 LE "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

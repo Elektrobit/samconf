@@ -1,0 +1,57 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "former.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.hardwareid 9d16e1fccc444d62c95ea0bc1025fdbc GT "
+                        ],
+                        "Config": {
+                            "BufferSize": 146
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "scientist.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.payload Break those read she policy later. GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/manager/skin.log",
+                            "MaxSize": 43100,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "more.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "200": ".ev.messageCode 8005 LT OR .e.messageCode 8005 LE AND .ev.messageCode 8005 GE AND .e.messageCode 8005 GT "
+                                }
+                            }
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "middle.so",
+                        "Run": "Always"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,105 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "rise.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".event.hardwareid 59b68dad6ae1959506c01ed4713a901d STRCMP "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "past.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 96,
+                            "Port": 46974,
+                            "Interface": "201.169.174.91",
+                            "EventBlackLiist": ".e.source.appname start.csv GE ",
+                            "authorizedProcesses": [
+                                ".process.uid 45478 GT AND .process.uid 45478 GE AND .process.uid 45478 STRCMP ",
+                                ".process.uid 45478 GT AND .process.uid 45478 GE AND .process.uid 45478 STRCMP AND .proc.uid 45478 LT OR .p.uid 45478 GT ",
+                                ".process.uid 45478 GT AND .process.uid 45478 GE AND .process.uid 45478 STRCMP AND .proc.uid 45478 LT OR .p.uid 45478 GT AND .process.uid 45478 LT OR .proc.uid 45478 GE "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "hit.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 194,
+                            "Port": 55849,
+                            "Interface": "10.47.249.226",
+                            "EventBlackLiist": ".ev.payload Long peace trial those war. GT ",
+                            "authorizedProcesses": [
+                                ".process.exec /happen/dream/way/on/here/husband GE AND .process.exec /happen/dream/way/on/here/husband STRCMP AND .proc.exec /happen/dream/way/on/here/husband LE ",
+                                ".process.exec /happen/dream/way/on/here/husband GE AND .process.exec /happen/dream/way/on/here/husband STRCMP AND .proc.exec /happen/dream/way/on/here/husband LE AND .proc.exec /happen/dream/way/on/here/husband GT OR .proc.exec /happen/dream/way/on/here/husband GT ",
+                                ".process.exec /happen/dream/way/on/here/husband GE AND .process.exec /happen/dream/way/on/here/husband STRCMP AND .proc.exec /happen/dream/way/on/here/husband LE AND .proc.exec /happen/dream/way/on/here/husband GT OR .proc.exec /happen/dream/way/on/here/husband GT OR .process.exec /happen/dream/way/on/here/husband GT AND .process.exec /happen/dream/way/on/here/husband STRCMP "
+                            ]
+                        }
+                    },
+                    "unixClient": {
+                        "File": "behind.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 157,
+                            "path": "/big/newspaper/information.socket",
+                            "EventBlackLiist": ".e.classification 0x0 GT ",
+                            "authorizedProcesses": [
+                                ".p.uid 32581 LT OR .process.uid 32581 LE OR .p.uid 32581 GE ",
+                                ".p.uid 32581 LT OR .process.uid 32581 LE OR .p.uid 32581 GE AND .p.uid 32581 STRCMP OR .proc.uid 32581 STRCMP ",
+                                ".p.uid 32581 LT OR .process.uid 32581 LE OR .p.uid 32581 GE AND .p.uid 32581 STRCMP OR .proc.uid 32581 STRCMP OR .p.uid 32581 GT AND .p.uid 32581 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "reason.so",
+                        "Run": "Always"
+                    },
+                    "Shmem": {
+                        "File": "father.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 54,
+                            "ShmemOffset": 59,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    },
+                    "SyslogScanner": {
+                        "File": "report.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8006": ".event.messageCode 5102 GE OR .ev.messageCode 5102 GT OR .event.messageCode 5102 GT AND .event.messageCode 5102 GE "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

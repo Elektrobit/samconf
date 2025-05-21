@@ -1,0 +1,27 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "music.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.appname fall.bmp LE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/theory/property.log",
+                            "MaxSize": 11820,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

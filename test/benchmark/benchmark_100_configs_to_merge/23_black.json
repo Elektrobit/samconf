@@ -1,0 +1,17 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "instead.so",
+                        "Run": "Never"
+                    }
+                }
+            }
+        }
+    }
+}

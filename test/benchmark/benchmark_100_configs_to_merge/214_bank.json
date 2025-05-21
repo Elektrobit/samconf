@@ -1,0 +1,36 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "open.so",
+                        "Run": "Always"
+                    },
+                    "SyslogScanner": {
+                        "File": "consumer.so",
+                        "Run": "Never",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "5006": ".ev.source.appname herself.jpeg STRCMP AND .e.source.appname herself.jpeg EQ AND .e.source.appname herself.jpeg GT OR .e.source.appname herself.jpeg LE "
+                                }
+                            }
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "guy.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

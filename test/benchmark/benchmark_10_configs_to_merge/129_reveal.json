@@ -1,0 +1,23 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "government.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.severity 1 STRCMP "
+                        ],
+                        "Config": {
+                            "BufferSize": 80
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

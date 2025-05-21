@@ -1,0 +1,64 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "present.c",
+            "LogLevel": "COUNT",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "hospital.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".ev.date [6410414833, 3960309004] STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/race/cell.log",
+                            "MaxSize": 22777,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "must.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.appname ability.bmp LE "
+                        ],
+                        "Config": {
+                            "BufferSize": 35
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "get.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "both.so",
+                        "Run": "Always"
+                    },
+                    "Shmem": {
+                        "File": "your.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 200,
+                            "ShmemOffset": 1,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

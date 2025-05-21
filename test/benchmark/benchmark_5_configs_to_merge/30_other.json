@@ -1,0 +1,43 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "administration.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 31,
+                            "Port": 38974,
+                            "Interface": "172.26.112.60",
+                            "EventBlackLiist": ".e.messageCode 7125 GE ",
+                            "authorizedProcesses": [
+                                ".proc.gid 47847 EQ AND .process.gid 47847 GT OR .p.gid 47847 LT ",
+                                ".proc.gid 47847 EQ AND .process.gid 47847 GT OR .p.gid 47847 LT OR .process.gid 47847 STRCMP AND .p.gid 47847 LE ",
+                                ".proc.gid 47847 EQ AND .process.gid 47847 GT OR .p.gid 47847 LT OR .process.gid 47847 STRCMP AND .p.gid 47847 LE AND .p.gid 47847 STRCMP OR .p.gid 47847 GT "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "above.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 127,
+                            "Port": 37426,
+                            "Interface": "209.55.88.46",
+                            "EventBlackLiist": ".ev.messageCode 1103 STRCMP ",
+                            "authorizedProcesses": [
+                                ".proc.pid 2187849 GT OR .process.pid 2187849 LT AND .p.pid 2187849 GT ",
+                                ".proc.pid 2187849 GT OR .process.pid 2187849 LT AND .p.pid 2187849 GT AND .proc.pid 2187849 STRCMP OR .process.pid 2187849 EQ ",
+                                ".proc.pid 2187849 GT OR .process.pid 2187849 LT AND .p.pid 2187849 GT AND .proc.pid 2187849 STRCMP OR .process.pid 2187849 EQ AND .p.pid 2187849 LE AND .process.pid 2187849 GE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

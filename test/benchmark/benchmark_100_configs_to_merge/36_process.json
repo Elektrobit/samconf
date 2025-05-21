@@ -1,0 +1,23 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "economic.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.payload Small onto resource write above have whether. LT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/discover/training.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

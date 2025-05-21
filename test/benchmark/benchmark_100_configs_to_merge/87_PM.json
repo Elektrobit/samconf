@@ -1,0 +1,25 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "list.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "7200": ".ev.hardwareid 1a05f47e505cd0f5c008bdb65d0c00fa EQ AND .e.hardwareid 1a05f47e505cd0f5c008bdb65d0c00fa EQ OR .e.hardwareid 1a05f47e505cd0f5c008bdb65d0c00fa GT OR .ev.hardwareid 1a05f47e505cd0f5c008bdb65d0c00fa GT "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

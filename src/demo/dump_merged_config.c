@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 
+#include <bits/time.h>
 #include <json-c/json_object.h>
 #include <safu/log.h>
 #include <safu/vector.h>
@@ -8,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "samconf/json_backend.h"
 #include "samconf/samconf.h"
@@ -34,6 +36,9 @@ int main(int argc, char **argv) {
     bool jsonDump = false;
     bool treeDump = false;
     bool enforceSignature = false;
+    struct timespec startTime = {0};
+    struct timespec endTime = {0};
+    int ret = 0;
 
     safuVec_t confDirs;
     int vecRes = safuVecCreate(&confDirs, 100, sizeof(samconfConfigLocation_t));
@@ -69,9 +74,17 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    ret = clock_gettime(CLOCK_MONOTONIC, &startTime);
     samconfConfigStatusE_t result = samconfLoadAndMerge(confDirs.data, confDirs.elementCount, &config);
     if (result != SAMCONF_CONFIG_OK) {
         fprintf(stderr, "ERROR reading config (%d)\n", result);
+    }
+    if (ret == 0) {
+        ret = clock_gettime(CLOCK_MONOTONIC, &endTime);
+        if (ret == 0) {
+            long nsec = endTime.tv_nsec - startTime.tv_nsec;
+            printf("Load and Merge Time :  %ld s %ld ns\n", (endTime.tv_sec - startTime.tv_sec), (nsec > 0 ? nsec : 0));
+        }
     }
     safuVecFree(&confDirs);
 
@@ -81,6 +94,7 @@ int main(int argc, char **argv) {
         printf("%s\n", json_object_to_json_string_ext(jconf, format));
         json_object_put(jconf);
     }
+
     if (treeDump) {
         samconfDumpConfigTree(config);
     }
@@ -89,6 +103,5 @@ int main(int argc, char **argv) {
     if (result != SAMCONF_CONFIG_OK) {
         fprintf(stderr, "ERROR freeing the config object\n");
     }
-
     return 0;
 }

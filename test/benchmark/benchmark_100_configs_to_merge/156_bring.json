@@ -1,0 +1,43 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "across.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 133,
+                            "Port": 48790,
+                            "Interface": "178.225.170.134",
+                            "EventBlackLiist": ".e.source.appname according.png LE ",
+                            "authorizedProcesses": [
+                                ".process.gid 59860 LT AND .process.gid 59860 EQ AND .p.gid 59860 GE ",
+                                ".process.gid 59860 LT AND .process.gid 59860 EQ AND .p.gid 59860 GE OR .p.gid 59860 GE OR .proc.gid 59860 EQ ",
+                                ".process.gid 59860 LT AND .process.gid 59860 EQ AND .p.gid 59860 GE OR .p.gid 59860 GE OR .proc.gid 59860 EQ OR .p.gid 59860 LE OR .proc.gid 59860 LE "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "yourself.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 30,
+                            "Port": 480,
+                            "Interface": "192.168.44.229",
+                            "EventBlackLiist": ".e.messageCode 2000 EQ ",
+                            "authorizedProcesses": [
+                                ".p.pid 1577796 LT OR .p.pid 1577796 GE OR .p.pid 1577796 EQ ",
+                                ".p.pid 1577796 LT OR .p.pid 1577796 GE OR .p.pid 1577796 EQ AND .p.pid 1577796 STRCMP AND .process.pid 1577796 LE ",
+                                ".p.pid 1577796 LT OR .p.pid 1577796 GE OR .p.pid 1577796 EQ AND .p.pid 1577796 STRCMP AND .process.pid 1577796 LE OR .proc.pid 1577796 STRCMP AND .process.pid 1577796 LE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "must.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.filename /forward/laugh.odsserve.pdf EQ "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/society/write.sqlite"
+                        }
+                    },
+                    "DLT": {
+                        "File": "federal.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.source.filename /huge/kitchen.pdfwell.jpg GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

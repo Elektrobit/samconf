@@ -1,0 +1,25 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "agent.c",
+            "LogLevel": "COUNT",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "thus.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8000": ".ev.source.filename /enjoy/by.keykeep.flac GE OR .ev.source.filename /enjoy/by.keykeep.flac GT OR .event.source.filename /enjoy/by.keykeep.flac LE AND .e.source.filename /enjoy/by.keykeep.flac LT "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "network.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 171,
+                            "Port": 17488,
+                            "Interface": "10.0.217.66",
+                            "EventBlackLiist": ".event.source.pid 2406047 STRCMP ",
+                            "authorizedProcesses": [
+                                ".p.uid 57331 GT OR .proc.uid 57331 EQ AND .proc.uid 57331 LT ",
+                                ".p.uid 57331 GT OR .proc.uid 57331 EQ AND .proc.uid 57331 LT AND .process.uid 57331 LE AND .proc.uid 57331 EQ ",
+                                ".p.uid 57331 GT OR .proc.uid 57331 EQ AND .proc.uid 57331 LT AND .process.uid 57331 LE AND .proc.uid 57331 EQ AND .process.uid 57331 EQ AND .p.uid 57331 LE "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "allow.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 198,
+                            "Port": 30712,
+                            "Interface": "212.77.96.95",
+                            "EventBlackLiist": ".ev.source.pid 2674055 LT ",
+                            "authorizedProcesses": [
+                                ".proc.gid 7246 EQ AND .p.gid 7246 EQ AND .process.gid 7246 LT ",
+                                ".proc.gid 7246 EQ AND .p.gid 7246 EQ AND .process.gid 7246 LT AND .process.gid 7246 LT AND .process.gid 7246 STRCMP ",
+                                ".proc.gid 7246 EQ AND .p.gid 7246 EQ AND .process.gid 7246 LT AND .process.gid 7246 LT AND .process.gid 7246 STRCMP OR .p.gid 7246 STRCMP OR .proc.gid 7246 GE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

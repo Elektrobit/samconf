@@ -1,0 +1,71 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "push.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "6003": ".e.source.pid 1794952 GE OR .ev.source.pid 1794952 STRCMP OR .ev.source.pid 1794952 GT AND .ev.source.pid 1794952 EQ "
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "sell.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 32,
+                            "path": "/draw/both/exactly.socket",
+                            "EventBlackLiist": ".event.source.filename /federal/forward.pptedge.webm LT ",
+                            "authorizedProcesses": [
+                                ".process.pid 3687310 GE AND .proc.pid 3687310 GT AND .p.pid 3687310 STRCMP ",
+                                ".process.pid 3687310 GE AND .proc.pid 3687310 GT AND .p.pid 3687310 STRCMP OR .process.pid 3687310 LT OR .p.pid 3687310 EQ ",
+                                ".process.pid 3687310 GE AND .proc.pid 3687310 GT AND .p.pid 3687310 STRCMP OR .process.pid 3687310 LT OR .p.pid 3687310 EQ AND .p.pid 3687310 GT OR .p.pid 3687310 GT "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "agent.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.classification 0x2 EQ "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/worry/friend.sqlite"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "whom.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.hardwareid 45403b5d85c71930e0dcf52af471cd5f LE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/coach/never.log",
+                            "MaxSize": 4092,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

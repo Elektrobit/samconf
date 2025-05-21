@@ -1,0 +1,32 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "sell.so",
+                        "Run": "Never",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "3006": ".ev.hardwareid ec4d75967e9e72d51c9975155c29d7eb GE OR .ev.hardwareid ec4d75967e9e72d51c9975155c29d7eb GE OR .ev.hardwareid ec4d75967e9e72d51c9975155c29d7eb LE AND .event.hardwareid ec4d75967e9e72d51c9975155c29d7eb GT "
+                                }
+                            }
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "cut.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

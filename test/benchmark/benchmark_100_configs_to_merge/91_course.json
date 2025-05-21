@@ -1,0 +1,60 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "loss.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8004": ".event.source.filename /body/most.avirock.wav GT AND .ev.source.filename /body/most.avirock.wav EQ AND .event.source.filename /body/most.avirock.wav GE AND .event.source.filename /body/most.avirock.wav GE "
+                                }
+                            }
+                        }
+                    },
+                    "Shmem": {
+                        "File": "explain.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 71,
+                            "ShmemOffset": 82,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "reason.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "glass.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.appname may.flac STRCMP "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

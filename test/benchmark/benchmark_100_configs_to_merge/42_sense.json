@@ -1,0 +1,23 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "recent.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.pid 2739386 EQ "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/section/suddenly.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

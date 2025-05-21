@@ -1,0 +1,39 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "lay.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.classification 0x10 GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "become.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".event.classification 0xff00000000 STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/return/company.log",
+                            "MaxSize": 4661,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

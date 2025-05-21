@@ -1,0 +1,61 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "just.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 248,
+                            "Port": 1438,
+                            "Interface": "192.168.54.35",
+                            "EventBlackLiist": ".event.date [2390096183, 906063245] STRCMP ",
+                            "authorizedProcesses": [
+                                ".process.pid 3701261 STRCMP OR .p.pid 3701261 EQ OR .p.pid 3701261 LT ",
+                                ".process.pid 3701261 STRCMP OR .p.pid 3701261 EQ OR .p.pid 3701261 LT OR .proc.pid 3701261 LE AND .process.pid 3701261 GE ",
+                                ".process.pid 3701261 STRCMP OR .p.pid 3701261 EQ OR .p.pid 3701261 LT OR .proc.pid 3701261 LE AND .process.pid 3701261 GE OR .process.pid 3701261 GE AND .p.pid 3701261 LE "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "performance.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 232,
+                            "Port": 59855,
+                            "Interface": "173.203.107.191",
+                            "EventBlackLiist": ".ev.messageCode 2006 GE ",
+                            "authorizedProcesses": [
+                                ".p.gid 40972 GE OR .process.gid 40972 GE AND .p.gid 40972 STRCMP ",
+                                ".p.gid 40972 GE OR .process.gid 40972 GE AND .p.gid 40972 STRCMP OR .p.gid 40972 LE AND .proc.gid 40972 LE ",
+                                ".p.gid 40972 GE OR .process.gid 40972 GE AND .p.gid 40972 STRCMP OR .p.gid 40972 LE AND .proc.gid 40972 LE AND .proc.gid 40972 GT AND .process.gid 40972 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "just.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.payload Arrive war government with nothing. EQ "
+                        ],
+                        "Config": {
+                            "StoragePath": "/once/office.log",
+                            "MaxSize": 3717,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "item.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 139,
+                            "Port": 10337,
+                            "Interface": "192.168.79.189",
+                            "EventBlackLiist": ".event.source.filename /remain/adult.pngthat.key GE ",
+                            "authorizedProcesses": [
+                                ".proc.pid 880681 LE OR .p.pid 880681 EQ OR .p.pid 880681 EQ ",
+                                ".proc.pid 880681 LE OR .p.pid 880681 EQ OR .p.pid 880681 EQ OR .p.pid 880681 EQ OR .process.pid 880681 GE ",
+                                ".proc.pid 880681 LE OR .p.pid 880681 EQ OR .p.pid 880681 EQ OR .p.pid 880681 EQ OR .process.pid 880681 GE AND .proc.pid 880681 STRCMP OR .process.pid 880681 LT "
+                            ]
+                        }
+                    },
+                    "unixClient": {
+                        "File": "free.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 90,
+                            "path": "/product/of/role.socket",
+                            "EventBlackLiist": ".event.payload How data air under evening support according. LE ",
+                            "authorizedProcesses": [
+                                ".p.uid 40040 GT AND .proc.uid 40040 LT OR .p.uid 40040 LE ",
+                                ".p.uid 40040 GT AND .proc.uid 40040 LT OR .p.uid 40040 LE OR .proc.uid 40040 STRCMP AND .proc.uid 40040 GE ",
+                                ".p.uid 40040 GT AND .proc.uid 40040 LT OR .p.uid 40040 LE OR .proc.uid 40040 STRCMP AND .proc.uid 40040 GE OR .p.uid 40040 LE OR .proc.uid 40040 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "site.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.appname thought.odt STRCMP "
+                        ],
+                        "Config": {
+                            "BufferSize": 101
+                        }
+                    },
+                    "DLT": {
+                        "File": "newspaper.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.payload Home quite might wait. EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

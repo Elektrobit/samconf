@@ -1,0 +1,66 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "world.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.classification 0x80 GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/us/that.log",
+                            "MaxSize": 26508,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "deep.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.appname ok.flac GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "young.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 82,
+                            "ShmemOffset": 57,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "my.so",
+                        "Run": "Always"
+                    },
+                    "KmsgScanner": {
+                        "File": "public.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

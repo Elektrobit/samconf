@@ -1,0 +1,57 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "color.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.hardwareid 5772e62d4a252bc5fdd7363a7f9f42ab EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "hard.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 59,
+                            "ShmemOffset": 34,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    },
+                    "SyslogScanner": {
+                        "File": "new.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "6002": ".event.source.filename /ever/should.avibag.gif GE AND .e.source.filename /ever/should.avibag.gif EQ OR .ev.source.filename /ever/should.avibag.gif GE AND .ev.source.filename /ever/should.avibag.gif LE "
+                                }
+                            }
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "change.so",
+                        "Run": "Always"
+                    }
+                }
+            }
+        }
+    }
+}

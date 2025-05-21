@@ -1,0 +1,62 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "spring.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 15,
+                            "Port": 4610,
+                            "Interface": "10.120.134.115",
+                            "EventBlackLiist": ".event.messageCode 5100 GE ",
+                            "authorizedProcesses": [
+                                ".p.pid 3432463 EQ OR .process.pid 3432463 LT OR .proc.pid 3432463 EQ ",
+                                ".p.pid 3432463 EQ OR .process.pid 3432463 LT OR .proc.pid 3432463 EQ AND .process.pid 3432463 GE OR .p.pid 3432463 LE ",
+                                ".p.pid 3432463 EQ OR .process.pid 3432463 LT OR .proc.pid 3432463 EQ AND .process.pid 3432463 GE OR .p.pid 3432463 LE OR .process.pid 3432463 EQ OR .proc.pid 3432463 GT "
+                            ]
+                        }
+                    },
+                    "unixClient": {
+                        "File": "star.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 39,
+                            "path": "/author/though/figure.socket",
+                            "EventBlackLiist": ".event.source.pid 3445917 GE ",
+                            "authorizedProcesses": [
+                                ".process.pid 2473923 LT OR .process.pid 2473923 STRCMP AND .proc.pid 2473923 STRCMP ",
+                                ".process.pid 2473923 LT OR .process.pid 2473923 STRCMP AND .proc.pid 2473923 STRCMP AND .process.pid 2473923 LE OR .proc.pid 2473923 LE ",
+                                ".process.pid 2473923 LT OR .process.pid 2473923 STRCMP AND .proc.pid 2473923 STRCMP AND .process.pid 2473923 LE OR .proc.pid 2473923 LE AND .process.pid 2473923 LT OR .proc.pid 2473923 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "off.so",
+                        "Run": "Always"
+                    },
+                    "SyslogScanner": {
+                        "File": "allow.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "400": ".event.classification 0x8000000000 GE OR .e.classification 0x8000000000 GE AND .event.classification 0x8000000000 GT OR .e.classification 0x8000000000 EQ "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

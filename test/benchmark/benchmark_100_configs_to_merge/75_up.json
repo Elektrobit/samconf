@@ -1,0 +1,44 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "fill.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 151,
+                            "Port": 40087,
+                            "Interface": "218.63.53.22",
+                            "EventBlackLiist": ".e.classification 0x8000000000 GT ",
+                            "authorizedProcesses": [
+                                ".proc.exec /discuss/research/half/relate/people/collection EQ AND .process.exec /discuss/research/half/relate/people/collection LE AND .p.exec /discuss/research/half/relate/people/collection EQ ",
+                                ".proc.exec /discuss/research/half/relate/people/collection EQ AND .process.exec /discuss/research/half/relate/people/collection LE AND .p.exec /discuss/research/half/relate/people/collection EQ AND .proc.exec /discuss/research/half/relate/people/collection STRCMP AND .proc.exec /discuss/research/half/relate/people/collection GT ",
+                                ".proc.exec /discuss/research/half/relate/people/collection EQ AND .process.exec /discuss/research/half/relate/people/collection LE AND .p.exec /discuss/research/half/relate/people/collection EQ AND .proc.exec /discuss/research/half/relate/people/collection STRCMP AND .proc.exec /discuss/research/half/relate/people/collection GT OR .proc.exec /discuss/research/half/relate/people/collection GT AND .process.exec /discuss/research/half/relate/people/collection EQ "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "buy.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "7204": ".ev.messageCode 8003 GE AND .e.messageCode 8003 GE OR .event.messageCode 8003 STRCMP AND .ev.messageCode 8003 GT "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

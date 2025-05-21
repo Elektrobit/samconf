@@ -1,0 +1,64 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "indicate.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.appname research.wav GT "
+                        ],
+                        "Config": {
+                            "BufferSize": 83
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "when.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.appname their.json STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/run/sell.log",
+                            "MaxSize": 52457,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "card.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "SyslogScanner": {
+                        "File": "another.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "6001": ".e.severity 3 GT OR .e.severity 3 LT OR .event.severity 3 STRCMP OR .ev.severity 3 GT "
+                                }
+                            }
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "bit.so",
+                        "Run": "Always"
+                    }
+                }
+            }
+        }
+    }
+}

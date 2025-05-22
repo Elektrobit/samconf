@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 #include "samconf/samconf.h"
 
+#include <dirent.h>
 #include <libgen.h>
 #include <safu/common.h>
 #include <safu/defines.h>
 #include <safu/log.h>
+#include <safu/vector.h>
 #include <samconf/samconf_types.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -139,6 +141,170 @@ samconfConfigStatusE_t samconfLoad(const char *location, bool enforceSignature, 
         *config = newConfig;
     }
 
+    return status;
+}
+
+static int _cmp(const void *left, const void *right) {
+    return -strncmp(*(const char **)right, *(const char **)left, 256);
+}
+
+static samconfConfigStatusE_t _extendWithSinglePath(const char *configLocation, bool enforceSignature,
+                                                    samconfConfig_t **conf) {
+    samconfConfig_t *addConf = NULL;
+    samconfConfigStatusE_t res = samconfLoad(configLocation, enforceSignature, &addConf);
+    if (res != SAMCONF_CONFIG_OK) {
+        safuLogWarnF("Failed to load \"%s\" (%d)", configLocation, res);
+    } else {
+        res = samconfConfigMergeConfig(conf, addConf);
+        if (res == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED) {
+            safuLogDebugF("not allowed to merge in \"%s\"", configLocation);
+        } else if (res != SAMCONF_CONFIG_OK) {
+            safuLogWarnF("samconfMergeConfig() merge %d failed (%d)", res, res);
+        }
+        samconfConfigStatusE_t tmpRes = samconfConfigDelete(addConf);
+        if (tmpRes != SAMCONF_CONFIG_OK) {
+            safuLogWarnF("coudn't delete the tmp config: %d", tmpRes);
+        }
+    }
+    return res;
+}
+
+static samconfConfigStatusE_t _extendWithDirectory(DIR *confDir, bool enforceSignature, const char *const path,
+                                                   samconfConfig_t **conf) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_NOT_FOUND;
+    samconfConfigStatusE_t status = SAMCONF_CONFIG_OK;
+    safuVec_t confList;
+    int vecRes = safuVecCreate(&confList, 100, sizeof(char *));
+    if (vecRes != 0) {
+        status = SAMCONF_CONFIG_ERROR;
+        safuLogErr("Failed to create config list");
+    }
+    if (status == SAMCONF_CONFIG_OK) {
+        struct dirent *ep;
+        while ((ep = readdir(confDir))) {
+            if (ep->d_type == DT_REG) {
+                char *entry = strndup(ep->d_name, 255);
+                if (entry == NULL) {
+                    status = SAMCONF_CONFIG_ERROR;
+                    safuLogErr("Failed to copy config entry");
+                    break;
+                }
+                vecRes = safuVecPush(&confList, &entry);
+                if (vecRes != 0) {
+                    status = SAMCONF_CONFIG_ERROR;
+                    safuLogErr("Failed to add to config list");
+                    break;
+                }
+            }
+        }
+    }
+    if (status != SAMCONF_CONFIG_OK) {
+        result = status;
+    } else {
+        qsort(confList.data, confList.elementCount, confList.elementSize, _cmp);
+        size_t locationLen = strlen(path);
+        for (size_t i = 0; i < safuVecElements(&confList); i++) {
+            char *configFile = *(char **)safuVecGet(&confList, i);
+            char *configLocation = malloc(strlen(configFile) + locationLen + 2);
+            sprintf(configLocation, "%s/%s", path, configFile);
+            samconfConfigStatusE_t res = _extendWithSinglePath(configLocation, enforceSignature, conf);
+            if (res == SAMCONF_CONFIG_INVALID_SIGNATURE) {
+                result = SAMCONF_CONFIG_INVALID_SIGNATURE;
+            } else if (res == SAMCONF_CONFIG_OK && result != SAMCONF_CONFIG_INVALID_SIGNATURE) {
+                result = SAMCONF_CONFIG_OK;
+            } else if (res == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED && result != SAMCONF_CONFIG_OK &&
+                       result != SAMCONF_CONFIG_INVALID_SIGNATURE) {
+                safuLogDebugF("not allowed to merge %s", configLocation);
+                result = SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED;
+            } else if (res == SAMCONF_CONFIG_SIGNATURE_NOT_FOUND && result != SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED &&
+                       result != SAMCONF_CONFIG_OK && result != SAMCONF_CONFIG_INVALID_SIGNATURE) {
+                result = SAMCONF_CONFIG_SIGNATURE_NOT_FOUND;
+            }
+            free(configLocation);
+        }
+        for (size_t i = 0; i < safuVecElements(&confList); i++) {
+            char *configFile = *(char **)safuVecGet(&confList, i);
+            free(configFile);
+        }
+    }
+    safuVecFree(&confList);
+    return result;
+}
+
+static samconfConfigStatusE_t _extendWithLocation(const samconfConfigLocation_t *location,
+                                                  samconfConfig_t **const conf) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_NOT_FOUND;
+    DIR *confDir = opendir(location->path);
+    if (confDir != NULL) {
+        result = _extendWithDirectory(confDir, location->enforceSignature, location->path, conf);
+        if (result == SAMCONF_CONFIG_NOT_FOUND) {
+            safuLogWarnF("No config found in \"%s\"", location->path);
+        } else if (result == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED) {
+            safuLogWarnF("merge rules don't allow anything in \"%s\" to be merged", location->path);
+        } else if (result != SAMCONF_CONFIG_OK) {
+            safuLogErrF("couldn't extend with \"%s\" (%d)", location->path, result);
+        }
+        closedir(confDir);
+    } else {
+        result = _extendWithSinglePath(location->path, location->enforceSignature, conf);
+        if (result == SAMCONF_CONFIG_NOT_FOUND) {
+            safuLogWarnF("no config could be found at \"%s\"", location->path);
+        } else if (result == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED) {
+            safuLogWarnF("extending with \"%s\" not allowed by merge rules", location->path);
+        } else if (result != SAMCONF_CONFIG_OK) {
+            safuLogErrF("couldn't extend with \"%s\"", location->path);
+        }
+    }
+    return result;
+}
+
+samconfConfigStatusE_t samconfLoadAndMerge(const samconfConfigLocation_t locations[], size_t locationsSize,
+                                           samconfConfig_t **const config) {
+    samconfConfigStatusE_t status = SAMCONF_CONFIG_OK;
+
+    if (locations == NULL) {
+        safuLogErr("Invalid Call to samconfLoad, missing config locations");
+        return SAMCONF_CONFIG_ERROR;
+    }
+    if (config == NULL) {
+        safuLogErr("Invalid Call to samconfLoad, uninitialized configuration");
+        return SAMCONF_CONFIG_ERROR;
+    }
+    if (*config == NULL) {
+        safuLogDebug("Creating new config");
+        status = samconfConfigNew(config);
+        if (status == SAMCONF_CONFIG_OK) {
+            (*config)->type = SAMCONF_CONFIG_VALUE_OBJECT;
+        }
+    }
+    if (status != SAMCONF_CONFIG_OK) {
+        return status;
+    }
+    status = SAMCONF_CONFIG_NOT_FOUND;
+    samconfConfigStatusE_t tmpRes = SAMCONF_CONFIG_OK;
+    for (size_t i = 0; i < locationsSize; i++) {
+        switch (locations[i].type) {
+            case SAMCONF_CONFIG_LOCATION_TYPE_CONFIG:
+                if (locations[i].path == NULL) {
+                    continue;
+                }
+                tmpRes = samconfConfigMergeConfig(config, locations[i].config);
+                break;
+            case SAMCONF_CONFIG_LOCATION_TYPE_PATH:
+                tmpRes = _extendWithLocation(&locations[i], config);
+                break;
+            default:
+                safuLogWarn("not a valid config location");
+                continue;
+        }
+        if (tmpRes == SAMCONF_CONFIG_OK) {
+            status = SAMCONF_CONFIG_OK;
+        } else if (tmpRes == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED && status == SAMCONF_CONFIG_OK) {
+            status = SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED;
+        } else {
+            safuLogWarnF("some error extending With location \"%s\"", locations[i].path);
+        }
+    }
     return status;
 }
 
@@ -964,4 +1130,81 @@ double samconfConfigGetRealOr(const samconfConfig_t *root, const char *path, dou
         result = defaultValue;
     }
     return result;
+}
+
+static void _level(const safuVec_t *const indicator) {
+    bool *ind = indicator->data;
+    for (size_t i = 0; i < indicator->elementCount; i++) {
+        if (ind[i]) {
+            printf("    ");
+        } else {
+            printf("│   ");
+        }
+    }
+}
+
+#define BOOL_STRING(b) (b) ? "true" : "false"
+#define SIGNED(sgnd)   (sgnd) ? "✅" : "❌"
+
+void _dumpConfigTree(const samconfConfig_t *const config, safuVec_t *indicator, bool last) {
+    _level(indicator);
+    if (last) {
+        printf("└── %s %s", SIGNED(config->isSigned), config->key);
+    } else {
+        printf("├── %s %s", SIGNED(config->isSigned), config->key);
+    }
+    safuVecPush(indicator, &last);
+    switch (config->type) {
+        case SAMCONF_CONFIG_VALUE_OBJECT:
+            printf("\n");
+            for (size_t i = 0; i < config->childCount; i++) {
+                last = i + 1 >= config->childCount;
+                _dumpConfigTree(config->children[i], indicator, last);
+            }
+            break;
+        case SAMCONF_CONFIG_VALUE_ARRAY:
+            printf("\n");
+            for (size_t i = 0; i < config->childCount; i++) {
+                last = i + 1 >= config->childCount;
+                _dumpConfigTree(config->children[i], indicator, last);
+            }
+            break;
+        case SAMCONF_CONFIG_VALUE_BOOLEAN:
+            printf(": %s\n", BOOL_STRING(config->value.boolean));
+            break;
+        case SAMCONF_CONFIG_VALUE_INT:
+            printf(": %ld\n", config->value.integer);
+            break;
+        case SAMCONF_CONFIG_VALUE_REAL:
+            printf(": %f\n", config->value.real);
+            break;
+        case SAMCONF_CONFIG_VALUE_STRING:
+            printf(": \"%s\"\n", config->value.string);
+            break;
+        default:
+            printf(": UNKNOWN/ERROR\n");
+    }
+    safuVecPop(indicator);
+}
+
+void samconfDumpConfigTree(const samconfConfig_t *const config) {
+    if (config == NULL) {
+        safuLogErr("Conifg to dump is NULL");
+        return;
+    }
+    safuVec_t indicator;
+    safuResultE_t res = safuVecCreate(&indicator, 10, sizeof(bool));
+    if (res != SAFU_RESULT_OK) {
+        safuLogErr("Failed to create indent vec\n");
+        return;
+    }
+    printf("%s / (%s)\n", SIGNED(config->isSigned), config->key);
+    for (size_t i = 0; i < config->childCount; i++) {
+        bool last = i + 1 >= config->childCount;
+        _dumpConfigTree(config->children[i], &indicator, last);
+    }
+    res = safuVecFree(&indicator);
+    if (res != SAFU_RESULT_OK) {
+        safuLogErr("Failed to free indent vec");
+    }
 }

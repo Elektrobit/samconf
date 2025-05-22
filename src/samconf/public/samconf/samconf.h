@@ -7,7 +7,37 @@ __BEGIN_DECLS
 const struct samconfConfigBackendOps *samconfGetBackendOps(samconfBackendOptions_t idx);
 samconfConfigStatusE_t samconfLookupBackend(const char *location, struct samconfConfigBackend **backend);
 samconfConfigStatusE_t samconfVerifySignature(const char *location);
+
+/*******************************************************************
+ * Create a path to the config, upto the top most parent.
+ *
+ * Parameters:
+ *     location : the location from where to load a config
+ *     enforceSignature : whether to require the config to be signed
+ *     config : the pointer in which to store the resulting config
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
 samconfConfigStatusE_t samconfLoad(const char *location, bool enforceSignature, samconfConfig_t **const config);
+
+/*******************************************************************
+ * Create a path to the config, upto the top most parent.
+ *
+ * Parameters:
+ *     locations : a lisit of locations from where to assemble the configuration
+ *     locationsSize : the size of the locations list
+ *     config : the pointer in which to store the resulting config
+ *
+ * Returns:
+ *         SAMCONF_CONFIG_OK – when at least one config could be loaded and merged successfully
+ *         SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED - when the merge rules forbitt all the configs to be merged
+ *         SAMCONF_CONFIG_NOT_FOUND - if none of the locations have any configs
+ *         SAMCONF_CONFIG_ERROR – on failure.
+ ******************************************************************/
+samconfConfigStatusE_t samconfLoadAndMerge(const samconfConfigLocation_t *locations, size_t locationsSize,
+                                           samconfConfig_t **const config);
 
 samconfConfigStatusE_t samconfConfigNew(samconfConfig_t **const config);
 samconfConfigStatusE_t samconfConfigInit(samconfConfig_t *config);
@@ -315,4 +345,14 @@ samconfConfigStatusE_t samconfConfigMergeConfigs(samconfConfig_t **mergedConfig,
  ******************************************************************/
 samconfConfigStatusE_t samconfConfigNext(const samconfConfig_t *root, const samconfConfig_t *configToFind,
                                          const samconfConfig_t **nextConfig);
+
+/*******************************************************************
+ * Function to dump a configuration as a tree to stdout
+ *
+ * Parameters:
+ *     config : the config to print
+ *
+ ******************************************************************/
+void samconfDumpConfigTree(const samconfConfig_t *const config);
+
 __END_DECLS

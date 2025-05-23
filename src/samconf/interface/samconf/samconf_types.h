@@ -26,6 +26,7 @@ typedef enum samconfConfigStatusE {
     SAMCONF_CONFIG_PARSE_ERROR,
     SAMCONF_CONFIG_INVALID_SIGNATURE,
     SAMCONF_CONFIG_SIGNATURE_NOT_FOUND,
+    SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED,
 } samconfConfigStatusE_t;
 
 typedef enum samconfConfigValueTypeE {
@@ -65,3 +66,24 @@ typedef struct samconfConfig {
     struct samconfConfig **children;
     size_t childCount;
 } samconfConfig_t;
+
+typedef enum samconfConfigLocationTypeE {
+    SAMCONF_CONFIG_LOCATION_TYPE_PATH,
+    SAMCONF_CONFIG_LOCATION_TYPE_CONFIG,
+} samconfConfigLocationTypeE_t;
+
+typedef struct samconfConfigLocation {
+    samconfConfigLocationTypeE_t type;
+    union {
+        struct {
+            char *path;
+            bool enforceSignature;
+        };
+        samconfConfig_t *config;
+    };
+} samconfConfigLocation_t;
+
+#define CONFIG(conf) \
+    { .type = SAMCONF_CONFIC_LOCATION_TYPE_CONFIG, .config = (conf) }
+#define CONF_PATH(p, enfSig) \
+    { .type = SAMCONF_CONFIG_LOCATION_TYPE_PATH, .path = (p), .enforceSignature = (enfSig) }

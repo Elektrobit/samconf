@@ -3,6 +3,7 @@
 
 #include <safu/common.h>
 #include <safu/defines.h>
+#include <safu/log.h>
 #include <safu/result.h>
 #include <safu/types.h>
 #include <samconf/samconf_types.h>
@@ -22,6 +23,35 @@ int _pathGetSegmentCount(const char *path) {
         }
     }
     return segcount;
+}
+
+static samconfConfigStatusE_t _add_to_new_path(const char *existingPath, const char *segment, char **newPath) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    size_t strLen = 0;
+    int ret = 0;
+
+    if (existingPath == NULL || segment == NULL) {
+        safuLogErr("invalid parameters");
+    } else {
+        strLen = strlen(segment) + strlen(existingPath);
+        *newPath = safuAllocMem(NULL, strLen + 2);
+        if (*newPath == NULL) {
+            safuLogErr("SafuAllocMem failed");
+        } else {
+            if (existingPath[0] == '\0') {
+                ret = snprintf(*newPath, strLen + 2, "%s", segment);
+            } else {
+                ret = snprintf(*newPath, strLen + 2, "%s/%s", segment, existingPath);
+            }
+            if (ret < 0) {
+                safuLogErr("snprintf failed");
+                free(*newPath);
+            } else {
+                result = SAMCONF_CONFIG_OK;
+            }
+        }
+    }
+    return result;
 }
 
 samconfConfigStatusE_t samconfPathCreateArray(const char *path, char ***patharray, int *count) {
@@ -94,4 +124,71 @@ samconfConfigStatusE_t samconfPathGetPathUntil(char **patharray, int index, char
         status = SAMCONF_CONFIG_OK;
     }
     return status;
+}
+
+samconfConfigStatusE_t samconfPathGetPath(const samconfConfig_t *config, const char **path) {
+    samconfConfigStatusE_t result = SAMCONF_CONFIG_ERROR;
+    samconfConfig_t *parent = NULL;
+    char *rootKey = "root";
+    char *existingPath = "";
+    char *newPath = NULL;
+
+    if (config == NULL || path == NULL) {
+        safuLogErr("invalid parameters");
+    } else {
+        if (strcmp(config->key, rootKey) == 0) {
+            *path = strdup(rootKey);
+            result = SAMCONF_CONFIG_OK;
+        } else {
+            result = _add_to_new_path(existingPath, config->key, &newPath);
+            if (result == SAMCONF_CONFIG_ERROR) {
+                safuLogErrF("adding %s to path failed", config->key);
+            } else if (newPath == NULL) {
+                safuLogErr("created path is null");
+                result = SAMCONF_CONFIG_ERROR;
+            } else {
+                parent = config->parent;
+                while (strcmp(parent->key, rootKey) != 0) {
+                    existingPath = strdup(newPath);
+                    if (existingPath == NULL) {
+                        safuLogErr("strdup failed");
+                        result = SAMCONF_CONFIG_ERROR;
+                        free(newPath);
+                        break;
+                    }
+                    free(newPath);
+                    newPath = NULL;
+                    result = _add_to_new_path(existingPath, parent->key, &newPath);
+                    if (result == SAMCONF_CONFIG_ERROR) {
+                        safuLogErrF("adding %s to path failed", parent->key);
+                        free(existingPath);
+                        break;
+                    }
+                    parent = parent->parent;
+                    result = SAMCONF_CONFIG_OK;
+                    free(existingPath);
+                }
+                if (strcmp(parent->key, rootKey) == 0 && result == SAMCONF_CONFIG_OK) {
+                    existingPath = strdup(newPath);
+                    if (existingPath == NULL) {
+                        safuLogErr("strdup failed");
+                        result = SAMCONF_CONFIG_ERROR;
+                    } else {
+                        free(newPath);
+                        newPath = NULL;
+                        result = _add_to_new_path(existingPath, rootKey, &newPath);
+                        if (result == SAMCONF_CONFIG_ERROR) {
+                            safuLogErrF("adding %s to path failed", rootKey);
+                        } else {
+                            *path = newPath;
+                            result = SAMCONF_CONFIG_OK;
+                        }
+                        free(existingPath);
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
 }

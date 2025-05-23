@@ -304,44 +304,101 @@ struct samconfbuildInConfig {
 
 ## Merge multiple Config-Trees
 
-The tree structure allows easy extension of a basic configuration or merging of an
-arbitrary number of configurations. Thus a configuration tree can consist of
-nodes from different sources.
+Configurations can come from different sources, but, when converted to samconf canonical form
+they are a tree data structure with root and nodes. With this structure, extension of a given
+configuration is easy. New nodes can be added, existing nodes can be removed and multiple
+numbers of similar configurations can be merged. Merging of multiple configurations is as shown
+below.
 
 Merging of two or more configs need:
 
-* at least two `samconfConfig_t` trees
-* a config path prefix for each source, to specify the mount point in the final
-  config tree
-* a set of rules how to merge them 
+* at least two `samconfConfig_t` trees , where one tree is where the other tree will be merged into.
+* the correct order in which the trees are to be merged according the merge rules.
 
-The following example illustrates how to merge different configuration from
-different sources.
+The following example illustrates how to merge different configuration.
+
+*configA.json*
+
+```json
+{
+    "root": {
+        "elos": {
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "backend_dlt_logger.so",
+                        "Run": "always",
+                        "Filter": [
+                            ".e.messageCode 1000 GE"
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 ```
-ConfigSource envSource = {
-   .location= "/proc/6542/environment",
-   .prefix = "/"
-};
 
-ConfigSource paramSource = {
-   .location= "/proc/6542/cmdline",
-   .prefix = "/"
-};
+*configB.json*
 
-ConfigSource configFileSource = {
-   .location= "/etc/myApp.json",
-   .prefix = "/"
-};
+```json
+{
+    "root": {
+        "elos": {
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "backend_fetchapi.so",
+                        "Run": "always",
+                        "Filter": [
+                            "1 1 EQ"
+                        ],
+                        "Config": {
+                            "BufferSize": 150
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
-aConfig = samconfLoad(configFileSource);
-bConfig = samconfLoad(envSource);
-cConfig = samconfLoad(paramSource);
+```
 
-samconfConfig_t mergedConfig ={};
-samconfMerge(&mergedConfig,{aConfig,bConfig,cConfig});
+*Config Via Environment Variable*
 
-samconfConfigGetBool("/myApp/isSomethingEnabled");
-...
+```shell
+    ELOS_EVENTLOGGING_PLUGINS_DLT_FILE=backend_dlt_logger.so
+
+```
+
+The above configurations can be converted to config trees as given below
+
+
+```c
+
+result = samconfLoad("configA.json", false, &aConfig);
+result = samconfLoad("configB.json", false, &bConfig);
+result = samconfLoad(envVariableUri, false, &cConfig);
+
+```
+
+Once the config trees are created the configuration can be merged as follows:
+
+
+```c
+
+samconfConfig_t *mergedConfig = NULL;
+samconfConfig_t *configsToMerge[] = {aConfig,bConfig,cConfig};
+size_t configCount = ARRAY_SIZE(configsToMerge);
+
+result = samconfConfigMergeConfigs(&mergedConfig, configsToMerge, configCount);
 
 ```
 
@@ -351,25 +408,151 @@ possible.
 
 The samconf merge algorithm is as follows:
 
-```c
-function merge(configs, mergeRules) {
-      mergeRules =  MergeRules
-      rootConfig = new Config
-      for config in configs {
-           for child in config.childNModes {
-                 if (child is leaf ) {
-                      optionPath = config.getPathPrefix() + child.getPath()
-                      rootConfig.insertIf(optionPath, child, rules)
-                 }else {
-                     for child in child.childs
-                             ... iterate trough the tree
-                 }
 
-           }
-     }
- }
+1) Determine where the configs are to be merged. This will be the mergedConfig.
+   This can be a newly initialized config, the first config in the array of configs
+   to be merged or any config.
+
+
+2) Once the mergedConfig is established, the next config will be the configsToMerge.
+
+
+   **For example:** if mergedConfig is the first element of the configs array, then
+   the second config will be the configToMerge.
+
+
+3) Iterate through each of the nodes in the configToMerge, get the node path and check if
+   the node is present with the same path in the mergedConfig.
+
+
+4) If the check is yes than check the signage of mergedConfig and ConfigToMerge and edit
+   node value according to the merge rules.
+
+
+5) If the check is no then add the node to mergedConfig if the configToMerge follows
+   the merge rules.
+
+
+6) Once all nodes in configToMerge are completed set next config in array as configToMerge
+
+
+7) Repeat steps 3-5 again.
+
+
+### Merge Rules
+
+When merging multiple configuration there arises conflicts when two
+configurations have the same values. The following rules are used for
+conflict resolution :
+
+1) In order of precedence
+   - The order of precedence is decided by the user.
+   - The processing starts with the lowest priority for the first and ends with
+     the highest priority on the last given configuration.
+   - A configuration option with lower priority can be overwritten with a
+     configuration option with high priority in the order, if the options
+     follow the other merge rules.
+
+2) Only an option from signed source can overwrite an option from signed source.
+   - Signed configurations are those that have their a signature file present.
+
+3) An option from a unsigned source can be overwritten by an option from a signed or unsigned source.
+   - Unsigned configurations are those without accompanying verification files. 
+   - User should make sure custom configurations are signed for the changes to take place.
+
+4) An unsigned option can **NOT** overwrite a signed option
+
+
+#### Example : Applying the merge rules
+
+In the given scenario the configuration files for an application *my_app* are
+located in the file system in a common way aligned to common best practices (see.  
+[FHS](https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html),
+[systemd-conf](https://www.freedesktop.org/software/systemd/man/latest/systemd-system.conf.html#Configuration%20Directories%20and%20Precedence)
+or [XDG basedir-spec](https://specifications.freedesktop.org/basedir-spec/latest/#basics)
+). 
+
 ```
-*The algorithm in pseudo code*
+/
+├── etc
+│   └── my_app.d
+│        ├── 10_my_app_config.json
+│        └── 10_my_app_config.sig
+├── home
+│   └── username
+│       └── .local
+│            ├── 20_my_app_config.json 
+│            └── 20_my_app_config.sig
+└── usr
+    └── share
+        ├── my_app
+        │   └── 40_my_app_config.json 
+        └── lib
+            └── 80_my_app_config.json 
+
+```
+
+Then the user shall load the configurations in the code for *my_app* application as follows:
+
+```c
+samconfConfig_t *etcConfig = NUll;
+samconfConfig_t *localConfig = NUll;
+samconfConfig_t *usraConfig = NUll;
+samconfConfig_t *usrbConfig = NUll;
+samconfLoad("/etc/my_app.d/10_my_app_config.json", true, &etcConfig);
+samconfLoad("/home/username/.local/20_my_app_config.json", true, &localConfig);
+samconfLoad("/usr/share/my_app/40_my_app_config.json", false, &usraConfig);
+samconfLoad("/usr/share/lib/80_my_app_config.json", false, &usrbConfig);
+```
+
+Once all the configurations are loaded and are available in the canonical tree form, these configuration trees can be merged.
+
+Then the merge is performed in the following way:
+
+```c
+samconfConfig_t *mergedConfig = NULL;
+samconfConfig_t *configsToMerge[] = {usrbConfig, usraConfig, localConfig, etcConfig};
+size_t configCount = ARRAY_SIZE(configsToMerge);
+result = samconfConfigMergeConfigs(&mergedConfig, configsToMerge, configCount);
+```
+
+The order in which the configurations are loaded indicates the priority
+starting with the lowest and ending with the highest. Again as stated above,
+this is to be determined by the user. `Samconf` does not automatically order
+the configurations. 
+When a merge is performed this way, then the order of precedence is as follows :
+
+| **Location**                                   | **Priority**  |
+|:---                                            |    :-----:    |
+| Command Line Arguments (if available)          | <div style="width: 100%; height: 10px; background-color:#3357FF;"></div> |
+| Environment Variables (if available)           | <div style="width: 80%; height: 10px; background-color: #3357FF;"></div> |
+| /etc/my\_app.d/10\_my\_app\_config.json        | <div style="width: 60%; height: 10px; background-color: #3357FF;"></div> |
+| /home/username/.local/20\_my\_app\_config.json | <div style="width: 60%; height: 10px; background-color: #3357FF;"></div> |
+| /usr/share/my\_app/40\_my\_app\_config.json    | <div style="width: 20%; height: 10px; background-color: #3357FF;"></div> |
+| /usr/share/lib/80\_my\_app\_config.json        | <div style="width: 10%; height: 10px; background-color: #3357FF;"></div> |
+
+
+
+Another common approach is to specify a configuration directory `my_app.d` with
+more than one configuration file to be loaded. 
+
+```
+/
+ └──etc
+    └── my_app.d
+        ├── 10_my_app_config.json
+        ├── 10_my_app_config.sig
+        ├── 20_my_app_config.json
+        ├── 20_my_app_config.sig
+        ├── 30_my_app_config.json
+        └── 30_my_app_config.sig
+
+```
+
+The Files should be sorted alphabetically and the first file in the above case
+`10_my_app_config.json` has least priority and can be overwritten with values
+from the preceding files, where the last file has the highest priority which in
+this case is `30_my_app_config.json`.
 
 
 ## Public API
@@ -393,19 +576,20 @@ if (status != SAMCONF_CONFIG_OK)
 In order to combine different configuration sources like json files and commandline parameters, you can merge them:
 
 ```c
-samconfConfig_t *config, *jsonConfig, *parameters;
-samconfConfigStatusE_t status;
-
+// Create config from source as shown in [Building a Configuration Tree](#Building a Configuration Tree)
 // Load json config and commandline parameters
 
-status = samconfMerge(&config, jsonConfig, parameters);
+status = samconfConfigMergeConfig(&config, jsonConfig, parameters);
+or
+status = samconfConfigMergeConfigs(&config, {config_1,...,config_n}, numberofconfigs);
+
 if (status != SAMCONF_CONFIG_OK)
     // Include error handling here
 ```
 
 ### Clearing Configuration Trees
 
-In order to clean up configuration trees, you can use `samconfClear`:
+In order to clean up configuration trees, you can use `samconfConfigDeleteMembers`:
 
 ```c
 samconfConfig_t *config;
@@ -413,7 +597,7 @@ samconfConfigStatusE_t status;
 
 // Load the configuration and do your thing
 
-status = samconfClear(config);
+status = samconfConfigDeleteMembers(config);
 ```
 
 ## Internal API

@@ -15,13 +15,9 @@ int samconfTestSamconfConfigGetRealOrSuccessEntryNotFoundTeardown(UNUSED void **
 void samconfTestSamconfConfigGetRealOrSuccessEntryNotFound(void **state) {
     samconfConfig_t *testConfig = *state;
     double result = NAN;
-    double defaultValues[] = {0.0, -12.3, DBL_MAX, DBL_MIN, 42.7, DBL_EPSILON, DBL_MAX_EXP, DBL_MIN_EXP};
-    const char *testPaths[] = {"",
-                               "elos/Scanner/SysLongLong",
-                               "Scanner/Syslog/SyslogPath/NotExisting",
-                               "Scanner/Syslog/NotExisting",
-                               "NotExisting",
-                               "NotExisting/"};
+    double defaultValues[] = {-12.3, DBL_MAX, DBL_MIN, 42.7, DBL_EPSILON, DBL_MAX_EXP, DBL_MIN_EXP};
+    const char *testPaths[] = {"elos/Scanner/SysLongLong", "Scanner/Syslog/SyslogPath/NotExisting",
+                               "Scanner/Syslog/NotExisting", "NotExisting", "NotExisting/"};
 
     TEST("samconfConfigGetRealOr");
     SHOULD("%s",

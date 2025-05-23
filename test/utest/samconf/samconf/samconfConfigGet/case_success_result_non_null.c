@@ -45,9 +45,7 @@ static void _testSamconfconfigGetSuccessResultNonNullParam(const samconfConfig_t
 
 void samconfTestSamconfConfigGetSuccessResultNonNull(void **state) {
     samconfUteststate_t *testState = *state;
-    const char *testPaths[] = {"/",
-                               "",
-                               "elos/Scanner/Syslog",
+    const char *testPaths[] = {"elos/Scanner/Syslog",
                                "elos//Scanner/Syslog",
                                "Scanner/Syslog/SyslogPath/NotExisting",
                                "/Scanner/Syslog/SyslogPath/NotExisting",

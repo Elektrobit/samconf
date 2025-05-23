@@ -17,7 +17,7 @@ while [ $# -gt 0 ]; do
         --verbose|-v)  OPTION_VERBOSE=1 ;;
         -D)            CMAKE_PARAM="${CMAKE_PARAM} -D ${2}"
                        shift ;;
-        -D*)           CMAKE_PARAM="$CMAKE_PARAM} ${1}" ;;
+        -D*)           CMAKE_PARAM="${CMAKE_PARAM} ${1}" ;;
         -*)          echo "error: unknown option: ${1}"; exit 1 ;;
         *)           PARAM="${PARAM} ${1}" ;;
     esac
@@ -44,28 +44,30 @@ BUILD_TYPE="${1:-Debug}"
 CMAKE_PARAM="${CMAKE_PARAM} -DINSTALL_DIR=${DIST_DIR}"
 CMAKE_PARAM="${CMAKE_PARAM} -DCMAKE_PREFIX_PATH=${BASE_DIR}/build/deps"
 
-if [ $OPTION_CLEAN -eq 1 ]; then
-    if [ -e "$BUILD_DIR" ]; then
-        echo "Removing $BUILD_DIR ..."
-        rm -rf "$BUILD_DIR"
+if [ ${OPTION_CLEAN} -eq 1 ]; then
+    if [ -e "${BUILD_DIR}" ]; then
+        echo "Removing ${BUILD_DIR} ..."
+        rm -rf "${BUILD_DIR}"
     fi
 fi
-if [ $OPTION_VERBOSE -eq 1 ]; then
-    NINJA_PARAM="$NINJA_PARAM -v"
+if [ ${OPTION_VERBOSE} -eq 1 ]; then
+    NINJA_PARAM="${NINJA_PARAM} -v"
 fi
 
-echo -e "\n#### Configuring $PROJECT ($BUILD_TYPE) ####"
-mkdir -p "$RESULT_DIR" "$DIST_DIR"
-if [ ! -e "$CMAKE_BUILD_DIR/build.ninja" ]; then
-    cmake -B "$CMAKE_BUILD_DIR" "$BASE_DIR" "-DCMAKE_BUILD_TYPE=$BUILD_TYPE" -G Ninja $CMAKE_PARAM
+echo -e "\n#### Configuring ${PROJECT} (${BUILD_TYPE}) ####"
+mkdir -p "${RESULT_DIR}" "${DIST_DIR}"
+if [ ! -e "${CMAKE_BUILD_DIR}/build.ninja" ]; then
+    set -x
+    cmake -B "${CMAKE_BUILD_DIR}" "${BASE_DIR}" "-DCMAKE_BUILD_TYPE=${BUILD_TYPE}" -G Ninja ${CMAKE_PARAM}
+    set +x
 fi
 
-echo -e "\n#### Building $PROJECT ($BUILD_TYPE) ####"
-DESTDIR="$DIST_DIR" \
-ninja -C "$CMAKE_BUILD_DIR" $NINJA_PARAM all install 2>&1 | tee "$RESULT_DIR/build_log.txt"
+echo -e "\n#### Building ${PROJECT} (${BUILD_TYPE}) ####"
+DESTDIR="${DIST_DIR}" \
+ninja -C "${CMAKE_BUILD_DIR}" ${NINJA_PARAM} all install 2>&1 | tee "${RESULT_DIR}/build_log.txt"
 
 re=${PIPESTATUS[0]}
 
-"$BASE_DIR/ci/check_build_log.py" "$RESULT_DIR/build_log.txt"
+"${BASE_DIR}/ci/check_build_log.py" "${RESULT_DIR}/build_log.txt"
 
 exit "$re"

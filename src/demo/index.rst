@@ -11,7 +11,7 @@ to check and query config files.
 
 To verify a config file :
 
-.. command-output:: samprobe /test/smoketest/config.json
+.. command-output:: samprobe test/smoketest/config.json
 
 
 env_example – test and query configs created from environment variables
@@ -27,3 +27,28 @@ into a configuration but only those with the given prefix are to be loaded.
 To use this demo :
 
 .. command-output:: env_example
+
+
+dump_merged_config - merge multiple configs and dump the result
+---------------------------------------------------------------
+
+This is an example application to dump the result of merging multiple configurations.
+The result can be dumped as JSON, a tree view or both.
+
+To use this demo:
+
+.. command-output:: dump_merged_config --help
+
+.. command-output:: dump_merged_config --tree --json test/smoketest/
+
+dump_config - load a single config and dump it to stdout
+--------------------------------------------------------
+
+This is an example application to load and dump a configurations.
+The output can be as JSON, a tree view or both.
+
+To use this demo:
+
+.. command-output:: dump_config --help
+
+.. command-output:: dump_config --tree --json test/smoketest/config.json

@@ -42,7 +42,11 @@ SPHINX_HTML_OUTPUT_DIR=${SPHINX_BUILD_DIR}/html
 
 . "${SPHINX_VENV-${BASE_DIR}/.venv/}/bin/activate"
 
-rm -rf "${SPHINX_GENERATED_SOURCE_DIR}"
+if [ ${OPTION_CLEAN} -eq 1 ]; then
+    echo "Delete ${SPHINX_GENERATED_SOURCE_DIR} ${SPHINX_BUILD_DIR}"
+    rm -rf ${SPHINX_GENERATED_SOURCE_DIR} ${SPHINX_BUILD_DIR}
+fi
+
 mkdir -p "${SPHINX_GENERATED_SOURCE_DIR}/ADRs" "${SPHINX_GENERATED_SOURCE_DIR}/developer"
 
 function createApiDocu() {
@@ -63,7 +67,7 @@ createApiDocu
 createDeveloperDocu
 
 export PATH="${PATH}:${DIST_DIR}/usr/local/bin"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-"./"}:${DIST_DIR}/usr/local/lib"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-"./"}:${DIST_DIR}/usr/local/lib:${BUILD_DIR}/deps/lib"
 
 mkdir -p ${SPHINX_BUILD_DIR}
 sphinx-build -b html ${SPHINX_SOURCE_DIR} ${SPHINX_HTML_OUTPUT_DIR} 2> >(tee -a ${SPHINX_BUILD_DIR}/html_doc_error.log >&2)

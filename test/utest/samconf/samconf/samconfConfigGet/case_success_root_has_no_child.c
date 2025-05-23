@@ -31,7 +31,7 @@ void samconfTestSamconfConfigGetSuccessRootHasNoChild(UNUSED void **state) {
     };
 
     TEST("samconfConfigGet");
-    SHOULD("%s", "return SAMCONF_CONFIG_ERROR since root config node has no child nodes");
+    SHOULD("%s", "return SAMCONF_CONFIG_NOT_FOUND since root config node has no child nodes");
 
     for (int i = 0; i < 1000; i++) {
         clock_gettime(CLOCK_REALTIME, &start);

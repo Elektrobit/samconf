@@ -54,7 +54,15 @@ create_mock_lib(
     samconfUriInit
     samconfUriDeleteMembers
     samconfConfigSetValueFromString
-    samconfEnvBackendCreateConfig
+    samconfCopyConfigValue
+    samconfConfigCopyConfig
+    samconfCreateAt
+    samconfCreateBoolAt
+    samconfCreateFromStringAt
+    samconfCreateIntAt
+    samconfCreateRealAt
+    samconfCreateStringAt
+    samconfInsertAt
 )
 
 target_link_libraries(

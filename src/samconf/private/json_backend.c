@@ -171,3 +171,39 @@ const samconfConfigBackendOps_t samconfJsonOps = {
     .close = samconfJsonBackendClose,
     .load = samconfJsonBackendLoad,
 };
+
+struct json_object *samconfDumpJsonConfig(const samconfConfig_t *const config) {
+    if (config == NULL) {
+        return json_object_new_null();
+    }
+    struct json_object *jobj;
+    switch (config->type) {
+        case SAMCONF_CONFIG_VALUE_OBJECT:
+            jobj = json_object_new_object();
+            for (size_t i = 0; i < config->childCount; i++) {
+                json_object_object_add(jobj, config->children[i]->key, samconfDumpJsonConfig(config->children[i]));
+            }
+            break;
+        case SAMCONF_CONFIG_VALUE_ARRAY:
+            jobj = json_object_new_array();
+            for (size_t i = 0; i < config->childCount; i++) {
+                json_object_array_add(jobj, samconfDumpJsonConfig(config->children[i]));
+            }
+            break;
+        case SAMCONF_CONFIG_VALUE_BOOLEAN:
+            jobj = json_object_new_boolean(config->value.boolean);
+            break;
+        case SAMCONF_CONFIG_VALUE_INT:
+            jobj = json_object_new_int(config->value.integer);
+            break;
+        case SAMCONF_CONFIG_VALUE_REAL:
+            jobj = json_object_new_double(config->value.real);
+            break;
+        case SAMCONF_CONFIG_VALUE_STRING:
+            jobj = json_object_new_string(config->value.string);
+            break;
+        default:
+            jobj = json_object_new_null();
+    }
+    return jobj;
+}

@@ -25,22 +25,6 @@ __BEGIN_DECLS
 samconfConfigStatusE_t samconfEnvBackendOpen(const char *location, samconfConfigBackend_t *backend);
 
 /**
- * Creates a samconfConfig_t struct by following the path parameter. The value is then set to
- * the last node in the path
- *
- * Parameters:
- *     root (samconfConfig_t *): root config to which further nodes from path a added.
- *     path (const char*):  path followed to create the config
- *     value (const char*):  value to be set to the last node in the path
- *
- * Returns:
- *     samconfConfigStatusE_t:
- *         SAMCONF_CONFIG_OK – on success.
- *         SAMCONF_CONFIG_ERROR – on failure.
- */
-samconfConfigStatusE_t samconfEnvBackendCreateConfig(samconfConfig_t **root, const char *path, const char *value);
-
-/**
  * Loads a configuration by creating a samconfConfig_t struct by following the path parameter and sets flag to
  * to indicate if config is signed or not.
  *

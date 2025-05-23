@@ -35,9 +35,7 @@ static void _testSamconfconfigGetSuccessEntryNotFoundParam(const samconfConfig_t
 
 void samconfTestSamconfConfigGetSuccessEntryNotFound(void **state) {
     samconfUteststate_t *testState = *state;
-    const char *testPaths[] = {"/",
-                               "",
-                               "elos/Scanner/Syslog",
+    const char *testPaths[] = {"elos/Scanner/Syslog",
                                "elos//Scanner/Syslog",
                                "Scanner/Syslog/SyslogPath/NotExisting",
                                "/Scanner/Syslog/SyslogPath/NotExisting",

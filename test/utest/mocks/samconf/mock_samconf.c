@@ -3,6 +3,10 @@
 #include "mock_samconf.h"
 
 #include <cmocka.h>
+#include <cmocka_extensions/mock_extensions.h>
+#include <samconf/samconf.h>
+#include <samconf/samconf_types.h>
+#include <stdlib.h>
 
 MOCK_FUNC_BODY(samconfGetBackendOps, const samconfConfigBackendOps_t *, samconfBackendOptions_t idx) {
     if (MOCK_IS_ACTIVE(samconfGetBackendOps)) {
@@ -299,6 +303,54 @@ MOCK_FUNC_BODY(samconfLoadPublicKey, samconfConfigStatusE_t, EVP_PKEY **pKey) {
     return MOCK_FUNC_REAL(samconfLoadPublicKey)(pKey);
 }
 
+MOCK_FUNC_VAR_NEW(samconfLoad);
+samconfConfigStatusE_t MOCK_FUNC_WRAP(samconfLoad)(const char *location, bool enforceSignature,
+                                                   samconfConfig_t **const config) {
+    samconfConfigStatusE_t result;
+    switch (MOCK_GET_TYPE(samconfLoad)) {
+        case CMOCKA_MOCK_ENABLED_WITH_FUNC:
+            result = MOCK_FUNC_WITH(samconfLoad)(location, enforceSignature, config);
+            break;
+        case CMOCKA_MOCK_ENABLED:
+            check_expected_ptr(location);
+            check_expected(enforceSignature);
+            check_expected_ptr(config);
+            if (config != NULL) {
+                *config = mock_ptr_type(samconfConfig_t *const);
+            }
+            result = mock_type(samconfConfigStatusE_t);
+            break;
+        default:
+            result = MOCK_FUNC_REAL(samconfLoad)(location, enforceSignature, config);
+    }
+
+    return result;
+}
+
+MOCK_FUNC_VAR_NEW(samconfLoadAndMerge);
+samconfConfigStatusE_t MOCK_FUNC_WRAP(samconfLoadAndMerge)(const samconfConfigLocation_t *locations,
+                                                           size_t locationsSize, samconfConfig_t **const config) {
+    samconfConfigStatusE_t result;
+    switch (MOCK_GET_TYPE(samconfLoadAndMerge)) {
+        case CMOCKA_MOCK_ENABLED_WITH_FUNC:
+            result = MOCK_FUNC_WITH(samconfLoadAndMerge)(locations, locationsSize, config);
+            break;
+        case CMOCKA_MOCK_ENABLED:
+            check_expected_ptr(locations);
+            check_expected(locationsSize);
+            check_expected_ptr(config);
+            if (config != NULL) {
+                *config = mock_ptr_type(samconfConfig_t *const);
+            }
+            result = mock_type(samconfConfigStatusE_t);
+            break;
+        default:
+            result = MOCK_FUNC_REAL(samconfLoadAndMerge)(locations, locationsSize, config);
+            break;
+    }
+    return result;
+}
+
 MOCK_FUNC_BODY(samconfBase64Decode, samconfConfigStatusE_t, const char *base64, uint8_t **buf, size_t *bufLen) {
     if (MOCK_IS_ACTIVE(samconfBase64Decode)) {
         check_expected(base64);
@@ -387,6 +439,79 @@ MOCK_FUNC_BODY(samconfInsertAt, samconfConfigStatusE_t, samconfConfig_t **root, 
     }
 
     return MOCK_FUNC_REAL(samconfInsertAt)(root, path, config);
+}
+
+MOCK_FUNC_VAR_NEW(samconfConfigNext);
+samconfConfigStatusE_t MOCK_FUNC_WRAP(samconfConfigNext)(const samconfConfig_t *root,
+                                                         const samconfConfig_t *configToFind,
+                                                         const samconfConfig_t **nextConfig) {
+    samconfConfigStatusE_t result;
+    switch (MOCK_GET_TYPE(samconfConfigNext)) {
+        case CMOCKA_MOCK_ENABLED_WITH_FUNC:
+            result = MOCK_FUNC_WITH(samconfConfigNext)(root, configToFind, nextConfig);
+            break;
+        case CMOCKA_MOCK_ENABLED:
+            check_expected_ptr(root);
+            check_expected_ptr(configToFind);
+            check_expected_ptr(nextConfig);
+            if (nextConfig != NULL) {
+                *nextConfig = mock_ptr_type(const samconfConfig_t *);
+            }
+            result = mock_type(samconfConfigStatusE_t);
+            break;
+        default:
+            result = MOCK_FUNC_REAL(samconfConfigNext)(root, configToFind, nextConfig);
+            break;
+    }
+    return result;
+}
+
+MOCK_FUNC_VAR_NEW(samconfConfigMergeConfig);
+samconfConfigStatusE_t MOCK_FUNC_WRAP(samconfConfigMergeConfig)(samconfConfig_t **mergedConfig,
+                                                                samconfConfig_t *configToMerge) {
+    samconfConfigStatusE_t result;
+    switch (MOCK_GET_TYPE(samconfConfigMergeConfig)) {
+        case CMOCKA_MOCK_ENABLED_WITH_FUNC:
+            result = MOCK_FUNC_WITH(samconfConfigMergeConfig)(mergedConfig, configToMerge);
+            break;
+        case CMOCKA_MOCK_ENABLED:
+            check_expected_ptr(mergedConfig);
+            check_expected_ptr(configToMerge);
+            if (mergedConfig != NULL) {
+                *mergedConfig = mock_ptr_type(samconfConfig_t *);
+            }
+            result = mock_type(samconfConfigStatusE_t);
+            break;
+        default:
+            result = MOCK_FUNC_REAL(samconfConfigMergeConfig)(mergedConfig, configToMerge);
+            break;
+    }
+    return result;
+}
+
+MOCK_FUNC_VAR_NEW(samconfConfigMergeConfigs);
+samconfConfigStatusE_t MOCK_FUNC_WRAP(samconfConfigMergeConfigs)(samconfConfig_t **mergedConfig,
+                                                                 samconfConfig_t **configsToMerge,
+                                                                 size_t configsCount) {
+    samconfConfigStatusE_t result;
+    switch (MOCK_GET_TYPE(samconfConfigMergeConfigs)) {
+        case CMOCKA_MOCK_ENABLED_WITH_FUNC:
+            result = MOCK_FUNC_WITH(samconfConfigMergeConfigs)(mergedConfig, configsToMerge, configsCount);
+            break;
+        case CMOCKA_MOCK_ENABLED:
+            check_expected_ptr(mergedConfig);
+            check_expected_ptr(configsToMerge);
+            check_expected(configsCount);
+            if (mergedConfig != NULL) {
+                *mergedConfig = mock_ptr_type(samconfConfig_t *);
+            }
+            result = mock_type(samconfConfigStatusE_t);
+            break;
+        default:
+            result = MOCK_FUNC_REAL(samconfConfigMergeConfigs)(mergedConfig, configsToMerge, configsCount);
+            break;
+    }
+    return result;
 }
 
 MOCK_FUNC_BODY(samconfCreateIntAt, samconfConfigStatusE_t, samconfConfig_t **root, const char *path, int64_t value) {

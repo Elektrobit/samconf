@@ -1,15 +1,28 @@
 #!/bin/sh
+# shellcheck disable=SC2317
 
-BASE_DIR=$(dirname "$0")/../..
-export BUILD_TYPE="${BUILD_TYPE-Debug}"
-export BUILD_DIR="$BASE_DIR/build/$BUILD_TYPE"
-export DIST_DIR="${DIST_DIR-"${BUILD_DIR}/dist"}"
+SCRIPT_NAME=${0##*/}
 
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-"${DIST_DIR}/usr/local/lib/"}"
-export PATH="${PATH}:${DIST_DIR}/usr/local/bin/"
-export BENCHMARK_DIR="${BENCHMARK_DIR-"$(dirname "$0")"}"
-export BENCHMARK_RESULT_DIR="${BENCHMARK_RESULT_DIR-"$BUILD_DIR/result/benchmark_results"}"
-export SAMCONF_SIGNATURE_KEY="$PUBLIC_KEY"
+###############################################################################
+print_info() {
+    echo "
+    Run the benchmark tests
+
+    Usage: ${SCRIPT_NAME} [-h|--help]
+
+    -h|--help:        print this help
+
+    The benchmark test can be configured through several environment variables. See
+    bench_test_env.sh for more details about how to setup the test suite and
+    about the defaults.
+
+$(cat "$(realpath "$(dirname "${0}")/bench_test_env.sh")")
+    "
+}
+###############################################################################
+
+CMDPATH="$(realpath "$(dirname "$0")")"
+. "${CMDPATH}/bench_test_env.sh"
 
 rm -rvf "${BENCHMARK_RESULT_DIR}" >/dev/null 2>&1
 mkdir -p "${BENCHMARK_RESULT_DIR}"
@@ -25,7 +38,7 @@ calculatetime() {
 
     loadtime_ms=$(LC_NUMERIC=C awk -v time_sms="$loadtime_sms" -v time_nsm="$loadtime_nsm" 'BEGIN { printf "%.6f", time_sms + time_nsm }')
 
-    echo $loadtime_ms
+    echo "$loadtime_ms"
 }
 
 createcsv() {
@@ -56,7 +69,7 @@ runBenchmark() {
         rm -rf "${BENCHMARK_LOG}" >/dev/null 2>&1
         touch "${BENCHMARK_LOG}"
 
-        CONFIG_FILES=$(find ${BENCHMARK_CONFIG_DIR} -maxdepth 1 | tail -n +2)
+        CONFIG_FILES=$(find "${BENCHMARK_CONFIG_DIR}" -maxdepth 1 | tail -n +2)
 
         FILE_SIZE=0
 
@@ -66,13 +79,34 @@ runBenchmark() {
         done
 
         for _ in $(seq 1 10); do
+            # disabling shellcheck 2086 since CONFIG_FILES need to be passed as args and not string
+            # shellcheck disable=SC2086
             MERGE_LOG=$(dump_merged_config ${CONFIG_FILES})
-            echo ${MERGE_LOG} | cut -f 1 -d '{' >>${BENCHMARK_LOG}
+            # disabling shellcheck 2086 since MERGE_LOG needs to be echoed as is and not as string
+            # shellcheck disable=SC2086
+            echo ${MERGE_LOG} | cut -f 1 -d '{' >> "${BENCHMARK_LOG}"
         done
 
-        echo "Total Files Size : ${FILE_SIZE} bytes" >>${BENCHMARK_LOG}
+        echo "Total Files Size : ${FILE_SIZE} bytes" >> "${BENCHMARK_LOG}"
     done
 }
+
+PARAM=""
+while [ $# -gt 0 ]; do
+    case ${1} in
+        --help|-h)
+            print_info
+            exit 0;;
+        -*)
+            echo "error: unknown option: $1"
+            echo "Use ${SCRIPT_NAME} --help"
+            exit 1 ;;
+        *)
+            PARAM="$PARAM ${1}" ;;
+    esac
+    shift
+done
+set -- "$PARAM"
 
 runBenchmark
 createcsv

@@ -23,17 +23,16 @@ samconfConfigStatusE_t samconfVerifySignature(const char *location);
 samconfConfigStatusE_t samconfLoad(const char *location, bool enforceSignature, samconfConfig_t **const config);
 
 /*******************************************************************
- * Create a path to the config, upto the top most parent.
+ * Load all configs from multiple locations and merge them together
  *
  * Parameters:
- *     locations : a lisit of locations from where to assemble the configuration
+ *     locations : a list of locations from where to assemble the configuration
  *     locationsSize : the size of the locations list
  *     config : the pointer in which to store the resulting config
  *
  * Returns:
- *         SAMCONF_CONFIG_OK – when at least one config could be loaded and merged successfully
- *         SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED - when the merge rules forbitt all the configs to be merged
- *         SAMCONF_CONFIG_NOT_FOUND - if none of the locations have any configs
+ *         SAMCONF_CONFIG_OK – when nothing failed
+ *         SAMCONF_CONFIG_INVALID_SIGNATURE - when at least one config has an invalid signature
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
 samconfConfigStatusE_t samconfLoadAndMerge(const samconfConfigLocation_t *locations, size_t locationsSize,

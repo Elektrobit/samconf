@@ -38,6 +38,7 @@ BUILD_TYPE="${1:-Debug}"
 
 BENCHMARK_RESULT_DIR=${BENCHMARK_RESULT_DIR:-"$RESULT_DIR/benchmark_results"}
 
+export BASE_DIR
 export BUILD_TYPE
 export BENCHMARK_RESULT_DIR
 export BUILD_DIR

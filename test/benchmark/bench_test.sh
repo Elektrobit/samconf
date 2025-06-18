@@ -81,7 +81,7 @@ runBenchmark() {
         for _ in $(seq 1 10); do
             # disabling shellcheck 2086 since CONFIG_FILES need to be passed as args and not string
             # shellcheck disable=SC2086
-            MERGE_LOG=$(dump_merged_config ${CONFIG_FILES})
+            MERGE_LOG=$(dump_merged_config -b ${CONFIG_FILES})
             # disabling shellcheck 2086 since MERGE_LOG needs to be echoed as is and not as string
             # shellcheck disable=SC2086
             echo ${MERGE_LOG} | cut -f 1 -d '{' >> "${BENCHMARK_LOG}"

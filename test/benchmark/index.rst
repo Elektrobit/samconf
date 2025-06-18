@@ -31,16 +31,16 @@ default.
 Run on a Target (Integrator):
 -----------------------------
 
-To run the benchmark test install all content in ``tests/smoketest`` to a
+To run the benchmark test install all content in ``tests/benchmark`` to a
 custom location on the target system. Currently it is not packaged and
-installed by elos build system itself.
+installed by samconf build system itself.
 
 Prerequisites :
 ~~~~~~~~~~~~~~~
 
--  Elos is installed on target system
+-  Samconf is installed on target system
 
--  Elos benchmark test package is installed
+-  Samconf benchmark test package is installed
 
 -  At least a writeable directory to store results and for intermediate
    files
@@ -53,11 +53,7 @@ example script to for benchmark test integration.
 
 .. code:: shell
 
-    #!/bin/sh -eu
-
-    export PREFIX_PATH=/usr/local/
-    export BENCHMARK_RESULT_DIR=/tmp/test-elos-benchmark
-    /usr/local/lib/test/elos/benchmark/bench_test.sh
+     ./test/benchmark/bench_test_env.sh
 
 Extended configuration
 ~~~~~~~~~~~~~~~~~~~~~~

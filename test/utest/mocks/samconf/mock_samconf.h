@@ -62,6 +62,10 @@ MOCK_FUNC_PROTOTYPE(samconfUriDelete, samconfConfigStatusE_t, samconfUri_t *uri)
 MOCK_FUNC_PROTOTYPE(samconfUriDeleteMembers, samconfConfigStatusE_t, samconfUri_t *uri)
 
 MOCK_FUNC_PROTOTYPE(samconfLoadPublicKey, samconfConfigStatusE_t, EVP_PKEY **pKey)
+MOCK_FUNC_PROTOTYPE(samconfLoad, samconfConfigStatusE_t, const char *location, bool enforceSignature,
+                    samconfConfig_t **const config)
+MOCK_FUNC_PROTOTYPE(samconfLoadAndMerge, samconfConfigStatusE_t, const samconfConfigLocation_t locations[],
+                    size_t locationsSize, samconfConfig_t **const config)
 MOCK_FUNC_PROTOTYPE(samconfBase64Decode, samconfConfigStatusE_t, const char *base64, uint8_t **buf, size_t *bufLen)
 MOCK_FUNC_PROTOTYPE(samconfCryptoUtilsVerify, samconfConfigStatusE_t, const char *data, size_t length,
                     const char *signature)
@@ -74,6 +78,15 @@ MOCK_FUNC_PROTOTYPE(samconfConfigGetInt32Or, int32_t, const samconfConfig_t *roo
 MOCK_FUNC_PROTOTYPE(samconfConfigGetRealOr, double, const samconfConfig_t *root, const char *path, double defaultValue)
 
 MOCK_FUNC_PROTOTYPE(samconfConfigSetValueFromString, samconfConfigStatusE_t, samconfConfig_t *config, const char *value)
+
+MOCK_FUNC_PROTOTYPE(samconfConfigNext, samconfConfigStatusE_t, const samconfConfig_t *root,
+                    const samconfConfig_t *configToFind, const samconfConfig_t **nextConfig)
+
+MOCK_FUNC_PROTOTYPE(samconfConfigMergeConfig, samconfConfigStatusE_t, samconfConfig_t **mergedConfig,
+                    samconfConfig_t *configToMerge)
+
+MOCK_FUNC_PROTOTYPE(samconfConfigMergeConfigs, samconfConfigStatusE_t, samconfConfig_t **mergedConfig,
+                    samconfConfig_t **configsToMerge, size_t configsCount)
 
 MOCK_FUNC_PROTOTYPE(samconfInsertAt, samconfConfigStatusE_t, samconfConfig_t **root, const char *path,
                     samconfConfig_t *config)

@@ -1,0 +1,94 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "left.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "determine.so",
+                        "Run": "Always"
+                    },
+                    "Shmem": {
+                        "File": "particularly.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 197,
+                            "ShmemOffset": 64,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "one.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.classification 0xff00000000 LT "
+                        ],
+                        "Config": {
+                            "BufferSize": 72
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "data.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.appname piece.doc GE "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/affect/deep.sqlite"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "suffer.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 203,
+                            "Port": 27298,
+                            "Interface": "176.100.199.133",
+                            "EventBlackLiist": ".event.hardwareid eb3241b8111f41811b9c46c7dfce9856 GT ",
+                            "authorizedProcesses": [
+                                ".process.exec /need/stuff/number/particular/course/rise GT AND .proc.exec /need/stuff/number/particular/course/rise EQ AND .p.exec /need/stuff/number/particular/course/rise LT ",
+                                ".process.exec /need/stuff/number/particular/course/rise GT AND .proc.exec /need/stuff/number/particular/course/rise EQ AND .p.exec /need/stuff/number/particular/course/rise LT OR .proc.exec /need/stuff/number/particular/course/rise EQ AND .proc.exec /need/stuff/number/particular/course/rise GT ",
+                                ".process.exec /need/stuff/number/particular/course/rise GT AND .proc.exec /need/stuff/number/particular/course/rise EQ AND .p.exec /need/stuff/number/particular/course/rise LT OR .proc.exec /need/stuff/number/particular/course/rise EQ AND .proc.exec /need/stuff/number/particular/course/rise GT OR .proc.exec /need/stuff/number/particular/course/rise STRCMP OR .proc.exec /need/stuff/number/particular/course/rise GE "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "gas.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 231,
+                            "Port": 1874,
+                            "Interface": "172.24.239.214",
+                            "EventBlackLiist": ".ev.classification 0x40 STRCMP ",
+                            "authorizedProcesses": [
+                                ".proc.pid 2857686 LE AND .process.pid 2857686 LE AND .p.pid 2857686 LE ",
+                                ".proc.pid 2857686 LE AND .process.pid 2857686 LE AND .p.pid 2857686 LE AND .process.pid 2857686 GT AND .p.pid 2857686 STRCMP ",
+                                ".proc.pid 2857686 LE AND .process.pid 2857686 LE AND .p.pid 2857686 LE AND .process.pid 2857686 GT AND .p.pid 2857686 STRCMP OR .p.pid 2857686 EQ AND .p.pid 2857686 GT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

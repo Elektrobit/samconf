@@ -1,0 +1,70 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "report.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 73,
+                            "path": "/their/grow/big.socket",
+                            "EventBlackLiist": ".e.date [4411527826, 8638159349] EQ ",
+                            "authorizedProcesses": [
+                                ".proc.pid 1509439 STRCMP AND .p.pid 1509439 GT OR .proc.pid 1509439 LT ",
+                                ".proc.pid 1509439 STRCMP AND .p.pid 1509439 GT OR .proc.pid 1509439 LT AND .process.pid 1509439 STRCMP OR .proc.pid 1509439 EQ ",
+                                ".proc.pid 1509439 STRCMP AND .p.pid 1509439 GT OR .proc.pid 1509439 LT AND .process.pid 1509439 STRCMP OR .proc.pid 1509439 EQ OR .proc.pid 1509439 GT AND .process.pid 1509439 LE "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "on.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 67,
+                            "Port": 61843,
+                            "Interface": "144.148.67.80",
+                            "EventBlackLiist": ".e.source.pid 2397919 LE ",
+                            "authorizedProcesses": [
+                                ".p.exec /right/because/medical/about/them/push LE OR .p.exec /right/because/medical/about/them/push EQ OR .process.exec /right/because/medical/about/them/push GE ",
+                                ".p.exec /right/because/medical/about/them/push LE OR .p.exec /right/because/medical/about/them/push EQ OR .process.exec /right/because/medical/about/them/push GE AND .p.exec /right/because/medical/about/them/push GE AND .p.exec /right/because/medical/about/them/push GT ",
+                                ".p.exec /right/because/medical/about/them/push LE OR .p.exec /right/because/medical/about/them/push EQ OR .process.exec /right/because/medical/about/them/push GE AND .p.exec /right/because/medical/about/them/push GE AND .p.exec /right/because/medical/about/them/push GT OR .proc.exec /right/because/medical/about/them/push STRCMP OR .proc.exec /right/because/medical/about/them/push GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "face.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.classification 0xffffff0000000000 EQ "
+                        ],
+                        "Config": {
+                            "BufferSize": 15
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "suggest.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.severity 5 STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/focus/six.log",
+                            "MaxSize": 16571,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

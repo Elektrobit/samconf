@@ -1,0 +1,85 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "DEBUG",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "data.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.filename /ever/mean.flacbuild.mov GE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/citizen/marriage.log",
+                            "MaxSize": 217,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "both.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "401": ".event.severity 4 LE OR .ev.severity 4 EQ OR .ev.severity 4 STRCMP OR .e.severity 4 STRCMP "
+                                }
+                            }
+                        }
+                    },
+                    "Shmem": {
+                        "File": "difference.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 154,
+                            "ShmemOffset": 75,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "security.so",
+                        "Run": "Never"
+                    },
+                    "KmsgScanner": {
+                        "File": "case.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "everything.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 226,
+                            "Port": 26492,
+                            "Interface": "172.19.93.74",
+                            "EventBlackLiist": ".ev.payload Interesting feeling mind old throughout. LT ",
+                            "authorizedProcesses": [
+                                ".process.exec /opportunity/interview/someone/each/whom/leader GE AND .proc.exec /opportunity/interview/someone/each/whom/leader GT AND .proc.exec /opportunity/interview/someone/each/whom/leader LT ",
+                                ".process.exec /opportunity/interview/someone/each/whom/leader GE AND .proc.exec /opportunity/interview/someone/each/whom/leader GT AND .proc.exec /opportunity/interview/someone/each/whom/leader LT AND .process.exec /opportunity/interview/someone/each/whom/leader LT OR .process.exec /opportunity/interview/someone/each/whom/leader GE ",
+                                ".process.exec /opportunity/interview/someone/each/whom/leader GE AND .proc.exec /opportunity/interview/someone/each/whom/leader GT AND .proc.exec /opportunity/interview/someone/each/whom/leader LT AND .process.exec /opportunity/interview/someone/each/whom/leader LT OR .process.exec /opportunity/interview/someone/each/whom/leader GE AND .p.exec /opportunity/interview/someone/each/whom/leader EQ AND .proc.exec /opportunity/interview/someone/each/whom/leader LT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

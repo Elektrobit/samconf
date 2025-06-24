@@ -1,0 +1,72 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "art.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.appname simple.bmp STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/weight/drop.log",
+                            "MaxSize": 58957,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "any.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.appname painting.png EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "fact.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 215,
+                            "path": "/order/production/say.socket",
+                            "EventBlackLiist": ".e.source.appname policy.mp4 LT ",
+                            "authorizedProcesses": [
+                                ".p.gid 36106 GE OR .proc.gid 36106 STRCMP AND .proc.gid 36106 STRCMP ",
+                                ".p.gid 36106 GE OR .proc.gid 36106 STRCMP AND .proc.gid 36106 STRCMP OR .proc.gid 36106 GT AND .p.gid 36106 LE ",
+                                ".p.gid 36106 GE OR .proc.gid 36106 STRCMP AND .proc.gid 36106 STRCMP OR .proc.gid 36106 GT AND .p.gid 36106 LE AND .process.gid 36106 EQ OR .process.gid 36106 LE "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "economy.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 184,
+                            "Port": 57826,
+                            "Interface": "132.50.96.64",
+                            "EventBlackLiist": ".ev.classification 0x80 GT ",
+                            "authorizedProcesses": [
+                                ".process.gid 57469 GT AND .p.gid 57469 STRCMP OR .p.gid 57469 STRCMP ",
+                                ".process.gid 57469 GT AND .p.gid 57469 STRCMP OR .p.gid 57469 STRCMP OR .p.gid 57469 GT OR .proc.gid 57469 LT ",
+                                ".process.gid 57469 GT AND .p.gid 57469 STRCMP OR .p.gid 57469 STRCMP OR .p.gid 57469 GT OR .proc.gid 57469 LT OR .proc.gid 57469 STRCMP AND .p.gid 57469 LT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

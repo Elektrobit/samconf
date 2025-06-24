@@ -1,0 +1,48 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "little.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "5005": ".e.date [1536178184, 5188040018] LE AND .event.date [1536178184, 5188040018] LT OR .event.date [1536178184, 5188040018] LT OR .event.date [1536178184, 5188040018] GT "
+                                }
+                            }
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "across.so",
+                        "Run": "Always"
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "style.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 0,
+                            "Port": 49237,
+                            "Interface": "10.128.185.238",
+                            "EventBlackLiist": ".ev.payload Everyone eight positive business sing condition. STRCMP ",
+                            "authorizedProcesses": [
+                                ".proc.uid 42137 GE AND .proc.uid 42137 LE OR .proc.uid 42137 GE ",
+                                ".proc.uid 42137 GE AND .proc.uid 42137 LE OR .proc.uid 42137 GE OR .proc.uid 42137 STRCMP OR .process.uid 42137 EQ ",
+                                ".proc.uid 42137 GE AND .proc.uid 42137 LE OR .proc.uid 42137 GE OR .proc.uid 42137 STRCMP OR .process.uid 42137 EQ AND .proc.uid 42137 GT OR .p.uid 42137 GE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,91 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "indeed.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 180,
+                            "path": "/tree/eye/stage.socket",
+                            "EventBlackLiist": ".event.payload Choice see nothing work wife former. STRCMP ",
+                            "authorizedProcesses": [
+                                ".p.pid 1063109 GT OR .proc.pid 1063109 EQ AND .proc.pid 1063109 GE ",
+                                ".p.pid 1063109 GT OR .proc.pid 1063109 EQ AND .proc.pid 1063109 GE AND .process.pid 1063109 LE AND .process.pid 1063109 STRCMP ",
+                                ".p.pid 1063109 GT OR .proc.pid 1063109 EQ AND .proc.pid 1063109 GE AND .process.pid 1063109 LE AND .process.pid 1063109 STRCMP AND .process.pid 1063109 STRCMP OR .process.pid 1063109 GE "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "game.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 73,
+                            "Port": 13954,
+                            "Interface": "192.168.96.91",
+                            "EventBlackLiist": ".e.severity 6 EQ ",
+                            "authorizedProcesses": [
+                                ".process.pid 3620715 LT AND .proc.pid 3620715 LT OR .process.pid 3620715 GE ",
+                                ".process.pid 3620715 LT AND .proc.pid 3620715 LT OR .process.pid 3620715 GE OR .process.pid 3620715 LE AND .p.pid 3620715 LT ",
+                                ".process.pid 3620715 LT AND .proc.pid 3620715 LT OR .process.pid 3620715 GE OR .process.pid 3620715 LE AND .p.pid 3620715 LT OR .process.pid 3620715 LT AND .proc.pid 3620715 EQ "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "last.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 103,
+                            "Port": 8765,
+                            "Interface": "219.23.160.124",
+                            "EventBlackLiist": ".e.hardwareid a87ddf813d92cc0f1dd7c14207713355 EQ ",
+                            "authorizedProcesses": [
+                                ".process.uid 39571 EQ AND .process.uid 39571 EQ AND .proc.uid 39571 EQ ",
+                                ".process.uid 39571 EQ AND .process.uid 39571 EQ AND .proc.uid 39571 EQ OR .proc.uid 39571 LE OR .p.uid 39571 GT ",
+                                ".process.uid 39571 EQ AND .process.uid 39571 EQ AND .proc.uid 39571 EQ OR .proc.uid 39571 LE OR .p.uid 39571 GT OR .p.uid 39571 GT AND .proc.uid 39571 STRCMP "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "mission.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 44,
+                            "ShmemOffset": 54,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "education.so",
+                        "Run": "Always"
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "sister.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.classification 0x8 GE "
+                        ],
+                        "Config": {
+                            "BufferSize": 53
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

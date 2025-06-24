@@ -1,0 +1,36 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "effort.c",
+            "LogLevel": "CRITICAL",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "floor.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 30,
+                            "Port": 10742,
+                            "Interface": "192.168.1.219",
+                            "EventBlackLiist": ".event.date [8547990287, 2421002818] EQ ",
+                            "authorizedProcesses": [
+                                ".process.gid 59566 GE AND .proc.gid 59566 LT AND .p.gid 59566 GT ",
+                                ".process.gid 59566 GE AND .proc.gid 59566 LT AND .p.gid 59566 GT OR .process.gid 59566 STRCMP AND .proc.gid 59566 STRCMP ",
+                                ".process.gid 59566 GE AND .proc.gid 59566 LT AND .p.gid 59566 GT OR .process.gid 59566 STRCMP AND .proc.gid 59566 STRCMP AND .process.gid 59566 STRCMP OR .process.gid 59566 STRCMP "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "particularly.so",
+                        "Run": "Never"
+                    }
+                }
+            }
+        }
+    }
+}

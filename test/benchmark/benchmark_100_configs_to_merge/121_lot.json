@@ -1,0 +1,20 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "federal.so",
+                        "Run": "Never",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

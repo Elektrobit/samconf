@@ -1,0 +1,78 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "old.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "6004": ".ev.source.appname me.css GT OR .ev.source.appname me.css EQ AND .event.source.appname me.css GE OR .e.source.appname me.css LT "
+                                }
+                            }
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "someone.so",
+                        "Run": "Always"
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "program.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.date [3770506229, 15190359] GE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "political.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.pid 1623547 LT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/capital/agent.log",
+                            "MaxSize": 27002,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "popular.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 61,
+                            "Port": 22010,
+                            "Interface": "53.153.222.98",
+                            "EventBlackLiist": ".e.payload Clear field eye must program full. LE ",
+                            "authorizedProcesses": [
+                                ".p.gid 36137 GE AND .proc.gid 36137 STRCMP OR .proc.gid 36137 LE ",
+                                ".p.gid 36137 GE AND .proc.gid 36137 STRCMP OR .proc.gid 36137 LE OR .process.gid 36137 STRCMP AND .proc.gid 36137 EQ ",
+                                ".p.gid 36137 GE AND .proc.gid 36137 STRCMP OR .proc.gid 36137 LE OR .process.gid 36137 STRCMP AND .proc.gid 36137 EQ OR .process.gid 36137 GE OR .proc.gid 36137 GE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

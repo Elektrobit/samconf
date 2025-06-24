@@ -1,0 +1,45 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "treat.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.date [8323043919, 6002993227] GE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "charge.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.classification 0x20 EQ "
+                        ],
+                        "Config": {
+                            "BufferSize": 44
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "the.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.hardwareid 88568102d99a0057dcbc5d1710dadfcd LT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/game/choice.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

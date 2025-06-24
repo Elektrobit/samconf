@@ -1,0 +1,33 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "DEBUG",
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "bed.so",
+                        "Run": "Always"
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "history.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.payload Before throughout affect one rather stock few. GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

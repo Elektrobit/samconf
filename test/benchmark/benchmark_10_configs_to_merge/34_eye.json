@@ -1,0 +1,80 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "site.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "SyslogScanner": {
+                        "File": "current.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "501": ".event.source.pid 894327 LE AND .e.source.pid 894327 STRCMP AND .event.source.pid 894327 LT OR .ev.source.pid 894327 LT "
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "do.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.source.pid 1653710 LE "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/specific/trade.sqlite"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "thing.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 18,
+                            "Port": 31443,
+                            "Interface": "192.168.70.199",
+                            "EventBlackLiist": ".ev.classification 0x1 GE ",
+                            "authorizedProcesses": [
+                                ".p.gid 56523 GT OR .p.gid 56523 STRCMP AND .process.gid 56523 STRCMP ",
+                                ".p.gid 56523 GT OR .p.gid 56523 STRCMP AND .process.gid 56523 STRCMP OR .process.gid 56523 GE OR .proc.gid 56523 LE ",
+                                ".p.gid 56523 GT OR .p.gid 56523 STRCMP AND .process.gid 56523 STRCMP OR .process.gid 56523 GE OR .proc.gid 56523 LE OR .proc.gid 56523 GT AND .proc.gid 56523 LT "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "as.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 251,
+                            "Port": 15837,
+                            "Interface": "168.207.195.101",
+                            "EventBlackLiist": ".e.messageCode 4001 LE ",
+                            "authorizedProcesses": [
+                                ".process.uid 23677 GT OR .proc.uid 23677 EQ OR .process.uid 23677 GE ",
+                                ".process.uid 23677 GT OR .proc.uid 23677 EQ OR .process.uid 23677 GE OR .process.uid 23677 GE OR .process.uid 23677 GE ",
+                                ".process.uid 23677 GT OR .proc.uid 23677 EQ OR .process.uid 23677 GE OR .process.uid 23677 GE OR .process.uid 23677 GE OR .p.uid 23677 GT AND .p.uid 23677 LE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,91 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "save.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.appname evening.pages GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/several/family.log",
+                            "MaxSize": 47878,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "act.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.hardwareid 5d9a0e4bb90661680daaddc5d61e6dc9 LT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/social/final.sqlite"
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "use.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.appname deal.mov GT "
+                        ],
+                        "Config": {
+                            "BufferSize": 27
+                        }
+                    },
+                    "DLT": {
+                        "File": "rule.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.appname when.mp3 GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "American.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8006": ".event.date [1907664685, 6890483113] LT OR .event.date [1907664685, 6890483113] LT OR .ev.date [1907664685, 6890483113] GE AND .ev.date [1907664685, 6890483113] EQ "
+                                }
+                            }
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "action.so",
+                        "Run": "Always"
+                    },
+                    "Shmem": {
+                        "File": "how.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 84,
+                            "ShmemOffset": 19,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

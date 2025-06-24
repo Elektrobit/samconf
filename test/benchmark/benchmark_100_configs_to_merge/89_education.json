@@ -1,0 +1,49 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "whose.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.hardwareid 5f57e309d2973d8eedd2e4664ace7eff LE "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/conference/however.sqlite"
+                        }
+                    },
+                    "DLT": {
+                        "File": "election.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.messageCode 7125 GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "people.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.severity 1 LT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/pattern/your.log",
+                            "MaxSize": 36730,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

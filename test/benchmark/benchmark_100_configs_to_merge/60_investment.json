@@ -1,0 +1,44 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "letter.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 23,
+                            "Port": 7446,
+                            "Interface": "69.42.76.7",
+                            "EventBlackLiist": ".e.source.appname officer.doc GT ",
+                            "authorizedProcesses": [
+                                ".proc.uid 18467 GT OR .proc.uid 18467 GE AND .proc.uid 18467 LT ",
+                                ".proc.uid 18467 GT OR .proc.uid 18467 GE AND .proc.uid 18467 LT OR .proc.uid 18467 GT OR .process.uid 18467 GE ",
+                                ".proc.uid 18467 GT OR .proc.uid 18467 GE AND .proc.uid 18467 LT OR .proc.uid 18467 GT OR .process.uid 18467 GE AND .proc.uid 18467 EQ OR .p.uid 18467 LT "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "evidence.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "2007": ".e.source.filename /some/piece.odsdirection.jpg EQ AND .ev.source.filename /some/piece.odsdirection.jpg LT AND .event.source.filename /some/piece.odsdirection.jpg STRCMP AND .ev.source.filename /some/piece.odsdirection.jpg LT "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

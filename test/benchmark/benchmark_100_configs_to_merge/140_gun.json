@@ -1,0 +1,44 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "answer.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 175,
+                            "ShmemOffset": 68,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "not.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "SyslogScanner": {
+                        "File": "three.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8002": ".event.source.pid 3956745 EQ AND .event.source.pid 3956745 STRCMP OR .event.source.pid 3956745 LT OR .ev.source.pid 3956745 LT "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

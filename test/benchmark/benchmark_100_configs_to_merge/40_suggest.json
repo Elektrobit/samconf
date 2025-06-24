@@ -1,0 +1,29 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "coach.so",
+                        "Run": "Always"
+                    },
+                    "SyslogScanner": {
+                        "File": "her.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "7004": ".ev.payload Activity any old trouble gas finish building. LE OR .e.payload Activity any old trouble gas finish building. GT AND .e.payload Activity any old trouble gas finish building. LT OR .e.payload Activity any old trouble gas finish building. GT "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

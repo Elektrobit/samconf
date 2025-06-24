@@ -1,0 +1,35 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "most.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.payload Everybody animal Mrs help benefit these generation. LE "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/now/threat.sqlite"
+                        }
+                    },
+                    "DLT": {
+                        "File": "example.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.payload Event reduce technology return. EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

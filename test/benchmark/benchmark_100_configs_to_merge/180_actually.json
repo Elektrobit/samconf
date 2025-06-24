@@ -1,0 +1,38 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "best.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".ev.severity 2 STRCMP "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/glass/these.sqlite"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "natural.so",
+                        "Run": "Always"
+                    },
+                    "KmsgScanner": {
+                        "File": "lead.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

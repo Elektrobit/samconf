@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "financial.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 71,
+                            "path": "/foreign/beat/too.socket",
+                            "EventBlackLiist": ".ev.source.appname difference.jpg LE ",
+                            "authorizedProcesses": [
+                                ".proc.uid 27829 LE AND .proc.uid 27829 STRCMP AND .proc.uid 27829 GE ",
+                                ".proc.uid 27829 LE AND .proc.uid 27829 STRCMP AND .proc.uid 27829 GE OR .proc.uid 27829 GT AND .proc.uid 27829 STRCMP ",
+                                ".proc.uid 27829 LE AND .proc.uid 27829 STRCMP AND .proc.uid 27829 GE OR .proc.uid 27829 GT AND .proc.uid 27829 STRCMP AND .process.uid 27829 STRCMP AND .process.uid 27829 GE "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "necessary.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 35,
+                            "Port": 43069,
+                            "Interface": "172.19.63.121",
+                            "EventBlackLiist": ".ev.hardwareid 34b43b81a8e8fc0761d65dee3d64f044 LE ",
+                            "authorizedProcesses": [
+                                ".proc.pid 3864054 GT AND .p.pid 3864054 GE AND .proc.pid 3864054 LT ",
+                                ".proc.pid 3864054 GT AND .p.pid 3864054 GE AND .proc.pid 3864054 LT OR .p.pid 3864054 LT OR .process.pid 3864054 GE ",
+                                ".proc.pid 3864054 GT AND .p.pid 3864054 GE AND .proc.pid 3864054 LT OR .p.pid 3864054 LT OR .process.pid 3864054 GE AND .proc.pid 3864054 EQ OR .proc.pid 3864054 LE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

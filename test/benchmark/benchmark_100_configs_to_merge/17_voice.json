@@ -1,0 +1,23 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "government.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.severity 1 LT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/traditional/also.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

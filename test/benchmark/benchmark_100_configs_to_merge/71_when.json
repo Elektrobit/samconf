@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "possible.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 86,
+                            "path": "/executive/not/modern.socket",
+                            "EventBlackLiist": ".ev.source.filename /north/ask.mp3garden.flac LT ",
+                            "authorizedProcesses": [
+                                ".p.exec /report/situation/notice/because/set/picture LT AND .process.exec /report/situation/notice/because/set/picture STRCMP AND .proc.exec /report/situation/notice/because/set/picture GE ",
+                                ".p.exec /report/situation/notice/because/set/picture LT AND .process.exec /report/situation/notice/because/set/picture STRCMP AND .proc.exec /report/situation/notice/because/set/picture GE OR .process.exec /report/situation/notice/because/set/picture LT OR .process.exec /report/situation/notice/because/set/picture GT ",
+                                ".p.exec /report/situation/notice/because/set/picture LT AND .process.exec /report/situation/notice/because/set/picture STRCMP AND .proc.exec /report/situation/notice/because/set/picture GE OR .process.exec /report/situation/notice/because/set/picture LT OR .process.exec /report/situation/notice/because/set/picture GT AND .proc.exec /report/situation/notice/because/set/picture GT AND .p.exec /report/situation/notice/because/set/picture EQ "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "little.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 172,
+                            "Port": 27534,
+                            "Interface": "30.30.214.91",
+                            "EventBlackLiist": ".e.classification 0xffffff0000000000 GE ",
+                            "authorizedProcesses": [
+                                ".proc.pid 2035960 GT OR .proc.pid 2035960 LT AND .p.pid 2035960 LE ",
+                                ".proc.pid 2035960 GT OR .proc.pid 2035960 LT AND .p.pid 2035960 LE OR .p.pid 2035960 LE OR .proc.pid 2035960 LT ",
+                                ".proc.pid 2035960 GT OR .proc.pid 2035960 LT AND .p.pid 2035960 LE OR .p.pid 2035960 LE OR .proc.pid 2035960 LT OR .process.pid 2035960 LT AND .proc.pid 2035960 GT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

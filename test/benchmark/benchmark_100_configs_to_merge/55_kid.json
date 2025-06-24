@@ -1,0 +1,57 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "experience.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 134,
+                            "path": "/speech/interview/remember.socket",
+                            "EventBlackLiist": ".ev.source.filename /adult/claim.jssame.pdf LE ",
+                            "authorizedProcesses": [
+                                ".p.uid 37981 EQ AND .process.uid 37981 GE AND .proc.uid 37981 EQ ",
+                                ".p.uid 37981 EQ AND .process.uid 37981 GE AND .proc.uid 37981 EQ AND .p.uid 37981 STRCMP AND .p.uid 37981 EQ ",
+                                ".p.uid 37981 EQ AND .process.uid 37981 GE AND .proc.uid 37981 EQ AND .p.uid 37981 STRCMP AND .p.uid 37981 EQ AND .proc.uid 37981 GT AND .proc.uid 37981 EQ "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "whatever.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 16,
+                            "Port": 19076,
+                            "Interface": "172.22.37.255",
+                            "EventBlackLiist": ".ev.classification 0x1 STRCMP ",
+                            "authorizedProcesses": [
+                                ".proc.uid 12230 GE AND .proc.uid 12230 STRCMP OR .p.uid 12230 GE ",
+                                ".proc.uid 12230 GE AND .proc.uid 12230 STRCMP OR .p.uid 12230 GE AND .process.uid 12230 LE AND .proc.uid 12230 STRCMP ",
+                                ".proc.uid 12230 GE AND .proc.uid 12230 STRCMP OR .p.uid 12230 GE AND .process.uid 12230 LE AND .proc.uid 12230 STRCMP OR .process.uid 12230 GT AND .p.uid 12230 GE "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "forget.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 196,
+                            "Port": 36681,
+                            "Interface": "215.126.56.223",
+                            "EventBlackLiist": ".ev.messageCode 6001 GE ",
+                            "authorizedProcesses": [
+                                ".process.uid 12896 LE OR .p.uid 12896 LE OR .proc.uid 12896 LT ",
+                                ".process.uid 12896 LE OR .p.uid 12896 LE OR .proc.uid 12896 LT AND .process.uid 12896 STRCMP OR .p.uid 12896 LT ",
+                                ".process.uid 12896 LE OR .p.uid 12896 LE OR .proc.uid 12896 LT AND .process.uid 12896 STRCMP OR .p.uid 12896 LT OR .p.uid 12896 GE OR .process.uid 12896 EQ "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

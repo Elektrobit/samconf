@@ -1,0 +1,88 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "party.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.classification 0xffffffff STRCMP "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "between.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.hardwareid ea8af252d7d8311413c440a7995604a2 STRCMP "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/design/buy.sqlite"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "culture.so",
+                        "Run": "Never"
+                    },
+                    "SyslogScanner": {
+                        "File": "season.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "1000": ".e.payload Like training you series lay. LT OR .ev.payload Like training you series lay. STRCMP AND .event.payload Like training you series lay. EQ OR .event.payload Like training you series lay. GE "
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "change.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 37,
+                            "path": "/purpose/attorney/house.socket",
+                            "EventBlackLiist": ".event.severity 0 GE ",
+                            "authorizedProcesses": [
+                                ".process.gid 9732 EQ AND .proc.gid 9732 LT AND .p.gid 9732 EQ ",
+                                ".process.gid 9732 EQ AND .proc.gid 9732 LT AND .p.gid 9732 EQ AND .process.gid 9732 LT AND .process.gid 9732 EQ ",
+                                ".process.gid 9732 EQ AND .proc.gid 9732 LT AND .p.gid 9732 EQ AND .process.gid 9732 LT AND .process.gid 9732 EQ OR .process.gid 9732 GE AND .process.gid 9732 LE "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "out.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 124,
+                            "Port": 31114,
+                            "Interface": "172.31.67.176",
+                            "EventBlackLiist": ".e.date [1699530966, 3872167310] EQ ",
+                            "authorizedProcesses": [
+                                ".process.gid 11383 LT AND .p.gid 11383 GE AND .p.gid 11383 LE ",
+                                ".process.gid 11383 LT AND .p.gid 11383 GE AND .p.gid 11383 LE OR .p.gid 11383 GT OR .process.gid 11383 GE ",
+                                ".process.gid 11383 LT AND .p.gid 11383 GE AND .p.gid 11383 LE OR .p.gid 11383 GT OR .process.gid 11383 GE OR .p.gid 11383 GT OR .p.gid 11383 EQ "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

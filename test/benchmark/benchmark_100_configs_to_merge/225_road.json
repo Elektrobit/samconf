@@ -1,0 +1,62 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "DEBUG",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "community.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 111,
+                            "path": "/loss/six/live.socket",
+                            "EventBlackLiist": ".e.hardwareid aafbe34c8a723fb7cf36a34aa5fb9a49 LE ",
+                            "authorizedProcesses": [
+                                ".process.uid 36537 LT AND .p.uid 36537 GT OR .p.uid 36537 GT ",
+                                ".process.uid 36537 LT AND .p.uid 36537 GT OR .p.uid 36537 GT OR .proc.uid 36537 GT OR .proc.uid 36537 GT ",
+                                ".process.uid 36537 LT AND .p.uid 36537 GT OR .p.uid 36537 GT OR .proc.uid 36537 GT OR .proc.uid 36537 GT OR .proc.uid 36537 GE AND .proc.uid 36537 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "single.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 125,
+                            "ShmemOffset": 37,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "case.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "SyslogScanner": {
+                        "File": "capital.so",
+                        "Run": "Never",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "6000": ".e.source.filename /sing/woman.htmlmoment.mp3 LE OR .event.source.filename /sing/woman.htmlmoment.mp3 GE OR .event.source.filename /sing/woman.htmlmoment.mp3 GT OR .event.source.filename /sing/woman.htmlmoment.mp3 STRCMP "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "however.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 8,
+                            "ShmemOffset": 44,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "full.so",
+                        "Run": "Always"
+                    }
+                }
+            }
+        }
+    }
+}

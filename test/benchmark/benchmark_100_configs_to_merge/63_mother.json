@@ -1,0 +1,84 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "future.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "2003": ".event.source.appname while.flac LE AND .event.source.appname while.flac LE AND .event.source.appname while.flac STRCMP OR .event.source.appname while.flac GT "
+                                }
+                            }
+                        }
+                    },
+                    "Shmem": {
+                        "File": "allow.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 19,
+                            "ShmemOffset": 31,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "college.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "point.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.severity 5 GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/goal/without.log",
+                            "MaxSize": 18893,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "compare.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.payload Add evening book itself painting truth. EQ "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/challenge/safe.sqlite"
+                        }
+                    },
+                    "DLT": {
+                        "File": "admit.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.messageCode 1101 GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

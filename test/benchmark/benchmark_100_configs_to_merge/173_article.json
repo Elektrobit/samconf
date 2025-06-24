@@ -1,0 +1,73 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "condition.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "7201": ".ev.source.appname spend.jpeg EQ AND .event.source.appname spend.jpeg EQ OR .ev.source.appname spend.jpeg LE AND .event.source.appname spend.jpeg STRCMP "
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "plan.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 188,
+                            "Port": 40345,
+                            "Interface": "145.24.178.156",
+                            "EventBlackLiist": ".e.source.filename /early/represent.flacadd.webm LE ",
+                            "authorizedProcesses": [
+                                ".proc.pid 2017028 GE OR .p.pid 2017028 STRCMP OR .process.pid 2017028 EQ ",
+                                ".proc.pid 2017028 GE OR .p.pid 2017028 STRCMP OR .process.pid 2017028 EQ AND .proc.pid 2017028 STRCMP AND .process.pid 2017028 STRCMP ",
+                                ".proc.pid 2017028 GE OR .p.pid 2017028 STRCMP OR .process.pid 2017028 EQ AND .proc.pid 2017028 STRCMP AND .process.pid 2017028 STRCMP OR .process.pid 2017028 EQ OR .process.pid 2017028 EQ "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "character.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 121,
+                            "Port": 33256,
+                            "Interface": "172.31.179.37",
+                            "EventBlackLiist": ".event.classification 0x2000000000 STRCMP ",
+                            "authorizedProcesses": [
+                                ".process.exec /degree/race/forget/series/form/white EQ OR .proc.exec /degree/race/forget/series/form/white EQ OR .p.exec /degree/race/forget/series/form/white GT ",
+                                ".process.exec /degree/race/forget/series/form/white EQ OR .proc.exec /degree/race/forget/series/form/white EQ OR .p.exec /degree/race/forget/series/form/white GT OR .p.exec /degree/race/forget/series/form/white STRCMP AND .process.exec /degree/race/forget/series/form/white LT ",
+                                ".process.exec /degree/race/forget/series/form/white EQ OR .proc.exec /degree/race/forget/series/form/white EQ OR .p.exec /degree/race/forget/series/form/white GT OR .p.exec /degree/race/forget/series/form/white STRCMP AND .process.exec /degree/race/forget/series/form/white LT OR .process.exec /degree/race/forget/series/form/white GE OR .p.exec /degree/race/forget/series/form/white LT "
+                            ]
+                        }
+                    },
+                    "unixClient": {
+                        "File": "look.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 225,
+                            "path": "/lose/conference/field.socket",
+                            "EventBlackLiist": ".ev.source.appname partner.pdf GT ",
+                            "authorizedProcesses": [
+                                ".p.gid 57770 LE OR .p.gid 57770 STRCMP OR .proc.gid 57770 LT ",
+                                ".p.gid 57770 LE OR .p.gid 57770 STRCMP OR .proc.gid 57770 LT OR .proc.gid 57770 GE OR .process.gid 57770 LT ",
+                                ".p.gid 57770 LE OR .p.gid 57770 STRCMP OR .proc.gid 57770 LT OR .proc.gid 57770 GE OR .process.gid 57770 LT AND .p.gid 57770 LE AND .proc.gid 57770 LT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

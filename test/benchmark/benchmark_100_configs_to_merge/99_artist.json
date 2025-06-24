@@ -1,0 +1,92 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "financial.so",
+                        "Run": "Always"
+                    },
+                    "SyslogScanner": {
+                        "File": "provide.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "7005": ".ev.classification 0x4 LT AND .event.classification 0x4 STRCMP AND .event.classification 0x4 EQ AND .e.classification 0x4 EQ "
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "identify.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.appname everything.flac EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "black.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.pid 3543266 GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/management/according.log",
+                            "MaxSize": 45515,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "may.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 249,
+                            "Port": 16540,
+                            "Interface": "192.168.11.193",
+                            "EventBlackLiist": ".event.messageCode 8006 LT ",
+                            "authorizedProcesses": [
+                                ".p.gid 18354 GT OR .proc.gid 18354 GT OR .proc.gid 18354 LT ",
+                                ".p.gid 18354 GT OR .proc.gid 18354 GT OR .proc.gid 18354 LT OR .proc.gid 18354 GT AND .process.gid 18354 STRCMP ",
+                                ".p.gid 18354 GT OR .proc.gid 18354 GT OR .proc.gid 18354 LT OR .proc.gid 18354 GT AND .process.gid 18354 STRCMP AND .proc.gid 18354 LT AND .process.gid 18354 GE "
+                            ]
+                        }
+                    },
+                    "unixClient": {
+                        "File": "history.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 10,
+                            "path": "/apply/wide/fly.socket",
+                            "EventBlackLiist": ".event.source.filename /maintain/with.pptcut.txt LE ",
+                            "authorizedProcesses": [
+                                ".process.pid 2885163 LT OR .process.pid 2885163 EQ AND .proc.pid 2885163 GE ",
+                                ".process.pid 2885163 LT OR .process.pid 2885163 EQ AND .proc.pid 2885163 GE OR .process.pid 2885163 EQ OR .proc.pid 2885163 LE ",
+                                ".process.pid 2885163 LT OR .process.pid 2885163 EQ AND .proc.pid 2885163 GE OR .process.pid 2885163 EQ OR .proc.pid 2885163 LE OR .p.pid 2885163 EQ OR .p.pid 2885163 GT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

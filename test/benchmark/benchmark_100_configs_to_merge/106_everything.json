@@ -1,0 +1,43 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "DEBUG",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "drive.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 206,
+                            "Port": 55425,
+                            "Interface": "10.131.202.225",
+                            "EventBlackLiist": ".ev.source.filename /since/another.avifactor.gif GT ",
+                            "authorizedProcesses": [
+                                ".p.pid 187648 LE OR .p.pid 187648 LE OR .process.pid 187648 GT ",
+                                ".p.pid 187648 LE OR .p.pid 187648 LE OR .process.pid 187648 GT OR .proc.pid 187648 GE OR .proc.pid 187648 GE ",
+                                ".p.pid 187648 LE OR .p.pid 187648 LE OR .process.pid 187648 GT OR .proc.pid 187648 GE OR .proc.pid 187648 GE AND .process.pid 187648 GE OR .proc.pid 187648 LT "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "figure.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 130,
+                            "Port": 54657,
+                            "Interface": "213.150.141.149",
+                            "EventBlackLiist": ".ev.source.appname stand.flac EQ ",
+                            "authorizedProcesses": [
+                                ".process.pid 1159174 LE AND .process.pid 1159174 GT AND .p.pid 1159174 STRCMP ",
+                                ".process.pid 1159174 LE AND .process.pid 1159174 GT AND .p.pid 1159174 STRCMP OR .process.pid 1159174 LE AND .process.pid 1159174 LT ",
+                                ".process.pid 1159174 LE AND .process.pid 1159174 GT AND .p.pid 1159174 STRCMP OR .process.pid 1159174 LE AND .process.pid 1159174 LT AND .proc.pid 1159174 GE AND .proc.pid 1159174 STRCMP "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

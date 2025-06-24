@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "interesting.c",
+            "LogLevel": "CRITICAL",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "thus.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 217,
+                            "path": "/development/total/leave.socket",
+                            "EventBlackLiist": ".ev.date [6466053205, 7136192528] STRCMP ",
+                            "authorizedProcesses": [
+                                ".proc.pid 499895 LE AND .p.pid 499895 GE OR .p.pid 499895 STRCMP ",
+                                ".proc.pid 499895 LE AND .p.pid 499895 GE OR .p.pid 499895 STRCMP AND .p.pid 499895 LT OR .proc.pid 499895 GE ",
+                                ".proc.pid 499895 LE AND .p.pid 499895 GE OR .p.pid 499895 STRCMP AND .p.pid 499895 LT OR .proc.pid 499895 GE AND .proc.pid 499895 STRCMP OR .proc.pid 499895 GT "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "write.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 29,
+                            "Port": 60675,
+                            "Interface": "172.26.110.180",
+                            "EventBlackLiist": ".e.severity 6 STRCMP ",
+                            "authorizedProcesses": [
+                                ".process.exec /staff/them/least/hand/place/together STRCMP AND .proc.exec /staff/them/least/hand/place/together LT OR .p.exec /staff/them/least/hand/place/together GE ",
+                                ".process.exec /staff/them/least/hand/place/together STRCMP AND .proc.exec /staff/them/least/hand/place/together LT OR .p.exec /staff/them/least/hand/place/together GE AND .proc.exec /staff/them/least/hand/place/together LE AND .p.exec /staff/them/least/hand/place/together STRCMP ",
+                                ".process.exec /staff/them/least/hand/place/together STRCMP AND .proc.exec /staff/them/least/hand/place/together LT OR .p.exec /staff/them/least/hand/place/together GE AND .proc.exec /staff/them/least/hand/place/together LE AND .p.exec /staff/them/least/hand/place/together STRCMP OR .process.exec /staff/them/least/hand/place/together LT AND .p.exec /staff/them/least/hand/place/together STRCMP "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "instead.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 108,
+                            "path": "/receive/war/what.socket",
+                            "EventBlackLiist": ".event.source.appname amount.jpeg GE ",
+                            "authorizedProcesses": [
+                                ".proc.exec /shoulder/air/use/fund/sound/art GT OR .p.exec /shoulder/air/use/fund/sound/art LE OR .proc.exec /shoulder/air/use/fund/sound/art LT ",
+                                ".proc.exec /shoulder/air/use/fund/sound/art GT OR .p.exec /shoulder/air/use/fund/sound/art LE OR .proc.exec /shoulder/air/use/fund/sound/art LT AND .proc.exec /shoulder/air/use/fund/sound/art EQ AND .p.exec /shoulder/air/use/fund/sound/art GT ",
+                                ".proc.exec /shoulder/air/use/fund/sound/art GT OR .p.exec /shoulder/air/use/fund/sound/art LE OR .proc.exec /shoulder/air/use/fund/sound/art LT AND .proc.exec /shoulder/air/use/fund/sound/art EQ AND .p.exec /shoulder/air/use/fund/sound/art GT OR .proc.exec /shoulder/air/use/fund/sound/art LE AND .p.exec /shoulder/air/use/fund/sound/art EQ "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "ball.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 224,
+                            "Port": 8787,
+                            "Interface": "172.16.174.154",
+                            "EventBlackLiist": ".ev.payload Old paper organization them north leave. EQ ",
+                            "authorizedProcesses": [
+                                ".process.gid 8883 STRCMP OR .process.gid 8883 EQ AND .proc.gid 8883 STRCMP ",
+                                ".process.gid 8883 STRCMP OR .process.gid 8883 EQ AND .proc.gid 8883 STRCMP OR .proc.gid 8883 LT AND .process.gid 8883 STRCMP ",
+                                ".process.gid 8883 STRCMP OR .process.gid 8883 EQ AND .proc.gid 8883 STRCMP OR .proc.gid 8883 LT AND .process.gid 8883 STRCMP AND .p.gid 8883 GT OR .process.gid 8883 LT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

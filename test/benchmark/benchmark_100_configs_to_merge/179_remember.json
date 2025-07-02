@@ -1,0 +1,65 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "DEBUG",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "camera.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 254,
+                            "path": "/send/grow/service.socket",
+                            "EventBlackLiist": ".e.date [4643639065, 3529661885] GE ",
+                            "authorizedProcesses": [
+                                ".p.gid 57460 GE OR .p.gid 57460 GE OR .proc.gid 57460 LT ",
+                                ".p.gid 57460 GE OR .p.gid 57460 GE OR .proc.gid 57460 LT AND .proc.gid 57460 LT AND .proc.gid 57460 STRCMP ",
+                                ".p.gid 57460 GE OR .p.gid 57460 GE OR .proc.gid 57460 LT AND .proc.gid 57460 LT AND .proc.gid 57460 STRCMP OR .process.gid 57460 GT AND .process.gid 57460 EQ "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "share.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.payload Skill pull analysis trip. LE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/game/career.log",
+                            "MaxSize": 29915,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "him.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.messageCode 3001 GT "
+                        ],
+                        "Config": {
+                            "BufferSize": 85
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "security.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.filename /word/significant.jsonbreak.jpg STRCMP "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/power/heart.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

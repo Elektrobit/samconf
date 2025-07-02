@@ -1,0 +1,68 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "assume.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.payload Difference improve necessary worker Mr arrive white member. STRCMP "
+                        ],
+                        "Config": {
+                            "BufferSize": 121
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "with.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.classification 0xffffffff GE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/might/site.log",
+                            "MaxSize": 57711,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "responsibility.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".event.date [3313459931, 6600179936] LT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "usually.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 63,
+                            "Port": 57052,
+                            "Interface": "172.26.203.82",
+                            "EventBlackLiist": ".ev.messageCode 5001 EQ ",
+                            "authorizedProcesses": [
+                                ".p.gid 31788 GT OR .p.gid 31788 GE OR .proc.gid 31788 LT ",
+                                ".p.gid 31788 GT OR .p.gid 31788 GE OR .proc.gid 31788 LT OR .proc.gid 31788 STRCMP AND .proc.gid 31788 GT ",
+                                ".p.gid 31788 GT OR .p.gid 31788 GE OR .proc.gid 31788 LT OR .proc.gid 31788 STRCMP AND .proc.gid 31788 GT AND .proc.gid 31788 EQ OR .proc.gid 31788 EQ "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

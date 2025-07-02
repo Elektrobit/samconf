@@ -1,0 +1,54 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "pick.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.payload College hospital relate option when discuss ability nearly. GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/responsibility/think.log",
+                            "MaxSize": 20412,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "around.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.appname personal.tiff EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "claim.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "purpose.so",
+                        "Run": "Never"
+                    }
+                }
+            }
+        }
+    }
+}

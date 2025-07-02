@@ -1,0 +1,43 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "machine.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 52,
+                            "Port": 16148,
+                            "Interface": "10.93.219.250",
+                            "EventBlackLiist": ".event.source.filename /like/former.movkitchen.js EQ ",
+                            "authorizedProcesses": [
+                                ".p.uid 22809 GT OR .process.uid 22809 GE OR .p.uid 22809 STRCMP ",
+                                ".p.uid 22809 GT OR .process.uid 22809 GE OR .p.uid 22809 STRCMP AND .proc.uid 22809 LT OR .proc.uid 22809 STRCMP ",
+                                ".p.uid 22809 GT OR .process.uid 22809 GE OR .p.uid 22809 STRCMP AND .proc.uid 22809 LT OR .proc.uid 22809 STRCMP AND .proc.uid 22809 EQ AND .process.uid 22809 EQ "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "recently.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 206,
+                            "Port": 52595,
+                            "Interface": "195.171.118.88",
+                            "EventBlackLiist": ".ev.source.filename /responsibility/standard.jpegimage.json EQ ",
+                            "authorizedProcesses": [
+                                ".p.exec /type/election/allow/federal/west/agency STRCMP OR .p.exec /type/election/allow/federal/west/agency LT OR .p.exec /type/election/allow/federal/west/agency EQ ",
+                                ".p.exec /type/election/allow/federal/west/agency STRCMP OR .p.exec /type/election/allow/federal/west/agency LT OR .p.exec /type/election/allow/federal/west/agency EQ OR .proc.exec /type/election/allow/federal/west/agency LT OR .p.exec /type/election/allow/federal/west/agency STRCMP ",
+                                ".p.exec /type/election/allow/federal/west/agency STRCMP OR .p.exec /type/election/allow/federal/west/agency LT OR .p.exec /type/election/allow/federal/west/agency EQ OR .proc.exec /type/election/allow/federal/west/agency LT OR .p.exec /type/election/allow/federal/west/agency STRCMP OR .p.exec /type/election/allow/federal/west/agency GE AND .proc.exec /type/election/allow/federal/west/agency STRCMP "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

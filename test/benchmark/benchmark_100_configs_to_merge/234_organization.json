@@ -1,0 +1,39 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "dog.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.hardwareid a706d62e37255a35baf15390bc031898 STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/catch/say.log",
+                            "MaxSize": 27213,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "character.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.payload Local contain process director morning majority. GE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

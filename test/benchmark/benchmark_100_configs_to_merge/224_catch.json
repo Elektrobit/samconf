@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "light.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.messageCode 8004 GT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/skill/cold.sqlite"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "might.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 151,
+                            "Port": 17254,
+                            "Interface": "192.168.44.132",
+                            "EventBlackLiist": ".e.classification 0x2000000000 LE ",
+                            "authorizedProcesses": [
+                                ".proc.pid 10631 LE AND .proc.pid 10631 EQ OR .process.pid 10631 GE ",
+                                ".proc.pid 10631 LE AND .proc.pid 10631 EQ OR .process.pid 10631 GE OR .p.pid 10631 GE AND .process.pid 10631 LT ",
+                                ".proc.pid 10631 LE AND .proc.pid 10631 EQ OR .process.pid 10631 GE OR .p.pid 10631 GE AND .process.pid 10631 LT OR .proc.pid 10631 LT AND .process.pid 10631 STRCMP "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "expect.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.filename /responsibility/nation.pagesworld.css GE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "that.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.classification 0x200 STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/baby/first.log",
+                            "MaxSize": 30863,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

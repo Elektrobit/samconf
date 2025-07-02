@@ -1,0 +1,25 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "institution.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 157,
+                            "ShmemOffset": 56,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

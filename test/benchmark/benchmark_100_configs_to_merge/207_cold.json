@@ -1,0 +1,82 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "soon.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 119,
+                            "path": "/campaign/conference/box.socket",
+                            "EventBlackLiist": ".ev.classification 0x8000000000 EQ ",
+                            "authorizedProcesses": [
+                                ".proc.gid 33757 GE AND .process.gid 33757 GE OR .process.gid 33757 LE ",
+                                ".proc.gid 33757 GE AND .process.gid 33757 GE OR .process.gid 33757 LE OR .p.gid 33757 LT AND .p.gid 33757 STRCMP ",
+                                ".proc.gid 33757 GE AND .process.gid 33757 GE OR .process.gid 33757 LE OR .p.gid 33757 LT AND .p.gid 33757 STRCMP OR .proc.gid 33757 LT AND .proc.gid 33757 LE "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "must.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 233,
+                            "Port": 9011,
+                            "Interface": "172.30.131.200",
+                            "EventBlackLiist": ".event.source.pid 2562171 EQ ",
+                            "authorizedProcesses": [
+                                ".p.uid 44054 EQ AND .p.uid 44054 GE AND .process.uid 44054 GT ",
+                                ".p.uid 44054 EQ AND .p.uid 44054 GE AND .process.uid 44054 GT AND .proc.uid 44054 GT AND .proc.uid 44054 GE ",
+                                ".p.uid 44054 EQ AND .p.uid 44054 GE AND .process.uid 44054 GT AND .proc.uid 44054 GT AND .proc.uid 44054 GE OR .proc.uid 44054 LE AND .p.uid 44054 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "traditional.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.hardwareid 45130d2f8f8c0391737b457749add091 GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/card/now.log",
+                            "MaxSize": 31893,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "from.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.payload Sell someone however discover story. GE "
+                        ],
+                        "Config": {
+                            "BufferSize": 105
+                        }
+                    },
+                    "DLT": {
+                        "File": "environment.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.severity 3 STRCMP "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

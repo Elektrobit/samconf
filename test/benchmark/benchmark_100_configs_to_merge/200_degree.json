@@ -1,0 +1,28 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "special.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 193,
+                            "Port": 15959,
+                            "Interface": "10.84.167.223",
+                            "EventBlackLiist": ".ev.severity 2 LE ",
+                            "authorizedProcesses": [
+                                ".proc.gid 38109 GT AND .proc.gid 38109 LE AND .p.gid 38109 STRCMP ",
+                                ".proc.gid 38109 GT AND .proc.gid 38109 LE AND .p.gid 38109 STRCMP AND .process.gid 38109 LE OR .process.gid 38109 GT ",
+                                ".proc.gid 38109 GT AND .proc.gid 38109 LE AND .p.gid 38109 STRCMP AND .process.gid 38109 LE OR .process.gid 38109 GT OR .p.gid 38109 GT AND .process.gid 38109 STRCMP "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

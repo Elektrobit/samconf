@@ -1,0 +1,65 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "myself.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "SyslogScanner": {
+                        "File": "per.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "7003": ".event.severity 6 LE AND .e.severity 6 GE OR .event.severity 6 GT AND .ev.severity 6 EQ "
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "animal.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 42,
+                            "path": "/woman/owner/floor.socket",
+                            "EventBlackLiist": ".e.severity 6 GT ",
+                            "authorizedProcesses": [
+                                ".p.uid 47542 GT OR .process.uid 47542 STRCMP OR .process.uid 47542 STRCMP ",
+                                ".p.uid 47542 GT OR .process.uid 47542 STRCMP OR .process.uid 47542 STRCMP AND .process.uid 47542 STRCMP AND .proc.uid 47542 LE ",
+                                ".p.uid 47542 GT OR .process.uid 47542 STRCMP OR .process.uid 47542 STRCMP AND .process.uid 47542 STRCMP AND .proc.uid 47542 LE AND .proc.uid 47542 GE AND .proc.uid 47542 STRCMP "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "ok.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 173,
+                            "Port": 516,
+                            "Interface": "192.210.98.90",
+                            "EventBlackLiist": ".ev.source.pid 4068600 LT ",
+                            "authorizedProcesses": [
+                                ".process.exec /school/unit/camera/south/system/onto LE AND .proc.exec /school/unit/camera/south/system/onto GT OR .proc.exec /school/unit/camera/south/system/onto LT ",
+                                ".process.exec /school/unit/camera/south/system/onto LE AND .proc.exec /school/unit/camera/south/system/onto GT OR .proc.exec /school/unit/camera/south/system/onto LT OR .proc.exec /school/unit/camera/south/system/onto LT AND .process.exec /school/unit/camera/south/system/onto LT ",
+                                ".process.exec /school/unit/camera/south/system/onto LE AND .proc.exec /school/unit/camera/south/system/onto GT OR .proc.exec /school/unit/camera/south/system/onto LT OR .proc.exec /school/unit/camera/south/system/onto LT AND .process.exec /school/unit/camera/south/system/onto LT OR .proc.exec /school/unit/camera/south/system/onto STRCMP OR .proc.exec /school/unit/camera/south/system/onto LT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

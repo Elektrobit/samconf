@@ -1,0 +1,35 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "five.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.filename /participant/situation.webmhim.gif GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "just.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.messageCode 8001 GT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/understand/where.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

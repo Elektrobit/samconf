@@ -1,0 +1,84 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "question.c",
+            "LogLevel": "ERROR",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "song.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "4000": ".event.classification 0x0 GT AND .event.classification 0x0 LE OR .ev.classification 0x0 LT OR .ev.classification 0x0 LT "
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "plan.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.classification 0x4 STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/newspaper/cover.log",
+                            "MaxSize": 57364,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "contain.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.payload Memory decide audience structure up. LT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "whole.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.appname reality.jpeg EQ "
+                        ],
+                        "Config": {
+                            "BufferSize": 116
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "fill.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 92,
+                            "Port": 16839,
+                            "Interface": "10.37.140.61",
+                            "EventBlackLiist": ".e.messageCode 2003 LE ",
+                            "authorizedProcesses": [
+                                ".process.uid 59571 GE OR .p.uid 59571 GE AND .p.uid 59571 STRCMP ",
+                                ".process.uid 59571 GE OR .p.uid 59571 GE AND .p.uid 59571 STRCMP AND .proc.uid 59571 LT OR .proc.uid 59571 LT ",
+                                ".process.uid 59571 GE OR .p.uid 59571 GE AND .p.uid 59571 STRCMP AND .proc.uid 59571 LT OR .proc.uid 59571 LT AND .p.uid 59571 LE OR .p.uid 59571 GE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

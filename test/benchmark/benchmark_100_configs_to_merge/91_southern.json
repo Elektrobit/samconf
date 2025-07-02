@@ -1,0 +1,32 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "power.so",
+                        "Run": "Never",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "4002": ".event.hardwareid 9405d95d277fc28640c130be4bfb5e3f LT OR .event.hardwareid 9405d95d277fc28640c130be4bfb5e3f STRCMP AND .event.hardwareid 9405d95d277fc28640c130be4bfb5e3f GE AND .ev.hardwareid 9405d95d277fc28640c130be4bfb5e3f GE "
+                                }
+                            }
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "benefit.so",
+                        "Run": "Never",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

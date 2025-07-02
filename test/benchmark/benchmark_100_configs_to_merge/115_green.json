@@ -1,0 +1,49 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "dinner.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.filename /around/tree.docxthese.json GT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/from/throughout.sqlite"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "save.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".e.source.filename /interesting/bank.mp4edge.flac LE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/too/heart.log",
+                            "MaxSize": 57933,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "dinner.so",
+                        "Run": "Never",
+                        "Filter": [
+                            ".event.hardwareid 223355fa14eb03a7a06ed3443720fc29 GE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

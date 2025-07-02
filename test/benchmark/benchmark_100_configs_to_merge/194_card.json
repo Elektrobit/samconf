@@ -1,0 +1,91 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "play.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 176,
+                            "Port": 41188,
+                            "Interface": "192.168.197.149",
+                            "EventBlackLiist": ".e.payload About moment sure course represent. STRCMP ",
+                            "authorizedProcesses": [
+                                ".proc.gid 15350 GE AND .proc.gid 15350 GT AND .process.gid 15350 GE ",
+                                ".proc.gid 15350 GE AND .proc.gid 15350 GT AND .process.gid 15350 GE AND .process.gid 15350 EQ AND .proc.gid 15350 STRCMP ",
+                                ".proc.gid 15350 GE AND .proc.gid 15350 GT AND .process.gid 15350 GE AND .process.gid 15350 EQ AND .proc.gid 15350 STRCMP AND .proc.gid 15350 GE OR .p.gid 15350 EQ "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "city.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 180,
+                            "ShmemOffset": 83,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "old.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "hit.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.pid 3989800 STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/public/quickly.log",
+                            "MaxSize": 33098,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "customer.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.payload Actually may pass again deal. EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "his.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.date [6001828436, 688540000] GT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/pay/since.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

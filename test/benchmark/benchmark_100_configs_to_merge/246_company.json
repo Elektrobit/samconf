@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "dog.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 253,
+                            "Port": 24967,
+                            "Interface": "209.213.2.255",
+                            "EventBlackLiist": ".event.source.pid 1889794 GT ",
+                            "authorizedProcesses": [
+                                ".proc.gid 51271 GE AND .p.gid 51271 EQ OR .proc.gid 51271 LE ",
+                                ".proc.gid 51271 GE AND .p.gid 51271 EQ OR .proc.gid 51271 LE AND .p.gid 51271 GE AND .process.gid 51271 GE ",
+                                ".proc.gid 51271 GE AND .p.gid 51271 EQ OR .proc.gid 51271 LE AND .p.gid 51271 GE AND .process.gid 51271 GE AND .process.gid 51271 LT OR .process.gid 51271 EQ "
+                            ]
+                        }
+                    },
+                    "unixClient": {
+                        "File": "early.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 35,
+                            "path": "/discussion/make/buy.socket",
+                            "EventBlackLiist": ".e.date [446067023, 8682101674] EQ ",
+                            "authorizedProcesses": [
+                                ".process.uid 54800 LT AND .p.uid 54800 EQ AND .process.uid 54800 LT ",
+                                ".process.uid 54800 LT AND .p.uid 54800 EQ AND .process.uid 54800 LT OR .p.uid 54800 LT OR .p.uid 54800 LE ",
+                                ".process.uid 54800 LT AND .p.uid 54800 EQ AND .process.uid 54800 LT OR .p.uid 54800 LT OR .p.uid 54800 LE OR .p.uid 54800 STRCMP OR .p.uid 54800 LT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

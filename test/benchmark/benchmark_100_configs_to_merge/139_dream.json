@@ -1,0 +1,70 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "officer.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 191,
+                            "Port": 30206,
+                            "Interface": "135.184.156.94",
+                            "EventBlackLiist": ".event.source.filename /different/old.gifmeet.wav EQ ",
+                            "authorizedProcesses": [
+                                ".process.pid 821048 GT OR .p.pid 821048 EQ AND .p.pid 821048 LE ",
+                                ".process.pid 821048 GT OR .p.pid 821048 EQ AND .p.pid 821048 LE OR .p.pid 821048 LT AND .process.pid 821048 GT ",
+                                ".process.pid 821048 GT OR .p.pid 821048 EQ AND .p.pid 821048 LE OR .p.pid 821048 LT AND .process.pid 821048 GT OR .process.pid 821048 GT AND .p.pid 821048 GT "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "no.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 49,
+                            "ShmemOffset": 75,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "war.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.filename /according/story.movpopular.mov LT "
+                        ],
+                        "Config": {
+                            "BufferSize": 50
+                        }
+                    },
+                    "DLT": {
+                        "File": "sure.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.messageCode 5005 GT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

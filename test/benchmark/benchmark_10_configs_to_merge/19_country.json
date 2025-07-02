@@ -1,0 +1,67 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "serious.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.messageCode 8005 LT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/improve/either.sqlite"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "sport.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.classification 0x1 STRCMP "
+                        ],
+                        "Config": {
+                            "StoragePath": "/car/decade.log",
+                            "MaxSize": 3807,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "minute.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.messageCode 5101 LT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "agent.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 245,
+                            "path": "/without/call/anything.socket",
+                            "EventBlackLiist": ".ev.hardwareid 861c8b3d3c93a02295bac49cebd89639 GT ",
+                            "authorizedProcesses": [
+                                ".process.uid 40707 EQ AND .process.uid 40707 EQ AND .process.uid 40707 LT ",
+                                ".process.uid 40707 EQ AND .process.uid 40707 EQ AND .process.uid 40707 LT AND .proc.uid 40707 LE OR .process.uid 40707 LE ",
+                                ".process.uid 40707 EQ AND .process.uid 40707 EQ AND .process.uid 40707 LT AND .proc.uid 40707 LE OR .process.uid 40707 LE OR .proc.uid 40707 GE OR .p.uid 40707 STRCMP "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

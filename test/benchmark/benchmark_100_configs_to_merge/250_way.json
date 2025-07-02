@@ -1,0 +1,44 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "house.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.filename /exactly/candidate.wavcentury.txt STRCMP "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/their/he.sqlite"
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "part.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.messageCode 7000 GT "
+                        ],
+                        "Config": {
+                            "BufferSize": 123
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "hold.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "so.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 94,
+                            "Port": 60848,
+                            "Interface": "156.85.31.106",
+                            "EventBlackLiist": ".event.source.pid 1156517 STRCMP ",
+                            "authorizedProcesses": [
+                                ".p.pid 610039 GT AND .process.pid 610039 LE AND .process.pid 610039 EQ ",
+                                ".p.pid 610039 GT AND .process.pid 610039 LE AND .process.pid 610039 EQ OR .proc.pid 610039 GE OR .proc.pid 610039 GE ",
+                                ".p.pid 610039 GT AND .process.pid 610039 LE AND .process.pid 610039 EQ OR .proc.pid 610039 GE OR .proc.pid 610039 GE AND .p.pid 610039 LE AND .p.pid 610039 LT "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "power.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.date [7074791047, 6386205168] GE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "off.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.pid 417579 LT "
+                        ],
+                        "Config": {
+                            "BufferSize": 93
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

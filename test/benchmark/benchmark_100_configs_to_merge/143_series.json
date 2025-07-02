@@ -1,0 +1,60 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "course.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "poor.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.messageCode 501 STRCMP "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "conference.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.date [6067799902, 5042842508] EQ "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/end/southern.sqlite"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "arrive.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.payload Final newspaper animal design prove. LT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/nor/ten.log",
+                            "MaxSize": 49776,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

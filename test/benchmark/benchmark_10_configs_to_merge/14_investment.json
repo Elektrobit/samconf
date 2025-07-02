@@ -1,0 +1,82 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "group.c",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "edge.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 167,
+                            "path": "/there/role/play.socket",
+                            "EventBlackLiist": ".ev.hardwareid 6dda3a4f88fc29a27bb2a933af736f62 GT ",
+                            "authorizedProcesses": [
+                                ".process.uid 1195 STRCMP AND .process.uid 1195 LT OR .process.uid 1195 LT ",
+                                ".process.uid 1195 STRCMP AND .process.uid 1195 LT OR .process.uid 1195 LT OR .proc.uid 1195 STRCMP AND .process.uid 1195 LT ",
+                                ".process.uid 1195 STRCMP AND .process.uid 1195 LT OR .process.uid 1195 LT OR .proc.uid 1195 STRCMP AND .process.uid 1195 LT AND .process.uid 1195 LE OR .process.uid 1195 EQ "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "time.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 2,
+                            "Port": 24366,
+                            "Interface": "182.70.114.231",
+                            "EventBlackLiist": ".e.source.filename /talk/have.mp4how.numbers LT ",
+                            "authorizedProcesses": [
+                                ".process.gid 39873 EQ OR .process.gid 39873 GE AND .process.gid 39873 LT ",
+                                ".process.gid 39873 EQ OR .process.gid 39873 GE AND .process.gid 39873 LT AND .proc.gid 39873 EQ OR .p.gid 39873 GE ",
+                                ".process.gid 39873 EQ OR .process.gid 39873 GE AND .process.gid 39873 LT AND .proc.gid 39873 EQ OR .p.gid 39873 GE AND .proc.gid 39873 EQ OR .p.gid 39873 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "throw.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.pid 2803259 STRCMP "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "this.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.payload Cost possible be easy night. EQ "
+                        ],
+                        "Config": {
+                            "BufferSize": 130
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "fight.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.filename /which/industry.htmlthan.json GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/hard/outside.log",
+                            "MaxSize": 47374,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

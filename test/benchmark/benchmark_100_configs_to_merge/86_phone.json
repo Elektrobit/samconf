@@ -1,0 +1,27 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "economic.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 62,
+                            "path": "/seat/that/whose.socket",
+                            "EventBlackLiist": ".ev.payload Approach practice move. GE ",
+                            "authorizedProcesses": [
+                                ".p.gid 39356 EQ OR .proc.gid 39356 LT AND .proc.gid 39356 GT ",
+                                ".p.gid 39356 EQ OR .proc.gid 39356 LT AND .proc.gid 39356 GT AND .p.gid 39356 EQ AND .p.gid 39356 STRCMP ",
+                                ".p.gid 39356 EQ OR .proc.gid 39356 LT AND .proc.gid 39356 GT AND .p.gid 39356 EQ AND .p.gid 39356 STRCMP OR .proc.gid 39356 LE OR .proc.gid 39356 LE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

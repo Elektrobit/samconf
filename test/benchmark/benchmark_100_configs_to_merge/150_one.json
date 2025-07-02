@@ -1,0 +1,60 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "party.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8007": ".ev.messageCode 8002 GT OR .e.messageCode 8002 LE OR .e.messageCode 8002 GT OR .e.messageCode 8002 LT "
+                                }
+                            }
+                        }
+                    },
+                    "Shmem": {
+                        "File": "Congress.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 26,
+                            "ShmemOffset": 4,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    },
+                    "KmsgScanner": {
+                        "File": "the.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "position.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.messageCode 1103 EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "me.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 203,
+                            "path": "/article/defense/up.socket",
+                            "EventBlackLiist": ".event.source.appname everyone.jpg GE ",
+                            "authorizedProcesses": [
+                                ".proc.exec /successful/growth/too/remember/stand/guy EQ OR .process.exec /successful/growth/too/remember/stand/guy LT OR .process.exec /successful/growth/too/remember/stand/guy LE ",
+                                ".proc.exec /successful/growth/too/remember/stand/guy EQ OR .process.exec /successful/growth/too/remember/stand/guy LT OR .process.exec /successful/growth/too/remember/stand/guy LE AND .process.exec /successful/growth/too/remember/stand/guy LE OR .proc.exec /successful/growth/too/remember/stand/guy LT ",
+                                ".proc.exec /successful/growth/too/remember/stand/guy EQ OR .process.exec /successful/growth/too/remember/stand/guy LT OR .process.exec /successful/growth/too/remember/stand/guy LE AND .process.exec /successful/growth/too/remember/stand/guy LE OR .proc.exec /successful/growth/too/remember/stand/guy LT OR .p.exec /successful/growth/too/remember/stand/guy EQ AND .process.exec /successful/growth/too/remember/stand/guy LT "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "use.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 54,
+                            "Port": 3174,
+                            "Interface": "214.230.123.139",
+                            "EventBlackLiist": ".e.classification 0x20 GT ",
+                            "authorizedProcesses": [
+                                ".process.gid 35319 GT OR .p.gid 35319 GE AND .process.gid 35319 GE ",
+                                ".process.gid 35319 GT OR .p.gid 35319 GE AND .process.gid 35319 GE OR .p.gid 35319 STRCMP AND .proc.gid 35319 STRCMP ",
+                                ".process.gid 35319 GT OR .p.gid 35319 GE AND .process.gid 35319 GE OR .p.gid 35319 STRCMP AND .proc.gid 35319 STRCMP AND .process.gid 35319 GE OR .proc.gid 35319 GT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

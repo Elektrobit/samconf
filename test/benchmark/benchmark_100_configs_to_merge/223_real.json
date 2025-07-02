@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "face.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 52,
+                            "path": "/air/new/party.socket",
+                            "EventBlackLiist": ".ev.source.pid 2675678 LE ",
+                            "authorizedProcesses": [
+                                ".proc.exec /history/along/never/hit/exist/parent GE AND .p.exec /history/along/never/hit/exist/parent GE OR .p.exec /history/along/never/hit/exist/parent EQ ",
+                                ".proc.exec /history/along/never/hit/exist/parent GE AND .p.exec /history/along/never/hit/exist/parent GE OR .p.exec /history/along/never/hit/exist/parent EQ OR .p.exec /history/along/never/hit/exist/parent LE AND .p.exec /history/along/never/hit/exist/parent GT ",
+                                ".proc.exec /history/along/never/hit/exist/parent GE AND .p.exec /history/along/never/hit/exist/parent GE OR .p.exec /history/along/never/hit/exist/parent EQ OR .p.exec /history/along/never/hit/exist/parent LE AND .p.exec /history/along/never/hit/exist/parent GT OR .proc.exec /history/along/never/hit/exist/parent EQ OR .process.exec /history/along/never/hit/exist/parent STRCMP "
+                            ]
+                        }
+                    },
+                    "PublicTcpClient": {
+                        "File": "tend.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 219,
+                            "Port": 52868,
+                            "Interface": "189.25.20.133",
+                            "EventBlackLiist": ".ev.hardwareid 4b266d391e671f49fb8e5f809624db87 EQ ",
+                            "authorizedProcesses": [
+                                ".process.gid 42969 LE OR .p.gid 42969 STRCMP OR .process.gid 42969 LT ",
+                                ".process.gid 42969 LE OR .p.gid 42969 STRCMP OR .process.gid 42969 LT AND .proc.gid 42969 EQ AND .p.gid 42969 GE ",
+                                ".process.gid 42969 LE OR .p.gid 42969 STRCMP OR .process.gid 42969 LT AND .proc.gid 42969 EQ AND .p.gid 42969 GE OR .process.gid 42969 GE OR .proc.gid 42969 LT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

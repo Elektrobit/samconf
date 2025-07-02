@@ -1,0 +1,49 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "cause.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.classification 0x80 LT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/debate/federal.sqlite"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "sell.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.severity 4 LE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/fall/vote.log",
+                            "MaxSize": 13064,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "DLT": {
+                        "File": "step.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.classification 0xff00000000 LT "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

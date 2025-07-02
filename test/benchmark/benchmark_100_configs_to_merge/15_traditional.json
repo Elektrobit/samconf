@@ -1,0 +1,78 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "no.so",
+                        "Run": "Never"
+                    },
+                    "Shmem": {
+                        "File": "sense.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 172,
+                            "ShmemOffset": 5,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "similar.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 71,
+                            "Port": 15924,
+                            "Interface": "205.131.193.101",
+                            "EventBlackLiist": ".ev.hardwareid 27591bffae8d27808873522f94dbde31 GE ",
+                            "authorizedProcesses": [
+                                ".p.pid 1428283 LT OR .process.pid 1428283 GE AND .process.pid 1428283 LE ",
+                                ".p.pid 1428283 LT OR .process.pid 1428283 GE AND .process.pid 1428283 LE AND .p.pid 1428283 EQ OR .proc.pid 1428283 STRCMP ",
+                                ".p.pid 1428283 LT OR .process.pid 1428283 GE AND .process.pid 1428283 LE AND .p.pid 1428283 EQ OR .proc.pid 1428283 STRCMP AND .p.pid 1428283 STRCMP AND .p.pid 1428283 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "prove.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.messageCode 1102 EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "throughout.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.date [1632433322, 126768594] EQ "
+                        ],
+                        "Config": {
+                            "StoragePath": "/everyone/itself.log",
+                            "MaxSize": 2866,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

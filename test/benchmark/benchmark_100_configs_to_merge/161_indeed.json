@@ -1,0 +1,32 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "hotel.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "Shmem": {
+                        "File": "young.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 72,
+                            "ShmemOffset": 99,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "NONE",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "program.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.pid 3537299 EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

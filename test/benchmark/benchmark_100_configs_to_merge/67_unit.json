@@ -1,0 +1,44 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "live.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 139,
+                            "Port": 12256,
+                            "Interface": "172.29.32.7",
+                            "EventBlackLiist": ".e.severity 6 GE ",
+                            "authorizedProcesses": [
+                                ".process.gid 9946 LT AND .proc.gid 9946 LT OR .proc.gid 9946 GE ",
+                                ".process.gid 9946 LT AND .proc.gid 9946 LT OR .proc.gid 9946 GE AND .process.gid 9946 LT OR .process.gid 9946 GE ",
+                                ".process.gid 9946 LT AND .proc.gid 9946 LT OR .proc.gid 9946 GE AND .process.gid 9946 LT OR .process.gid 9946 GE AND .proc.gid 9946 LE AND .proc.gid 9946 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "whatever.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8006": ".e.severity 5 STRCMP OR .e.severity 5 LE AND .e.severity 5 LE AND .event.severity 5 GE "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

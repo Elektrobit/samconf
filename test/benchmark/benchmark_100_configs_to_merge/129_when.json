@@ -1,0 +1,36 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "their.so",
+                        "Run": "Never",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "4006": ".ev.source.appname set.txt GT AND .event.source.appname set.txt LE OR .event.source.appname set.txt GT OR .event.source.appname set.txt LE "
+                                }
+                            }
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "common.so",
+                        "Run": "Always"
+                    },
+                    "KmsgScanner": {
+                        "File": "nothing.so",
+                        "Run": "Never",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

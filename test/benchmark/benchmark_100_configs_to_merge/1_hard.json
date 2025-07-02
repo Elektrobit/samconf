@@ -1,0 +1,27 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "step.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 168,
+                            "path": "/among/specific/baby.socket",
+                            "EventBlackLiist": ".ev.hardwareid 9c40105752a3c84dfa4684118fd7d693 GT ",
+                            "authorizedProcesses": [
+                                ".proc.uid 21150 GT AND .p.uid 21150 STRCMP OR .proc.uid 21150 GE ",
+                                ".proc.uid 21150 GT AND .p.uid 21150 STRCMP OR .proc.uid 21150 GE OR .p.uid 21150 LE OR .proc.uid 21150 EQ ",
+                                ".proc.uid 21150 GT AND .p.uid 21150 STRCMP OR .proc.uid 21150 GE OR .p.uid 21150 LE OR .proc.uid 21150 EQ OR .p.uid 21150 GT AND .p.uid 21150 GT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

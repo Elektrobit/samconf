@@ -1,0 +1,23 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "personal.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.severity 6 EQ "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/painting/full.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

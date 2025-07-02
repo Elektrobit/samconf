@@ -1,0 +1,27 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "program.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.hardwareid 78a95eb421b22479169539ddf60dc53b LE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/detail/decide.log",
+                            "MaxSize": 53037,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

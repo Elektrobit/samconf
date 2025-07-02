@@ -1,0 +1,46 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "EventLogging": {
+                "Plugins": {
+                    "SQLBackend": {
+                        "File": "increase.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.date [6901772436, 2322682508] LE "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/in/our.sqlite"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "politics.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "Shmem": {
+                        "File": "answer.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 125,
+                            "ShmemOffset": 99,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

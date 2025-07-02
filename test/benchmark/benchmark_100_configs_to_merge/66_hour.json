@@ -1,0 +1,47 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "whatever.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 209,
+                            "path": "/relate/where/recently.socket",
+                            "EventBlackLiist": ".event.severity 2 GE ",
+                            "authorizedProcesses": [
+                                ".process.gid 54257 LE AND .process.gid 54257 LE OR .proc.gid 54257 GT ",
+                                ".process.gid 54257 LE AND .process.gid 54257 LE OR .proc.gid 54257 GT AND .p.gid 54257 LT OR .p.gid 54257 LE ",
+                                ".process.gid 54257 LE AND .process.gid 54257 LE OR .proc.gid 54257 GT AND .p.gid 54257 LT OR .p.gid 54257 LE OR .proc.gid 54257 GE AND .p.gid 54257 GE "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "reason.so",
+                        "Run": "Always"
+                    },
+                    "Shmem": {
+                        "File": "politics.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 222,
+                            "ShmemOffset": 56,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "DEBUG",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "goal.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 140,
+                            "path": "/painting/argue/never.socket",
+                            "EventBlackLiist": ".event.source.appname education.wav GE ",
+                            "authorizedProcesses": [
+                                ".proc.pid 768878 LE OR .proc.pid 768878 GE OR .process.pid 768878 GE ",
+                                ".proc.pid 768878 LE OR .proc.pid 768878 GE OR .process.pid 768878 GE OR .p.pid 768878 LE AND .p.pid 768878 EQ ",
+                                ".proc.pid 768878 LE OR .proc.pid 768878 GE OR .process.pid 768878 GE OR .p.pid 768878 LE AND .p.pid 768878 EQ AND .p.pid 768878 GE AND .proc.pid 768878 GT "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "as.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 54,
+                            "Port": 35041,
+                            "Interface": "192.168.72.201",
+                            "EventBlackLiist": ".event.source.pid 1045335 EQ ",
+                            "authorizedProcesses": [
+                                ".p.gid 29835 GT OR .proc.gid 29835 GE OR .proc.gid 29835 EQ ",
+                                ".p.gid 29835 GT OR .proc.gid 29835 GE OR .proc.gid 29835 EQ OR .proc.gid 29835 GE OR .p.gid 29835 GE ",
+                                ".p.gid 29835 GT OR .proc.gid 29835 GE OR .proc.gid 29835 EQ OR .proc.gid 29835 GE OR .p.gid 29835 GE AND .process.gid 29835 LE AND .process.gid 29835 GE "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

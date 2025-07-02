@@ -1,0 +1,60 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "speak.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.messageCode 6001 GE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "financial.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.severity 6 LE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/minute/into.log",
+                            "MaxSize": 50088,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "thought.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.appname hear.mov EQ "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/interview/wind.sqlite"
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "consider.so",
+                        "Run": "Never",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

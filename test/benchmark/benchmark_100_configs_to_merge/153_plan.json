@@ -1,0 +1,32 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "you.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "Shmem": {
+                        "File": "by.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 138,
+                            "ShmemOffset": 59,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": false
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

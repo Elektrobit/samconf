@@ -1,0 +1,28 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "ClientInputs": {
+                "Plugins": {
+                    "LocalTcpClient": {
+                        "File": "subject.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 36,
+                            "Port": 59993,
+                            "Interface": "172.30.115.65",
+                            "EventBlackLiist": ".event.payload Common purpose produce occur item. STRCMP ",
+                            "authorizedProcesses": [
+                                ".process.uid 30370 LE AND .process.uid 30370 STRCMP AND .proc.uid 30370 GE ",
+                                ".process.uid 30370 LE AND .process.uid 30370 STRCMP AND .proc.uid 30370 GE AND .p.uid 30370 GE OR .p.uid 30370 STRCMP ",
+                                ".process.uid 30370 LE AND .process.uid 30370 STRCMP AND .proc.uid 30370 GE AND .p.uid 30370 GE OR .p.uid 30370 STRCMP OR .proc.uid 30370 GT AND .p.uid 30370 LT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

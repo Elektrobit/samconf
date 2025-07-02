@@ -1,0 +1,55 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "CRITICAL",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "receive.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 36,
+                            "Port": 34061,
+                            "Interface": "169.56.175.145",
+                            "EventBlackLiist": ".ev.source.appname these.flac LT ",
+                            "authorizedProcesses": [
+                                ".proc.uid 24236 GT AND .proc.uid 24236 LE AND .proc.uid 24236 LT ",
+                                ".proc.uid 24236 GT AND .proc.uid 24236 LE AND .proc.uid 24236 LT AND .p.uid 24236 LE AND .process.uid 24236 LT ",
+                                ".proc.uid 24236 GT AND .proc.uid 24236 LE AND .proc.uid 24236 LT AND .p.uid 24236 LE AND .process.uid 24236 LT AND .process.uid 24236 LT OR .process.uid 24236 LT "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "suggest.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "claim.so",
+                        "Run": "Always"
+                    },
+                    "SyslogScanner": {
+                        "File": "dream.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8007": ".event.hardwareid 6d16a6031069e2327f5e5fb4ef2e4e75 EQ OR .event.hardwareid 6d16a6031069e2327f5e5fb4ef2e4e75 GE AND .ev.hardwareid 6d16a6031069e2327f5e5fb4ef2e4e75 EQ AND .e.hardwareid 6d16a6031069e2327f5e5fb4ef2e4e75 GE "
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

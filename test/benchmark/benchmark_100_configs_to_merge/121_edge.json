@@ -1,0 +1,43 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "next.c",
+            "LogLevel": "INVALID",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "type.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.date [7654790959, 2601919908] GE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/can/girl.log",
+                            "MaxSize": 34313,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "Shmem": {
+                        "File": "military.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": true,
+                            "ShmemLogEntries": 46,
+                            "ShmemOffset": 28,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

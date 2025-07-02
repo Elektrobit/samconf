@@ -1,0 +1,20 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "DEBUG",
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "candidate.so",
+                        "Run": "Never",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

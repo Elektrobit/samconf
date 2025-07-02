@@ -1,0 +1,35 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "ERROR",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "control.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.filename /likely/challenge.jsonguy.json LE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "human.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.classification 0xff00000000 EQ "
+                        ],
+                        "Config": {
+                            "BufferSize": 146
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

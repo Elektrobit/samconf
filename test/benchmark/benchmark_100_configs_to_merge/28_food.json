@@ -1,0 +1,43 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "add.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 247,
+                            "Port": 27069,
+                            "Interface": "175.200.138.237",
+                            "EventBlackLiist": ".e.source.filename /cost/away.gifmilitary.wav EQ ",
+                            "authorizedProcesses": [
+                                ".proc.exec /teach/since/leave/either/operation/control LT AND .proc.exec /teach/since/leave/either/operation/control GT AND .p.exec /teach/since/leave/either/operation/control EQ ",
+                                ".proc.exec /teach/since/leave/either/operation/control LT AND .proc.exec /teach/since/leave/either/operation/control GT AND .p.exec /teach/since/leave/either/operation/control EQ OR .proc.exec /teach/since/leave/either/operation/control LE AND .proc.exec /teach/since/leave/either/operation/control LT ",
+                                ".proc.exec /teach/since/leave/either/operation/control LT AND .proc.exec /teach/since/leave/either/operation/control GT AND .p.exec /teach/since/leave/either/operation/control EQ OR .proc.exec /teach/since/leave/either/operation/control LE AND .proc.exec /teach/since/leave/either/operation/control LT AND .p.exec /teach/since/leave/either/operation/control LT AND .process.exec /teach/since/leave/either/operation/control GT "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "indeed.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 143,
+                            "Port": 44416,
+                            "Interface": "10.86.103.149",
+                            "EventBlackLiist": ".ev.source.filename /main/that.mp3improve.html GE ",
+                            "authorizedProcesses": [
+                                ".process.gid 59555 LE AND .proc.gid 59555 LT AND .proc.gid 59555 LE ",
+                                ".process.gid 59555 LE AND .proc.gid 59555 LT AND .proc.gid 59555 LE OR .proc.gid 59555 LT AND .proc.gid 59555 LE ",
+                                ".process.gid 59555 LE AND .proc.gid 59555 LT AND .proc.gid 59555 LE OR .proc.gid 59555 LT AND .proc.gid 59555 LE AND .proc.gid 59555 LT AND .p.gid 59555 GT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

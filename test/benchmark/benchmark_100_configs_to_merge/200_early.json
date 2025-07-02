@@ -1,0 +1,37 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "Scanner": {
+                "Plugins": {
+                    "SyslogScanner": {
+                        "File": "now.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "8007": ".ev.messageCode 5100 EQ OR .e.messageCode 5100 GT OR .e.messageCode 5100 LE OR .e.messageCode 5100 STRCMP "
+                                }
+                            }
+                        }
+                    },
+                    "Shmem": {
+                        "File": "indicate.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ShmemFile": "scanner_shmem",
+                            "ShmemCreate": false,
+                            "ShmemLogEntries": 62,
+                            "ShmemOffset": 14,
+                            "SemFile": "scanner_shmem_sem",
+                            "SemCreate": true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

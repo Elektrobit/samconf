@@ -1,0 +1,43 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "",
+            "LogLevel": "INVALID",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "hit.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 11,
+                            "Port": 62247,
+                            "Interface": "41.217.140.241",
+                            "EventBlackLiist": ".e.hardwareid 314d12736474612c7cea174a42a85f2e LT ",
+                            "authorizedProcesses": [
+                                ".process.exec /agent/pull/floor/miss/agent/one LT OR .p.exec /agent/pull/floor/miss/agent/one EQ OR .proc.exec /agent/pull/floor/miss/agent/one STRCMP ",
+                                ".process.exec /agent/pull/floor/miss/agent/one LT OR .p.exec /agent/pull/floor/miss/agent/one EQ OR .proc.exec /agent/pull/floor/miss/agent/one STRCMP AND .p.exec /agent/pull/floor/miss/agent/one EQ AND .proc.exec /agent/pull/floor/miss/agent/one EQ ",
+                                ".process.exec /agent/pull/floor/miss/agent/one LT OR .p.exec /agent/pull/floor/miss/agent/one EQ OR .proc.exec /agent/pull/floor/miss/agent/one STRCMP AND .p.exec /agent/pull/floor/miss/agent/one EQ AND .proc.exec /agent/pull/floor/miss/agent/one EQ OR .process.exec /agent/pull/floor/miss/agent/one LT OR .proc.exec /agent/pull/floor/miss/agent/one LT "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "very.so",
+                        "Run": "Never",
+                        "Config": {
+                            "ConnectionLimit": 117,
+                            "Port": 30200,
+                            "Interface": "172.31.71.197",
+                            "EventBlackLiist": ".ev.payload Our sound ever shoulder west. LE ",
+                            "authorizedProcesses": [
+                                ".proc.pid 302952 STRCMP OR .p.pid 302952 LE OR .p.pid 302952 GE ",
+                                ".proc.pid 302952 STRCMP OR .p.pid 302952 LE OR .p.pid 302952 GE AND .process.pid 302952 GE OR .p.pid 302952 LT ",
+                                ".proc.pid 302952 STRCMP OR .p.pid 302952 LE OR .p.pid 302952 GE AND .process.pid 302952 GE OR .p.pid 302952 LT OR .process.pid 302952 EQ AND .process.pid 302952 GT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

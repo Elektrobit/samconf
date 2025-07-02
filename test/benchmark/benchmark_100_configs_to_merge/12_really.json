@@ -1,0 +1,35 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "require.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.hardwareid 36d6211658214dabe97ff2d5d04a1222 GE "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "decade.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.source.appname above.csv LT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/art/guy.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

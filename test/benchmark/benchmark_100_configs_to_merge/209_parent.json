@@ -1,0 +1,45 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": true,
+            "LogFilter": "later.c",
+            "LogLevel": "WARN",
+            "EventLogging": {
+                "Plugins": {
+                    "DLT": {
+                        "File": "would.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.classification 0x8000000000 EQ "
+                        ],
+                        "Config": {
+                            "Connection": "/tmp/dlt",
+                            "EcuId": "ECU1",
+                            "AppId": "ELOS"
+                        }
+                    },
+                    "fetchapi": {
+                        "File": "professor.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.messageCode 7127 GT "
+                        ],
+                        "Config": {
+                            "BufferSize": 91
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "nice.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.severity 5 GE "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/enjoy/under.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

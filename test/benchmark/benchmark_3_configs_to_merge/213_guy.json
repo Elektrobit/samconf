@@ -1,0 +1,57 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "energy.so",
+                        "Run": "Never"
+                    },
+                    "KmsgScanner": {
+                        "File": "factor.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    }
+                }
+            },
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "bit.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 165,
+                            "path": "/support/such/artist.socket",
+                            "EventBlackLiist": ".event.source.appname TV.flac GT ",
+                            "authorizedProcesses": [
+                                ".p.exec /result/record/together/sort/meet/old STRCMP OR .proc.exec /result/record/together/sort/meet/old GE OR .proc.exec /result/record/together/sort/meet/old EQ ",
+                                ".p.exec /result/record/together/sort/meet/old STRCMP OR .proc.exec /result/record/together/sort/meet/old GE OR .proc.exec /result/record/together/sort/meet/old EQ OR .p.exec /result/record/together/sort/meet/old LE OR .proc.exec /result/record/together/sort/meet/old GE ",
+                                ".p.exec /result/record/together/sort/meet/old STRCMP OR .proc.exec /result/record/together/sort/meet/old GE OR .proc.exec /result/record/together/sort/meet/old EQ OR .p.exec /result/record/together/sort/meet/old LE OR .proc.exec /result/record/together/sort/meet/old GE AND .p.exec /result/record/together/sort/meet/old LE AND .proc.exec /result/record/together/sort/meet/old GE "
+                            ]
+                        }
+                    },
+                    "LocalTcpClient": {
+                        "File": "brother.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 231,
+                            "Port": 21529,
+                            "Interface": "172.27.36.252",
+                            "EventBlackLiist": ".ev.payload Model might research serve leave. EQ ",
+                            "authorizedProcesses": [
+                                ".process.exec /picture/through/while/on/natural/whole GT OR .process.exec /picture/through/while/on/natural/whole GE OR .process.exec /picture/through/while/on/natural/whole EQ ",
+                                ".process.exec /picture/through/while/on/natural/whole GT OR .process.exec /picture/through/while/on/natural/whole GE OR .process.exec /picture/through/while/on/natural/whole EQ OR .process.exec /picture/through/while/on/natural/whole LT AND .proc.exec /picture/through/while/on/natural/whole GT ",
+                                ".process.exec /picture/through/while/on/natural/whole GT OR .process.exec /picture/through/while/on/natural/whole GE OR .process.exec /picture/through/while/on/natural/whole EQ OR .process.exec /picture/through/while/on/natural/whole LT AND .proc.exec /picture/through/while/on/natural/whole GT OR .proc.exec /picture/through/while/on/natural/whole STRCMP AND .process.exec /picture/through/while/on/natural/whole GT "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

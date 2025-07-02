@@ -1,0 +1,17 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "INFO",
+            "Scanner": {
+                "Plugins": {
+                    "OomKiller": {
+                        "File": "hour.so",
+                        "Run": "Always"
+                    }
+                }
+            }
+        }
+    }
+}

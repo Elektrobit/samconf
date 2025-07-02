@@ -21,6 +21,7 @@ Welcome to samconf's documentation!
    documentation/developer.md
    documentation/documentation.md
    ADRs <documentation/adr/index.rst>
+   test/benchmark/index.rst
 
 Indices and tables
 ==================

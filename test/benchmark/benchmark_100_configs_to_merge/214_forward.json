@@ -1,0 +1,47 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "less.c",
+            "LogLevel": "INFO",
+            "EventLogging": {
+                "Plugins": {
+                    "fetchapi": {
+                        "File": "charge.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".ev.source.pid 1372959 GE "
+                        ],
+                        "Config": {
+                            "BufferSize": 110
+                        }
+                    },
+                    "JsonBackend": {
+                        "File": "on.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".e.messageCode 8000 LE "
+                        ],
+                        "Config": {
+                            "StoragePath": "/even/couple.log",
+                            "MaxSize": 36938,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    },
+                    "SQLBackend": {
+                        "File": "card.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.hardwareid d6f13a116e42be68896a827028c018b7 GT "
+                        ],
+                        "Config": {
+                            "ConnectionPath": "/night/husband.sqlite"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

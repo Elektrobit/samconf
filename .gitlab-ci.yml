@@ -150,6 +150,19 @@ code-lint:
     paths:
       - build/Release/cmake/lint_results/
 
+benchmark:
+  stage: test
+  needs:
+    - build-docker-image
+    - build-dependencies
+    - build-release
+  script:
+    - ci/run_benchmark.sh Release
+  artifacts:
+    when: always
+    paths:
+      - build/Release/result/benchmark_results/
+
 code-coverage:
   stage: test
   tags:

@@ -1,0 +1,54 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "ALL",
+            "ClientInputs": {
+                "Plugins": {
+                    "unixClient": {
+                        "File": "member.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 48,
+                            "path": "/information/science/among.socket",
+                            "EventBlackLiist": ".ev.classification 0x1 EQ ",
+                            "authorizedProcesses": [
+                                ".process.gid 22188 LT OR .process.gid 22188 EQ AND .p.gid 22188 GT ",
+                                ".process.gid 22188 LT OR .process.gid 22188 EQ AND .p.gid 22188 GT AND .p.gid 22188 GT OR .p.gid 22188 GT ",
+                                ".process.gid 22188 LT OR .process.gid 22188 EQ AND .p.gid 22188 GT AND .p.gid 22188 GT OR .p.gid 22188 GT OR .proc.gid 22188 GE OR .process.gid 22188 STRCMP "
+                            ]
+                        }
+                    }
+                }
+            },
+            "Scanner": {
+                "Plugins": {
+                    "KmsgScanner": {
+                        "File": "sense.so",
+                        "Run": "Always",
+                        "Config": {
+                            "KmsgFile": "/dev/kmsg"
+                        }
+                    },
+                    "SyslogScanner": {
+                        "File": "test.so",
+                        "Run": "Always",
+                        "Config": {
+                            "SyslogPath": "/dev/log",
+                            "MappingRules": {
+                                "MessageCodes": {
+                                    "2000": ".ev.hardwareid c710ffd4ac7dfd5d3ecfd097364f1582 STRCMP AND .event.hardwareid c710ffd4ac7dfd5d3ecfd097364f1582 LE AND .event.hardwareid c710ffd4ac7dfd5d3ecfd097364f1582 STRCMP AND .ev.hardwareid c710ffd4ac7dfd5d3ecfd097364f1582 LE "
+                                }
+                            }
+                        }
+                    },
+                    "OomKiller": {
+                        "File": "something.so",
+                        "Run": "Always"
+                    }
+                }
+            }
+        }
+    }
+}

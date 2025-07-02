@@ -63,6 +63,11 @@ create_mock_lib(
     samconfCreateRealAt
     samconfCreateStringAt
     samconfInsertAt
+    samconfConfigNext
+    samconfConfigMergeConfig
+    samconfLoad
+    samconfLoadAndMerge
+    samconfConfigMergeConfigs
 )
 
 target_link_libraries(

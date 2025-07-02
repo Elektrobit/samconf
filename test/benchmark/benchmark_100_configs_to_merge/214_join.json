@@ -1,0 +1,28 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "WARN",
+            "ClientInputs": {
+                "Plugins": {
+                    "PublicTcpClient": {
+                        "File": "simple.so",
+                        "Run": "Always",
+                        "Config": {
+                            "ConnectionLimit": 163,
+                            "Port": 27143,
+                            "Interface": "173.205.97.130",
+                            "EventBlackLiist": ".e.date [7714374696, 8279825778] EQ ",
+                            "authorizedProcesses": [
+                                ".process.uid 26728 LE AND .proc.uid 26728 LT AND .proc.uid 26728 STRCMP ",
+                                ".process.uid 26728 LE AND .proc.uid 26728 LT AND .proc.uid 26728 STRCMP OR .p.uid 26728 GE AND .proc.uid 26728 LE ",
+                                ".process.uid 26728 LE AND .proc.uid 26728 LT AND .proc.uid 26728 STRCMP OR .p.uid 26728 GE AND .proc.uid 26728 LE AND .proc.uid 26728 GE OR .process.uid 26728 STRCMP "
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "root": {
+        "elos": {
+            "UseEnv": false,
+            "LogFilter": "",
+            "LogLevel": "COUNT",
+            "EventLogging": {
+                "Plugins": {
+                    "JsonBackend": {
+                        "File": "little.so",
+                        "Run": "Always",
+                        "Filter": [
+                            ".event.source.filename /vote/you.xlsrecent.js GT "
+                        ],
+                        "Config": {
+                            "StoragePath": "/natural/city.log",
+                            "MaxSize": 56224,
+                            "Flags": [
+                                "O_SYNC"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

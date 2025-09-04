@@ -280,7 +280,7 @@ samconfConfigStatusE_t samconfLoadAndMerge(const samconfConfigLocation_t locatio
     if (status != SAMCONF_CONFIG_OK) {
         return status;
     }
-    status = SAMCONF_CONFIG_NOT_FOUND;
+    status = SAMCONF_CONFIG_OK;
     samconfConfigStatusE_t tmpRes = SAMCONF_CONFIG_OK;
     for (size_t i = 0; i < locationsSize; i++) {
         switch (locations[i].type) {
@@ -297,12 +297,9 @@ samconfConfigStatusE_t samconfLoadAndMerge(const samconfConfigLocation_t locatio
                 safuLogWarn("not a valid config location");
                 continue;
         }
-        if (tmpRes == SAMCONF_CONFIG_OK) {
-            status = SAMCONF_CONFIG_OK;
-        } else if (tmpRes == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED && status == SAMCONF_CONFIG_OK) {
-            status = SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED;
-        } else {
-            safuLogWarnF("some error extending With location \"%s\"", locations[i].path);
+        if (tmpRes == SAMCONF_CONFIG_INVALID_SIGNATURE ||
+            (tmpRes == SAMCONF_CONFIG_ERROR && status != SAMCONF_CONFIG_INVALID_SIGNATURE)) {
+            status = tmpRes;
         }
     }
     return status;

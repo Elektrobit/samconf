@@ -8,7 +8,8 @@ create_unit_test(
   test_samconfJsonBackendOpen_utest
   SOURCES
     case_success_file.c
-    case_error_file.c
+    case_err_reading_file.c
+    case_err_file_not_found.c
     samconfJsonBackendOpen_utest.c
   LIBRARIES
     samconf_static

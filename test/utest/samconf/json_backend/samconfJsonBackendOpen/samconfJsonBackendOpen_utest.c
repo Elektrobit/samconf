@@ -6,7 +6,8 @@ TEST_SUITE_FUNC_PROTOTYPES(samconfJsonBackendOpenUtest)
 int main() {
     const struct CMUnitTest tests[] = {
         TEST_CASE(samconfTestSamconfJsonBackendOpenFileSuccess),
-        TEST_CASE(samconfTestSamconfJsonBackendOpenFileError),
+        TEST_CASE(samconfTestSamconfJsonBackendOpenFileErrReadingFile),
+        TEST_CASE(samconfTestSamconfJsonBackendOpenFileErrFileNotFound),
     };
 
     return RUN_TEST_SUITE(tests, samconfJsonBackendOpenUtest);

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-set(SAMCONF_VERSION 0.75.4)
+set(SAMCONF_VERSION 0.75.8)
 
 # Attention: Aside from the version, as many things as possible in this file
 #   should be put into functions, as this solves potential issues with commands

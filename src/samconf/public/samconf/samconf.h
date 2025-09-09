@@ -18,6 +18,7 @@ samconfConfigStatusE_t samconfVerifySignature(const char *location);
  *
  * Returns:
  *         SAMCONF_CONFIG_OK – on success.
+ *         SAMCONF_CONFIG_NOT_FOUND - when path doesn't point to a configuration..
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
 samconfConfigStatusE_t samconfLoad(const char *location, bool enforceSignature, samconfConfig_t **const config);
@@ -33,6 +34,7 @@ samconfConfigStatusE_t samconfLoad(const char *location, bool enforceSignature, 
  * Returns:
  *         SAMCONF_CONFIG_OK – when nothing failed
  *         SAMCONF_CONFIG_INVALID_SIGNATURE - when at least one config has an invalid signature
+ *         SAMCONF_CONFIG_NOT_FOUND - when no configuration was found.
  *         SAMCONF_CONFIG_ERROR – on failure.
  ******************************************************************/
 samconfConfigStatusE_t samconfLoadAndMerge(const samconfConfigLocation_t *locations, size_t locationsSize,

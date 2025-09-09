@@ -6,13 +6,23 @@
 #include <safu/common.h>
 #include <safu/log.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "samconf/config_backend.h"
 #include "samconf/samconf.h"
+#include "samconf/samconf_types.h"
 
 samconfConfigStatusE_t samconfJsonBackendOpen(const char *location, samconfConfigBackend_t *backend) {
     json_object *root = NULL;
+
+    struct stat sb;
+    int s = stat(location, &sb);
+    if (s == -1 && errno == ENOENT) {
+        safuLogDebugF("%s does not exist", location);
+        return SAMCONF_CONFIG_NOT_FOUND;
+    }
 
     root = json_object_from_file(location);
 

@@ -27,5 +27,5 @@ void samconfTestSamconfLoadLookupError(UNUSED void **state) {
     status = samconfLoad(location, false, &config);
 
     assert_ptr_equal(backend, (void *)0xdeadc0de);
-    assert_int_equal(status, SAMCONF_CONFIG_ERROR);
+    assert_int_equal(status, SAMCONF_CONFIG_NOT_FOUND);
 }

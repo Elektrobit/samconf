@@ -1005,6 +1005,9 @@ samconfConfigStatusE_t samconfConfigSetInt(samconfConfig_t *config, int64_t intV
     samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
 
     if (config != NULL) {
+        if (config->type == SAMCONF_CONFIG_VALUE_STRING) {
+            free(config->value.string);
+        }
         config->value.integer = intValue;
         config->type = SAMCONF_CONFIG_VALUE_INT;
         status = SAMCONF_CONFIG_OK;
@@ -1017,6 +1020,9 @@ samconfConfigStatusE_t samconfConfigSetBool(samconfConfig_t *config, bool value)
     samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
 
     if (config != NULL) {
+        if (config->type == SAMCONF_CONFIG_VALUE_STRING) {
+            free(config->value.string);
+        }
         config->value.boolean = value;
         config->type = SAMCONF_CONFIG_VALUE_BOOLEAN;
         status = SAMCONF_CONFIG_OK;
@@ -1029,6 +1035,9 @@ samconfConfigStatusE_t samconfConfigSetReal(samconfConfig_t *config, double valu
     samconfConfigStatusE_t status = SAMCONF_CONFIG_ERROR;
 
     if (config != NULL) {
+        if (config->type == SAMCONF_CONFIG_VALUE_STRING) {
+            free(config->value.string);
+        }
         config->value.real = value;
         config->type = SAMCONF_CONFIG_VALUE_REAL;
         status = SAMCONF_CONFIG_OK;

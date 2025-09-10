@@ -132,6 +132,7 @@ samconfConfigStatusE_t samconfLoad(const char *location, bool enforceSignature, 
             }
         } else {
             safuLogErrF("Failed to lookup backend for %s.\n", location);
+            status = SAMCONF_CONFIG_NOT_FOUND;
         }
     } else {
         safuLogErrF("Failed to verify signature for %s.", location);
@@ -234,25 +235,27 @@ static samconfConfigStatusE_t _extendWithDirectory(DIR *confDir, bool enforceSig
 static samconfConfigStatusE_t _extendWithLocation(const samconfConfigLocation_t *location,
                                                   samconfConfig_t **const conf) {
     samconfConfigStatusE_t result = SAMCONF_CONFIG_NOT_FOUND;
-    DIR *confDir = opendir(location->path);
-    if (confDir != NULL) {
-        result = _extendWithDirectory(confDir, location->enforceSignature, location->path, conf);
-        if (result == SAMCONF_CONFIG_NOT_FOUND) {
-            safuLogWarnF("No config found in \"%s\"", location->path);
-        } else if (result == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED) {
-            safuLogWarnF("merge rules don't allow anything in \"%s\" to be merged", location->path);
-        } else if (result != SAMCONF_CONFIG_OK) {
-            safuLogErrF("couldn't extend with \"%s\" (%d)", location->path, result);
-        }
-        closedir(confDir);
-    } else {
-        result = _extendWithSinglePath(location->path, location->enforceSignature, conf);
-        if (result == SAMCONF_CONFIG_NOT_FOUND) {
-            safuLogWarnF("no config could be found at \"%s\"", location->path);
-        } else if (result == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED) {
-            safuLogWarnF("extending with \"%s\" not allowed by merge rules", location->path);
-        } else if (result != SAMCONF_CONFIG_OK) {
-            safuLogErrF("couldn't extend with \"%s\"", location->path);
+    if (location->path != NULL) {
+        DIR *confDir = opendir(location->path);
+        if (confDir != NULL) {
+            result = _extendWithDirectory(confDir, location->enforceSignature, location->path, conf);
+            if (result == SAMCONF_CONFIG_NOT_FOUND) {
+                safuLogWarnF("No config found in \"%s\"", location->path);
+            } else if (result == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED) {
+                safuLogWarnF("merge rules don't allow anything in \"%s\" to be merged", location->path);
+            } else if (result != SAMCONF_CONFIG_OK) {
+                safuLogErrF("couldn't extend with \"%s\" (%d)", location->path, result);
+            }
+            closedir(confDir);
+        } else {
+            result = _extendWithSinglePath(location->path, location->enforceSignature, conf);
+            if (result == SAMCONF_CONFIG_NOT_FOUND) {
+                safuLogWarnF("no config could be found at \"%s\"", location->path);
+            } else if (result == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED) {
+                safuLogWarnF("extending with \"%s\" not allowed by merge rules", location->path);
+            } else if (result != SAMCONF_CONFIG_OK) {
+                safuLogErrF("couldn't extend with \"%s\"", location->path);
+            }
         }
     }
     return result;
@@ -285,9 +288,6 @@ samconfConfigStatusE_t samconfLoadAndMerge(const samconfConfigLocation_t locatio
     for (size_t i = 0; i < locationsSize; i++) {
         switch (locations[i].type) {
             case SAMCONF_CONFIG_LOCATION_TYPE_CONFIG:
-                if (locations[i].path == NULL) {
-                    continue;
-                }
                 tmpRes = samconfConfigMergeConfig(config, locations[i].config);
                 break;
             case SAMCONF_CONFIG_LOCATION_TYPE_PATH:
@@ -297,12 +297,11 @@ samconfConfigStatusE_t samconfLoadAndMerge(const samconfConfigLocation_t locatio
                 safuLogWarn("not a valid config location");
                 continue;
         }
-        if (tmpRes == SAMCONF_CONFIG_OK) {
+        if (tmpRes == SAMCONF_CONFIG_INVALID_SIGNATURE ||
+            (tmpRes == SAMCONF_CONFIG_ERROR && status != SAMCONF_CONFIG_INVALID_SIGNATURE)) {
+            status = tmpRes;
+        } else if (status == SAMCONF_CONFIG_NOT_FOUND && tmpRes == SAMCONF_CONFIG_OK) {
             status = SAMCONF_CONFIG_OK;
-        } else if (tmpRes == SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED && status == SAMCONF_CONFIG_OK) {
-            status = SAMCONF_CONFIG_OVERWRITE_NOT_ALLOWED;
-        } else {
-            safuLogWarnF("some error extending With location \"%s\"", locations[i].path);
         }
     }
     return status;

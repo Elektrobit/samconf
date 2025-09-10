@@ -25,7 +25,7 @@ void samconfTestSamconfConfigMergeConfigOverwriteSuccess(UNUSED void **state) {
     SHOULD("%s", "overwrite value of one config to the other");
 
     testConfigToMerge = calloc(1, sizeof(samconfConfig_t));
-    result = samconfUtilCreateMockConfigFromStr(_TEST_CONFIG_FETCHAPI, false, testConfigToMerge);
+    result = samconfUtilCreateMockConfigFromStr(_TEST_CONFIG_FETCHAPI_B, false, testConfigToMerge);
     assert_int_equal(result, SAMCONF_CONFIG_OK);
 
     testDefConfig = calloc(1, sizeof(samconfConfig_t));
